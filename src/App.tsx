@@ -9,8 +9,8 @@ function App() {
   
   return (
     <Canvas>
-      <ambientLight intensity={0.5} />
-      <pointLight position={[0, 10, 0]} />
+      <ambientLight intensity={0.2} />
+      <directionalLight intensity={1.0} position={[1, 1, 1]} />
       <Ground position={[-10, 0, 0]} />
       <Water position={[5, 0, 0]} />
       <Ground position={[20, 0, 0]} />

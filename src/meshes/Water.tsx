@@ -1,24 +1,61 @@
-import { ThreeElements } from "@react-three/fiber"
+import { ThreeElements, useFrame } from "@react-three/fiber"
 import { useRef } from "react"
 
-import vertexShader from "../shaders/vector/water.glsl";
-import fragmentShader from "../shaders/fragment/water.glsl";
+import vertexWater from "../shaders/vector/water.glsl";
+import fragmentWater from "../shaders/fragment/water.glsl";
+import vertexRipple from "../shaders/vector/ripple.glsl";
+import fragmentRipple from "../shaders/fragment/ripple.glsl";
 
-import { Mesh } from 'three'
+import { Group, ShaderMaterial } from 'three'
+import { Geometry, Base, Intersection } from '@react-three/csg'
 
-function Water(props: ThreeElements['mesh']) {
-  const meshRef = useRef<Mesh>(null!);
+function Water(props: ThreeElements['group']) {
+  const groupRef = useRef<Group>(null!);
+  const matRef = useRef<ShaderMaterial>(null!)
+
   const width = 18;
   const height = 20;
 
+  useFrame(({clock }) =>{
+    if(matRef.current){
+      matRef.current.uniforms.uTime = { value: clock.getElapsedTime()};
+    }
+  })
+
+  const uniforms = {
+    uTime: { value: 0.0 },
+  };
+
   return (
-    <mesh
-      {...props}
+    <group {...props}
       rotation={[-Math.PI / 2.0,0, 0]}
-      ref={meshRef}>
-      <planeGeometry args={[width, height, width * 3, height * 3]} />
-      <shaderMaterial vertexShader={vertexShader} fragmentShader={fragmentShader} />
-    </mesh>
+      ref={groupRef}
+    >
+      <mesh position={[0.0, 0.0, 0.001]}>
+        <Geometry>
+          <Base>
+            <planeGeometry args={[width, height]} />
+          </Base>
+          <Intersection scale={[1.3,1.3,1.3]}>
+            <boxGeometry args={[1, 1, 1]} />
+          </Intersection>
+        </Geometry>
+        <shaderMaterial
+          ref={matRef}
+          uniforms={uniforms} 
+          vertexShader={vertexRipple}
+          fragmentShader={fragmentRipple} 
+        />
+      </mesh>
+      <mesh position={[0.0, 0.0, 0.0]}>
+          <boxGeometry args={[1, 1, 1]} />
+          <meshStandardMaterial color='white' />
+        </mesh>
+      <mesh>
+        <planeGeometry args={[width, height, width * 3, height * 3]} />
+        <shaderMaterial vertexShader={vertexWater} fragmentShader={fragmentWater} />
+      </mesh>
+    </group>
   )
 }
 
