@@ -36,7 +36,7 @@ function Water(props: ThreeElements['group']) {
           <Base>
             <planeGeometry args={[width, height]} />
           </Base>
-          <Intersection scale={[1.3,1.3,1.3]}>
+          <Intersection scale={[1.4,1.4,1.4]}>
             <boxGeometry args={[1, 1, 1]} />
           </Intersection>
         </Geometry>
@@ -44,7 +44,8 @@ function Water(props: ThreeElements['group']) {
           ref={matRef}
           uniforms={uniforms} 
           vertexShader={vertexRipple}
-          fragmentShader={fragmentRipple} 
+          fragmentShader={fragmentRipple}
+          transparent
         />
       </mesh>
       <mesh position={[0.0, 0.0, 0.0]}>

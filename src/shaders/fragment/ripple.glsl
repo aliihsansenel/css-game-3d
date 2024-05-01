@@ -1,9 +1,31 @@
 export default
 `
+precision mediump float;
+
 uniform float uTime;
+
 varying vec2 vUv;
 
 void main() {
-    gl_FragColor = vec4(vec3(0.90), 1.0);
-    // gl_FragColor = vec4(vec3(step(0.5, vUv.x)), 1.0);
-}`;
+    vec2 uv = vUv;
+
+    // Rotation start
+    uv -= vec2(0.5);
+    float angle = radians(45.0);
+    // Apply rotation matrix
+    float cosA = cos(angle);
+    float sinA = sin(angle);
+    mat2 rotationMatrix = mat2(cosA, -sinA, sinA, cosA);
+    uv = rotationMatrix * uv;
+    uv += vec2(0.5);
+    // Rotation end
+
+    vec2 center = vec2(0.5);
+    float dist = abs(uv.x - center.x) + abs(uv.y - center.x);
+    float timeFactor = mod(uTime * 0.008, 1.0);
+    float ripple = (sin((dist - timeFactor) * 600.0) + 1.0) / 2.0;
+    vec4 color = vec4(vec3(0.9), ripple); // Adjust color as needed
+
+    gl_FragColor = color;
+}
+`;
