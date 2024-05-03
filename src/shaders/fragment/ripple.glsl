@@ -3,9 +3,9 @@ export default
 precision mediump float;
 
 uniform float uTime;
-
 varying vec2 vUv;
 
+// TODO implement [0,1] ranged variable, remove uv
 void main() {
     vec2 uv = vUv;
 
@@ -24,7 +24,8 @@ void main() {
     float dist = abs(uv.x - center.x) + abs(uv.y - center.x);
     float timeFactor = mod(uTime * 0.008, 1.0);
     float ripple = (sin((dist - timeFactor) * 600.0) + 1.0) / 2.0;
-    vec4 color = vec4(vec3(0.9), ripple); // Adjust color as needed
+    float border = 1.0 - smoothstep(0.9, 1.0, dist * 20.0);
+    vec4 color = vec4(vec3(0.9), min(border, ripple));
 
     gl_FragColor = color;
 }
