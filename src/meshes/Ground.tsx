@@ -3,7 +3,8 @@ import { useRef } from "react"
 
 import { Mesh } from 'three'
 
-function Ground(props: ThreeElements['mesh']) {
+function GroundMesh(props: ThreeElements['mesh']) {
+  
   const meshRef = useRef<Mesh>(null!);
   
   return (
@@ -16,4 +17,4 @@ function Ground(props: ThreeElements['mesh']) {
   )
 }
 
-export default Ground;
+export default GroundMesh;
