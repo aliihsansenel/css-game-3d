@@ -4,7 +4,6 @@ import { useRef } from "react"
 import { Mesh } from 'three'
 
 function GroundMesh(props: ThreeElements['mesh']) {
-  
   const meshRef = useRef<Mesh>(null!);
   
   return (
