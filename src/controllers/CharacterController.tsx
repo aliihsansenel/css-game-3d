@@ -25,7 +25,7 @@ export const CharacterController = () => {
   const isOnFloor = useRef(true);
 
   useFrame(() => {
-    const impulse = { x: 0, y: 0, z: 0 };
+    let impulse = { x: 0, y: 0, z: 0 };
     if (jumpPressed && isOnFloor.current) {
       impulse.y += JUMP_FORCE;
       isOnFloor.current = false;
@@ -49,6 +49,9 @@ export const CharacterController = () => {
       impulse.z -= MOVEMENT_SPEED;
       changeRotation = true;
     }
+
+    const norm = new Vector3(impulse.x, impulse.y, impulse.z).normalize();
+    impulse = {x: norm.x, y: norm.y, z: norm.z};
 
     rigidbody.current?.applyImpulse(impulse, true);
     if (changeRotation) {
