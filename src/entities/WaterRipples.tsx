@@ -1,5 +1,5 @@
 
-import vertexRipple from "../shaders/vector/ripple.glsl";
+import vertexRipple from "../shaders/vertex/ripple.glsl";
 import fragmentRipple from "../shaders/fragment/ripple.glsl";
 
 import { Geometry, Base, Intersection } from '@react-three/csg'
@@ -28,7 +28,7 @@ function WaterRipples({ size }: { size: { w: number, h: number} }) {
             <Base>
               <planeGeometry args={[size.w, size.h]} />
             </Base>
-            <Intersection scale={[1.4,1.4,1.4]}>
+            <Intersection>
               <boxGeometry args={[1, 1, 1]} />
             </Intersection>
           </Geometry>
@@ -45,7 +45,7 @@ function WaterRipples({ size }: { size: { w: number, h: number} }) {
     <group position={[0.0, 0.0, 0.001]}>
       {IntersectionMesh}
       { meshRef.current && (
-          <lineSegments position={[0.0, 0.0, 0.001]}>
+          <lineSegments position={[0.0, 0.0, 0.002]}>
             <edgesGeometry attach="geometry" args={[meshRef.current.geometry]} />
             <lineBasicMaterial attach="material" color={[0.0, 0.0, 0.0]}/>
           </lineSegments>
