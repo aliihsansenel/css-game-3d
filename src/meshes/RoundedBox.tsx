@@ -3,6 +3,7 @@ import { ThreeElements } from '@react-three/fiber'
 
 function RoundedBoxMesh(props: ThreeElements['mesh']) {
   
+  const color : string = props.color ? props.color : "#f3f3f3";
   return (
     <RoundedBox
       args={[1, 1, 1]} // Width, height, depth. Default is [1, 1, 1]
@@ -12,7 +13,7 @@ function RoundedBoxMesh(props: ThreeElements['mesh']) {
       creaseAngle={0.4} // Smooth normals everywhere except faces that meet at an angle greater than the crease angle
       {...props} // All THREE.Mesh props are valid
     >
-      <meshStandardMaterial color="#f3f3f3" roughness={0.5}/>
+      <meshStandardMaterial color={color} roughness={0.5}/>
     </RoundedBox>
   )
 }
