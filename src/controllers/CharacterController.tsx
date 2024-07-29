@@ -6,10 +6,10 @@ import { Controls } from "./input/KeyboardController";
 import Character from "../entities/Character";
 import { Group, Vector3 } from "three";
 
-const JUMP_FORCE = 1.5;
+const JUMP_FORCE = 10.5;
 const MOVEMENT_SPEED = 0.3;
 const MAX_VEL = 3;
-
+ 
 export interface AnimationStateDispatcher {
   (anim: string, vel: number): void;
 }
@@ -29,6 +29,7 @@ export const CharacterController = () => {
 
   const character = useRef<Group>(null!);
   const isOnFloor = useRef(true);
+  //const lastJump = useRef(0);
   
   useFrame(() => {
     let impulse = { x: 0, y: 0, z: 0 };
@@ -58,8 +59,8 @@ export const CharacterController = () => {
       changeRotation = true;
     }
 
-    const norm = new Vector3(impulse.x, impulse.y, impulse.z).normalize();
-    impulse = { x: norm.x, y: norm.y, z: norm.z };
+    const norm = new Vector3(impulse.x, 0.0, impulse.z).normalize();
+    impulse = { x: norm.x, y: impulse.y, z: norm.z };
 
     rigidbody.current?.applyImpulse(impulse, true);
     if (changeRotation) {
