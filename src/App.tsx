@@ -10,6 +10,7 @@ import RoundedBox from "./entities/RoundedBox";
 import { CharacterController } from "./controllers/CharacterController";
 import Playground from "./entities/Playground";
 import StaticCuboid from "./entities/StaticCuboid";
+import { DisplayScreen } from "./entities/DisplayScreen";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Ground position={[-10, 0, 0]} />
             <Water position={[5, 0, 0]} />
             <Ground position={[20, 0, 0]} />
+            <DisplayScreen />
             <RoundedBox position={[-6, 5, 0]} rotation={[Math.PI / 4.0, Math.PI / 4.0, 0]}/>
             <StaticCuboid position={[-1, 0, 0]} args={[3, 1, 2]}/>
             <Playground position={[7.5 - 0.1, 0.0, 0.01]} />

@@ -91,8 +91,8 @@ export const CharacterController = () => {
         // }}
       
       >
-        <CapsuleCollider args={[0.65, 0.6]} position={[-6, 1.2, -4]}/>
-        <group ref={character} position={[-6, 0, -4]} >
+        <CapsuleCollider args={[0.65, 0.6]} position={[-6, 1.2, -2]}/>
+        <group ref={character} position={[-6, 0, -2]} >
           <AnimationStateContext.Provider value={animStateDispatcher}>
             <Character />
           </AnimationStateContext.Provider>
