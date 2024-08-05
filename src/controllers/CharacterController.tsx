@@ -1,7 +1,7 @@
 import { useKeyboardControls } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
-import { ElementRef, MutableRefObject, createContext, useContext, useEffect, useRef } from "react";
+import { ElementRef, MutableRefObject, createContext, useCallback, useContext, useEffect, useRef } from "react";
 import { Controls } from "./input/KeyboardController";
 import Character from "../entities/Character";
 import { Group, Quaternion, Vector3 } from "three";
@@ -33,13 +33,27 @@ export const CharacterController = () => {
 
   const character = useRef<Group>(null!);
   const isOnFloor = useRef(true);
-  //const lastJump = useRef(0);
-  
+  const jumpCooldown = useRef(false);
+
+  const handleJump = useCallback(() => {
+    if (isOnFloor.current && !jumpCooldown.current) {
+      jumpCooldown.current = true;
+      setTimeout(() => {
+        jumpCooldown.current = false;
+      }, 700); // Cooldown period of 500ms
+
+      return JUMP_FORCE;
+    }
+    return 0;
+  }, []);
+
   useFrame(() => {
     let impulse = { x: 0, y: 0, z: 0 };
-    if (jumpPressed && isOnFloor.current) {
-      impulse.y += JUMP_FORCE;
-      isOnFloor.current = false;
+    if (jumpPressed) {
+      impulse.y += handleJump();
+      if (impulse.y > 0) {
+        isOnFloor.current = false;
+      }
     }
 
     const linvel = rigidbody.current?.linvel() || new Vector3();
