@@ -1,14 +1,16 @@
 import { useKeyboardControls } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
-import { ElementRef, MutableRefObject, createContext, useRef } from "react";
+import { ElementRef, MutableRefObject, createContext, useContext, useEffect, useRef } from "react";
 import { Controls } from "./input/KeyboardController";
 import Character from "../entities/Character";
-import { Group, Vector3 } from "three";
+import { Group, Quaternion, Vector3 } from "three";
+import { CameraTargetContext } from "./CameraController";
 
 const JUMP_FORCE = 10.5;
 const MOVEMENT_SPEED = 0.3;
-const MAX_VEL = 3;
+const MAX_VEL = 4;
+const MID_AIR_CONTROL = 0.33;
  
 export interface AnimationStateDispatcher {
   (anim: string, vel: number): void;
@@ -17,6 +19,7 @@ export interface AnimationStateDispatcher {
 export const AnimationStateContext = createContext<MutableRefObject<AnimationStateDispatcher> | null>(null);
 
 export const CharacterController = () => {
+  const { camera } = useThree();
   const jumpPressed = useKeyboardControls((state) => state[Controls.jump]);
   const leftPressed = useKeyboardControls((state) => state[Controls.left]);
   const rightPressed = useKeyboardControls((state) => state[Controls.right]);
@@ -26,6 +29,7 @@ export const CharacterController = () => {
   );
   const rigidbody = useRef<ElementRef<typeof RigidBody>>(null);
   const animStateDispatcher = useRef<(anim: string, vel: number) => void>(() => {});
+  const cameraTargetContext = useContext(CameraTargetContext);
 
   const character = useRef<Group>(null!);
   const isOnFloor = useRef(true);
@@ -39,28 +43,49 @@ export const CharacterController = () => {
     }
 
     const linvel = rigidbody.current?.linvel() || new Vector3();
-    const linvelMagnitude = new Vector3(linvel.x, linvel.y, linvel.z).length();
+    const linvelVec = new Vector3(linvel.x, linvel.y, linvel.z);
+    const linvelMagnitude = linvelVec.length();
 
     let changeRotation = false;
-    if (rightPressed && linvel?.x < MAX_VEL) {
+    const cameraDirection = new Vector3();
+    camera.getWorldDirection(cameraDirection);
+    cameraDirection.y = 0;
+    cameraDirection.normalize();
+
+    const up = new Vector3(0, 1, 0);
+    const quat = new Quaternion();
+    quat.setFromAxisAngle(up, Math.PI / 2);
+    const rotatedVec = cameraDirection.clone().applyQuaternion(quat);
+    const rightVec = linvelVec.clone().projectOnVector(rotatedVec);
+
+    const dotH = rightVec.dot(linvelVec);
+    const dotV = cameraDirection.dot(linvelVec);
+
+    if (rightPressed && dotH < MAX_VEL) {
       impulse.x += MOVEMENT_SPEED;
       changeRotation = true;
     }
-    if (leftPressed && linvel.x > -MAX_VEL) {
+    if (leftPressed && dotH < MAX_VEL) {
       impulse.x -= MOVEMENT_SPEED;
       changeRotation = true;
     }
-    if (backPressed && linvel.z < MAX_VEL) {
+    if (backPressed && dotV > -MAX_VEL) {
       impulse.z += MOVEMENT_SPEED;
       changeRotation = true;
     }
-    if (forwardPressed && linvel.z > -MAX_VEL) {
+    if (forwardPressed && dotV < MAX_VEL) {
       impulse.z -= MOVEMENT_SPEED;
       changeRotation = true;
     }
 
-    const norm = new Vector3(impulse.x, 0.0, impulse.z).normalize();
-    impulse = { x: norm.x, y: impulse.y, z: norm.z };
+    let dir = new Vector3(impulse.x, 0.0, impulse.z).normalize();
+    const direction = new Vector3(0, 0, -1);
+    const quaternion = new Quaternion().setFromUnitVectors(direction, cameraDirection);
+
+    dir = dir.applyQuaternion(quaternion);
+    dir = dir.multiplyScalar(isOnFloor.current ? 1.0 : MID_AIR_CONTROL);
+
+    impulse = { x: dir.x, y: impulse.y, z: dir.z };
 
     rigidbody.current?.applyImpulse(impulse, true);
     if (changeRotation) {
@@ -75,6 +100,12 @@ export const CharacterController = () => {
     }
   });
 
+  useEffect(() => {
+    if (cameraTargetContext)
+      cameraTargetContext(character.current);
+  }, [cameraTargetContext]);
+
+  // FIX this component renders every frame because of useKeyboardControls
   return (
     <group>
       <RigidBody

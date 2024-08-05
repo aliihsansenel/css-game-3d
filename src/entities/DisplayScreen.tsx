@@ -1,8 +1,10 @@
 import { Html, Plane, RoundedBox } from "@react-three/drei";
-import StaticCuboid from "./StaticCuboid";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
+import { useState } from "react";
 
 export const DisplayScreen = () => {
+  const [hidden, set] = useState();
+
   const width = 4.5;
   const heigth = 2.5;
 
@@ -16,7 +18,14 @@ export const DisplayScreen = () => {
         <meshBasicMaterial color="black" />
         <Plane args={[width - 0.3, heigth - 0.3]} position={[0, 0, .11]}>
         <meshBasicMaterial color="white" />
-          <Html position={[0, 0, 0.111]} transform occlude>
+          <Html position={[0, 0, 0.111]}
+            transform
+            occlude 
+            onOcclude={set}
+            style={{
+              transition: 'all 0.5s',
+              opacity: hidden ? 0 : 1,
+            }} >
             <div>
               <h1 style={{ color: "red", fontSize: "20px" }}>HELLO</h1>
             </div>
