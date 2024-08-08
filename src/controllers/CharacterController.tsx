@@ -40,7 +40,7 @@ export const CharacterController = () => {
       jumpCooldown.current = true;
       setTimeout(() => {
         jumpCooldown.current = false;
-      }, 700); // Cooldown period of 500ms
+      }, 700); 
 
       return JUMP_FORCE;
     }
@@ -101,11 +101,14 @@ export const CharacterController = () => {
 
     impulse = { x: dir.x, y: impulse.y, z: dir.z };
 
-    rigidbody.current?.applyImpulse(impulse, true);
-    if (changeRotation) {
-      const angle = Math.atan2(linvel.x, linvel.z);
-      character.current.rotation.y = angle;
+    if(cameraTargetContext?.isCameraToggled){
+      rigidbody.current?.applyImpulse(impulse, true);
+      if (changeRotation) {
+        const angle = Math.atan2(linvel.x, linvel.z);
+        character.current.rotation.y = angle;
+      }
     }
+      
 
     if (linvelMagnitude < 0.1) {
       animStateDispatcher.current('Idle', linvelMagnitude)
@@ -116,7 +119,7 @@ export const CharacterController = () => {
 
   useEffect(() => {
     if (cameraTargetContext)
-      cameraTargetContext(character.current);
+      cameraTargetContext.setCharacter(character.current);
   }, [cameraTargetContext]);
 
   // FIX this component renders every frame because of useKeyboardControls

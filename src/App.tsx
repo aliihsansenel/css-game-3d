@@ -12,6 +12,8 @@ import StaticCuboid from "./entities/StaticCuboid";
 import { DisplayScreen } from "./entities/DisplayScreen";
 import CameraController from "./controllers/CameraController";
 
+import "./App.css"
+
 function App() {
   return (
     <KeyboardController>

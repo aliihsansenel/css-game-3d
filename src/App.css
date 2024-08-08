@@ -1,5 +1,4 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -39,4 +38,41 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.screen-content {
+  font-size: 0.6em;
+  color: red;
+  text-align: start;
+  height: 88px;
+  width: 168px;
+  overflow: hidden;
+
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+.screen-content div{
+  margin: 0.1em;
+  
+}
+.screen-content .pv{
+  padding-left: 1.2em;
+}
+
+.screen-content input{
+  border: none;
+  background-color: inherit;
+  font-size: inherit;
+  outline: none;
+  font-weight: inherit;
+  
+}
+
+.screen-content input:nth-of-type(1) {
+  width: 8em;
+}
+
+.screen-content input:nth-of-type(2) {
+  width: 5em;
 }
