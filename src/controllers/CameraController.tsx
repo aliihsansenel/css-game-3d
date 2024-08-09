@@ -7,6 +7,7 @@ interface CameraTargetContextType {
   setCharacter: (target: Group) => void;
   setDisplayScreen: (target: Group) => void;
   isCameraToggled: boolean;
+  focusScreen: () => void;
 }
 
 export const CameraTargetContext = createContext<CameraTargetContextType | null>(null);
@@ -15,7 +16,7 @@ function CameraController({children}: { children: React.ReactNode; }) {
   const [cameraTarget, setCameraTarget] = useState<Vector3>(new Vector3())
   const exTargetPos = useRef<Vector3>(new Vector3(0, 0, -1))
   const { camera } = useThree();
-  const [isCameraToggled, setCameraToggle] = useState(true);
+  const [isCameraToggled, setCameraToggle] = useState(false);
   const [savedCameraState, setSavedCameraState] = useState<{ 
       position: Vector3, rotation: Euler, target: Vector3 } | null>(null);
   
@@ -31,7 +32,7 @@ function CameraController({children}: { children: React.ReactNode; }) {
   }
 
   useFrame(() => {
-    if (character.current) {
+    if (!isCameraToggled && character.current) {
       const worldPosition = new Vector3();
       character.current.getWorldPosition(worldPosition);
       camera.position.add(worldPosition.clone().sub(exTargetPos.current));
@@ -40,30 +41,36 @@ function CameraController({children}: { children: React.ReactNode; }) {
     }
   });
 
+  function focusScreen() {
+    // Save the current camera state
+    setSavedCameraState({
+      position: camera.position.clone(),
+      rotation: camera.rotation.clone(),
+      target: cameraTarget.clone()
+    });
+    if (displayScreen.current) {
+      const screenPosition = new Vector3();
+      displayScreen.current.getWorldPosition(screenPosition);
+      camera.position.set(screenPosition.x, screenPosition.y, screenPosition.z + 2.3);
+      camera.lookAt(screenPosition);
+      setCameraToggle(!isCameraToggled); // Toggle the state
+    }
+  }
+
   useEffect(() => {
     const handleKeyDown = (event: { key: string; }) => {
       if (event.key === 'e' && displayScreen.current) {
-        if (isCameraToggled) {
-          // Save the current camera state
-          setSavedCameraState({
-            position: camera.position.clone(),
-            rotation: camera.rotation.clone(),
-            target: cameraTarget.clone()
-          });
-          if (displayScreen.current) {
-            const screenPosition = new Vector3();
-            displayScreen.current.getWorldPosition(screenPosition);
-            camera.position.set(screenPosition.x, screenPosition.y, screenPosition.z + 2.3);
-            camera.lookAt(screenPosition);
-          }
-
-        } else if (savedCameraState) {
+        if (!isCameraToggled) {
+          focusScreen();
+        }
+      } else if (event.key === 'Escape' && isCameraToggled) {
+        if (savedCameraState) {
           // Restore the saved camera state
           camera.position.copy(savedCameraState.position);
           camera.rotation.copy(savedCameraState.rotation);
           setCameraTarget(savedCameraState.target);
+          setCameraToggle(!isCameraToggled); // Toggle the state
         }
-        setCameraToggle(!isCameraToggled); // Toggle the state
       }
     };
 
@@ -75,9 +82,11 @@ function CameraController({children}: { children: React.ReactNode; }) {
   }, [isCameraToggled]);
   
   return (
-    <CameraTargetContext.Provider value={{ setCharacter, setDisplayScreen, isCameraToggled }}>
+    <CameraTargetContext.Provider value={{ 
+        setCharacter, setDisplayScreen, isCameraToggled, focusScreen
+      }}>
       {children}
-      {isCameraToggled && 
+      {!isCameraToggled && 
         <OrbitControls
           maxPolarAngle={1.2}
           enablePan={false}

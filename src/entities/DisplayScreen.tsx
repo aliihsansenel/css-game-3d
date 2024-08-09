@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef, useContext, FocusEvent } from "react";
 
 import { Html, Plane, RoundedBox } from "@react-three/drei";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
@@ -20,36 +20,42 @@ export const DisplayScreen = () => {
       cameraTargetContext.setDisplayScreen(displayScreen.current);
   }, [cameraTargetContext]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function getFocus(_: FocusEvent<HTMLInputElement>): void {
+    if (cameraTargetContext && !cameraTargetContext.isCameraToggled) {
+      cameraTargetContext.focusScreen();
+    }
+  }
+
   return (
     <group position={[-5, 2.5, -4]} ref={displayScreen}>
       <RigidBody
         colliders={false}
         type="fixed"
       >
-      <RoundedBox args={[width, heigth, 0.1]}>
-        <meshBasicMaterial color="black" />
-        <Plane args={[width - 0.3, heigth - 0.3]} position={[0, 0, .11]}>
-        <meshBasicMaterial color="white" />
-          <Html position={[0, 0, 0.01]}
-            transform
-            occlude 
-            onOcclude={set}
-            style={{
-              transition: 'all 0.5s',
-              opacity: hidden ? 0 : 1,
-            }} >
-            <ScreenContent />
-          </Html>
-        </Plane>
-      </RoundedBox>
-      <CuboidCollider args={[width / 2.0, heigth / 2.0, 0.1]} />
-    </RigidBody>
-      
+        <RoundedBox args={[width, heigth, 0.1]}>
+          <meshBasicMaterial color="black" />
+          <Plane args={[width - 0.3, heigth - 0.3]} position={[0, 0, .11]} >
+          <meshBasicMaterial color="white" />
+            <Html position={[0, 0, 0.01]}
+              transform
+              occlude 
+              onOcclude={set}
+              style={{
+                transition: 'all 0.5s',
+                opacity: hidden ? 0 : 1,
+              }} >
+              <ScreenContent handler={getFocus} />
+            </Html>
+          </Plane>
+        </RoundedBox>
+        <CuboidCollider args={[width / 2.0, heigth / 2.0, 0.1]} />
+      </RigidBody>
     </group>
   );
 }
 
-function ScreenContent() {
+function ScreenContent({handler}:{handler: (event: FocusEvent<HTMLInputElement>) => void}) {
   const contentId = 'l0';
   const content = quizQuestions[contentId];
 
@@ -68,6 +74,7 @@ function ScreenContent() {
                     onChange={() => {
                       // Handle value change if needed
                     }}
+                    onFocus={handler}
                   />
                 <span>:</span>
                 <input

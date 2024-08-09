@@ -101,7 +101,7 @@ export const CharacterController = () => {
 
     impulse = { x: dir.x, y: impulse.y, z: dir.z };
 
-    if(cameraTargetContext?.isCameraToggled){
+    if(!cameraTargetContext?.isCameraToggled){
       rigidbody.current?.applyImpulse(impulse, true);
       if (changeRotation) {
         const angle = Math.atan2(linvel.x, linvel.z);
