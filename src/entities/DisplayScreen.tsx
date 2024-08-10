@@ -43,7 +43,7 @@ export const DisplayScreen = () => {
               onOcclude={set}
               style={{
                 transition: 'all 0.5s',
-                opacity: hidden ? 0 : 1,
+                opacity: (!cameraTargetContext?.isCameraToggled && hidden) ? 0 : 1,
               }} >
               <ScreenContent handler={getFocus} />
             </Html>
