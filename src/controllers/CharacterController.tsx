@@ -49,7 +49,14 @@ export const CharacterController = () => {
 
   useFrame(() => {
     let impulse = { x: 0, y: 0, z: 0 };
-    if (jumpPressed) {
+
+    const characterPos = new Vector3();
+    character.current.getWorldPosition(characterPos);
+
+    if (characterPos.y < 0) {
+      impulse.y = Math.min(Math.pow(-characterPos.y, 1.8) * 3.0, 60.0);
+      isOnFloor.current = false;
+    } else if (jumpPressed) {
       impulse.y += handleJump();
       if (impulse.y > 0) {
         isOnFloor.current = false;
