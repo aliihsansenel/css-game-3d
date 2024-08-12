@@ -1,4 +1,4 @@
-interface QuizQuestion {
+export interface QuizQuestion {
   selector: string;
   pv: PropertyValue[];
   color: string;
@@ -10,10 +10,10 @@ interface PropertyValue {
   editable: boolean;
 }
 
-interface QuizQuestions {
+export interface QuizQuestions {
   [key: string]: QuizQuestion[];
 }
 
-declare const QuizQuestion: QuizQuestions;
+declare const QuizQuestions: QuizQuestions;
 
-export default QuizQuestion;
+export default QuizQuestions;

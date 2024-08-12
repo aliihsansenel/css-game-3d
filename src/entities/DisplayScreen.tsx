@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useContext, FocusEvent, useCallback } from
 import { Html, Plane, RoundedBox } from "@react-three/drei";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
 
-import quizQuestions from "../data/quiz.js";
+import levelData from "../data/levels";
 import { Group } from "three";
 import { CameraTargetContext } from "../controllers/CameraController.js";
 import { debounce } from "../utils/helper.js";
@@ -66,7 +66,7 @@ function ScreenContent(
   }) {
 
   const contentId = 'l0';
-  const content = quizQuestions[contentId];
+  const content = levelData[contentId];
 
   const [inputValues, setInputValues] = useState<{ [key: string]: string }>({});
 
