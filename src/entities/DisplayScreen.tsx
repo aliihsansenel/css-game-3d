@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext, FocusEvent } from "react";
+import { useState, useEffect, useRef, useContext, FocusEvent, useCallback } from "react";
 
 import { Html, Plane, RoundedBox } from "@react-three/drei";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
@@ -6,11 +6,14 @@ import { CuboidCollider, RigidBody } from "@react-three/rapier";
 import quizQuestions from "../data/quiz.js";
 import { Group } from "three";
 import { CameraTargetContext } from "../controllers/CameraController.js";
+import { debounce } from "../utils/helper.js";
+import { PlaygroundContext, PlaygroundContextType } from "../controllers/PlaygroundController.js";
 
 export const DisplayScreen = () => {
   const [hidden, set] = useState<boolean>(false);
   const displayScreen = useRef<Group>(null!); 
   const cameraTargetContext = useContext(CameraTargetContext);
+  const playgroundContext = useContext(PlaygroundContext);
 
   const width = 4.5;
   const heigth = 2.5;
@@ -45,7 +48,7 @@ export const DisplayScreen = () => {
                 transition: 'all 0.5s',
                 opacity: (!cameraTargetContext?.isCameraToggled && hidden) ? 0 : 1,
               }} >
-              <ScreenContent handler={getFocus} />
+              <ScreenContent handler={getFocus} parseCSS={playgroundContext?.parseCSS} />
             </Html>
           </Plane>
         </RoundedBox>
@@ -55,9 +58,32 @@ export const DisplayScreen = () => {
   );
 }
 
-function ScreenContent({handler}:{handler: (event: FocusEvent<HTMLInputElement>) => void}) {
+function ScreenContent(
+  {handler, parseCSS} : 
+  {
+    handler: (event: FocusEvent<HTMLInputElement>) => void, 
+    parseCSS: PlaygroundContextType['parseCSS'] | undefined
+  }) {
+
   const contentId = 'l0';
   const content = quizQuestions[contentId];
+
+  const [inputValues, setInputValues] = useState<{ [key: string]: string }>({});
+
+  const handleInputChange = (key: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      [key]: event.target.value,
+    }));
+  };
+
+  const debouncedParseCSS = useCallback(
+    debounce((values) => { parseCSS?.(values as { [key: string]: string }) }, 1000), 
+  [parseCSS]);
+
+  useEffect(() => {
+    debouncedParseCSS(inputValues);
+  }, [inputValues]);
 
   return (
     <div className="screen-content">
@@ -69,21 +95,18 @@ function ScreenContent({handler}:{handler: (event: FocusEvent<HTMLInputElement>)
               <div key={pvIndex}>
                 <input
                     type="text"
-                    defaultValue={!pvItem.editable ? pvItem.prop : ""} 
+                    value={!pvItem.editable ? pvItem.prop : inputValues[`prop-${pvIndex}`] || ""} 
                     disabled={!pvItem.editable} // Disable input if not editable
-                    onChange={() => {
-                      // Handle value change if needed
-                    }}
+                    onChange={handleInputChange(`prop-${pvIndex}`)}
                     onFocus={handler}
                   />
                 <span>:</span>
                 <input
                     type="text"
-                    defaultValue={!pvItem.editable ? pvItem.values[0] : ""}
+                    value={!pvItem.editable ? pvItem.values[0] : inputValues[`value-${pvIndex}`] || ""} 
                     disabled={!pvItem.editable} // Disable input if not editable
-                    onChange={() => {
-                      // Handle value change if needed
-                    }}
+                    onChange={handleInputChange(`value-${pvIndex}`)}
+                    onFocus={handler}
                   />
               </div>
             ))}
