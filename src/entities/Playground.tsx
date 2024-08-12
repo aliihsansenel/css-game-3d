@@ -1,10 +1,12 @@
 import { Vector3, Vector3Tuple } from "three";
 import { Flex, Box } from '@react-three/flex';
 import { Edges, Plane } from '@react-three/drei';
-import RoundedBoxMesh from "../meshes/RoundedBox";
 import StaticCuboid from "./StaticCuboid";
+import { useContext } from "react";
+import { PlaygroundContext } from "../controllers/PlaygroundController";
 
 function Playground({ position }: { position: Vector3Tuple }) {
+  const { flexProps } = useContext(PlaygroundContext);
 
   const outlinePos = new Vector3().fromArray(position);
   outlinePos.setY(position[2] + 0.2);
@@ -12,7 +14,7 @@ function Playground({ position }: { position: Vector3Tuple }) {
   return (
     <>
       <Flex 
-        justifyContent="flex-start" 
+        {...flexProps}
         alignItems="flex-start" 
         position={position}
         rotation={[0.0, -Math.PI, 0.0]}
