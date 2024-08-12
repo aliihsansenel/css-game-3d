@@ -17,17 +17,22 @@ export const PlaygroundContext = createContext<PlaygroundContextType | null>(nul
 
 function PlaygroundController({children}: { children: React.ReactNode; }) {
   const [level, setLevel] = useState(new Level('l0'));
+  const [flexProps, setFlexProps] = useState<FlexPropsKeys>({});
   
-  const flexProps: FlexPropsKeys = {};
   function parseCSS(inputvalues: { [key: string]: string }): void {
-    console.log('// TODO parse CSS');
-    
+    const newFlexProps: FlexPropsKeys = {};
     for (const key in inputvalues) {
       if (Object.prototype.hasOwnProperty.call(inputvalues, key)) {
-        const camelCasedKey = toCamelCase(key) as keyof R3FlexProps; // Ensure the key is a valid R3FlexProps key
-        flexProps[camelCasedKey] = inputvalues[key]; 
+        if(key.startsWith('value')){
+          const p = inputvalues[`prop-${key.split('value-')[1]}`] || null;
+          if (p) {
+            const camelCasedKey = toCamelCase(p) as keyof R3FlexProps;
+            newFlexProps[camelCasedKey] = inputvalues[key]; 
+          } 
+        }
       }
     }
+    setFlexProps(newFlexProps);
   }
   return (
     <PlaygroundContext.Provider value={{level, parseCSS, flexProps}}>

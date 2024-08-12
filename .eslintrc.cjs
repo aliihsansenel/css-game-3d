@@ -15,5 +15,6 @@ module.exports = {
       { allowConstantExport: true },
     ],
     'react-hooks/exhaustive-deps': 'warn',
+    '@typescript-eslint/no-unused-vars': ['warn'], // Added rule to warn on unused variables
   },
 }
