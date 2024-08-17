@@ -20,7 +20,7 @@ function App() {
     <KeyboardController>
       <Canvas>
         <Suspense>
-          <Physics colliders={false}>
+          <Physics colliders={false} debug>
             <ambientLight intensity={0.5} />
             <directionalLight intensity={0.6} position={[1, 1, 1]} />
             <Ground position={[-10, 0, 0]} />
