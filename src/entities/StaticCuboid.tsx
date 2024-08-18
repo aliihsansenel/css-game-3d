@@ -7,12 +7,12 @@ function StaticCuboid(props: ThreeElements['mesh']) {
   const { position, ...rest } = props;
   
   return (
-    <group position={position}>
+    <group >
       <RigidBody 
         colliders='cuboid' 
         type="fixed"
       >
-        <RoundedBoxMesh {...rest}/>
+        <RoundedBoxMesh position={position} {...rest} />
       </RigidBody>
     </group>
     
