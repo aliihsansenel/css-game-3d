@@ -1,3 +1,5 @@
+import { SceneComponent } from "./sceneComponents";
+
 export interface QuizQuestion {
   selector: string;
   pv: PropertyValue[];
@@ -10,10 +12,13 @@ interface PropertyValue {
   editable: boolean;
 }
 
-export interface QuizQuestions {
-  [key: string]: QuizQuestion[];
+export interface LevelComponents {
+  scene: SceneComponent[];
+  quiz: QuizQuestion[];
 }
 
-declare const QuizQuestions: QuizQuestions;
+export type LevelDataType = Record<string, LevelComponents>;
 
-export default QuizQuestions;
+declare const LevelDataType: LevelDataType;
+
+export default LevelDataType;

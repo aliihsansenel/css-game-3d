@@ -1,9 +1,9 @@
-import { ThreeElements } from "@react-three/fiber"
 import { RigidBody } from "@react-three/rapier";
 
 import RoundedBoxMesh from "../meshes/RoundedBox"
+import { StaticCuboidProps } from "./entities";
 
-function StaticCuboid(props: ThreeElements['mesh']) {
+function StaticCuboid(props: StaticCuboidProps) {
   const { position, ...rest } = props;
   
   return (

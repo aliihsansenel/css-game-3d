@@ -1,13 +1,9 @@
 import { forwardRef } from 'react';
 import { RoundedBox } from '@react-three/drei';
-import { MeshProps } from '@react-three/fiber';
+import { RoundedBoxMeshProps } from '../entities/entities';
 
-interface RoundedBoxMeshProps extends MeshProps {
-  color?: string; // Optional color property
-}
-
-const RoundedBoxMesh = forwardRef<RoundedBoxMeshProps>((props, ref?) => {
-  const color: string = props.color ? props.color : "#f3f3f3";
+const RoundedBoxMesh = forwardRef<typeof RoundedBox, RoundedBoxMeshProps>((props, ref) => {
+  const color = props.color || "#f3f3f3";
   return (
     <RoundedBox
       ref={ref}

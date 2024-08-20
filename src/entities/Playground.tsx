@@ -1,12 +1,13 @@
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+
 import { Group, Vector3, Vector3Tuple } from "three";
 import { Flex, Box } from '@react-three/flex';
 import { Edges, Plane } from '@react-three/drei';
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+
 import { PlaygroundContext } from "../controllers/PlaygroundController";
 import RoundedBoxMesh from "../meshes/RoundedBox";
-import KinematicCuboid from "./KinematicCuboid";
-import { RapierRigidBody } from "@react-three/rapier";
 import StaticCuboid from "./StaticCuboid";
+
 import { debounce } from "../utils/helper";
 
 function Playground({ position }: { position: Vector3Tuple }) {
@@ -38,11 +39,13 @@ function Playground({ position }: { position: Vector3Tuple }) {
   }
 
   const debounceAdjustRigidBodies = useCallback(
-    debounce(adjustRigidBodies, 500), 
+    debounce(adjustRigidBodies, 250), 
   [adjustRigidBodies]);
 
   useEffect(() => {
-    debounceAdjustRigidBodies();
+    if (flexProps) {
+      debounceAdjustRigidBodies();
+    }
   }, [flexProps]);
 
   return (
@@ -75,7 +78,6 @@ function Playground({ position }: { position: Vector3Tuple }) {
             key={counter.counter + index}
             position={counter.positions[index]}
             args={[9.0, 1.0, 1.5]}
-            material-color={color}
             transparent
             opacity={0.0}
           />

@@ -66,7 +66,7 @@ function ScreenContent(
   }) {
 
   const contentId = 'l0';
-  const content = levelData[contentId];
+  const content = levelData[contentId].quiz;
 
   const [inputValues, setInputValues] = useState<{ [key: string]: string }>({});
 

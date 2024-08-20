@@ -15,8 +15,12 @@ export interface PlaygroundContextType {
 
 export const PlaygroundContext = createContext<PlaygroundContextType | null>(null);
 
-function PlaygroundController({children}: { children: React.ReactNode; }) {
-  const [level, setLevel] = useState(new Level('l0'));
+interface PlaygroundControllerProps {
+  children: React.ReactNode;
+  level: Level;
+}
+
+function PlaygroundController({children, level}: PlaygroundControllerProps) {
   const [flexProps, setFlexProps] = useState<FlexPropsKeys>({});
   
   function parseCSS(inputvalues: { [key: string]: string }): void {

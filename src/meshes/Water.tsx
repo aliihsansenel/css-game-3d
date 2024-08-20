@@ -1,11 +1,11 @@
-import { ThreeElements } from "@react-three/fiber"
 import { useEffect, useRef } from "react"
 
 import vertexWater from "../shaders/vertex/water.glsl";
 import fragmentWater from "../shaders/fragment/water.glsl";
 import { Group, PlaneGeometry } from "three";
+import { WaterProps } from "../entities/entities";
 
-function Water(props: ThreeElements['group']) {
+function Water(props: WaterProps) {
   const groupRef = useRef<Group>(null!);
   const waterGeomRef = useRef<PlaneGeometry>(null!);
 
