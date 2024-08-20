@@ -21,7 +21,7 @@ interface PlaygroundControllerProps {
 }
 
 function PlaygroundController({children, level}: PlaygroundControllerProps) {
-  const [flexProps, setFlexProps] = useState<FlexPropsKeys>({});
+  const [flexProps, setFlexProps] = useState<FlexPropsKeys>((level.initialPropState()));
   
   function parseCSS(inputvalues: { [key: string]: string }): void {
     const newFlexProps: FlexPropsKeys = {};

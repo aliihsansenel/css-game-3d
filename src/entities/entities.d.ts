@@ -13,4 +13,9 @@ export interface StaticCuboidProps extends Partial<ThreeElements['mesh']> {
 
 export interface RoundedBoxMeshProps extends Partial<RoundedBox> { // Using MeshProps for brevity
   color?: string;
+  hidden?: boolean;
+}
+
+export interface PlaygroundBoxProps extends Partial<RoundedBoxMeshProps> { // Using MeshProps for brevity
+  
 }

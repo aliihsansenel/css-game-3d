@@ -9,7 +9,7 @@ function Water(props: WaterProps) {
   const groupRef = useRef<Group>(null!);
   const waterGeomRef = useRef<PlaneGeometry>(null!);
 
-  const width = 18;
+  const width = 20;
   const height = 20;
   const sf = 3;
 

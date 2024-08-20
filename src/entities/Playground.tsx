@@ -9,14 +9,17 @@ import RoundedBoxMesh from "../meshes/RoundedBox";
 import StaticCuboid from "./StaticCuboid";
 
 import { debounce } from "../utils/helper";
+import { ScenePlaygroundComponent } from "../data/sceneComponents";
+import PlaygroundBlock from "./PlaygroundBlock";
 
 function Playground({ position }: { position: Vector3Tuple }) {
-  const { flexProps } = useContext(PlaygroundContext);
+  const { flexProps, level } = useContext(PlaygroundContext);
   const outlinePos = new Vector3().fromArray(position);
   outlinePos.setY(position[2] + 0.2);
 
-  // Array of colors for the RoundedBoxMeshs
-  const colors = ["#c2acac", "#c05a5a", "#6f1f1f",];
+  const playground: ScenePlaygroundComponent = level.sceneData.find(i => i.type === 'playground');
+  const playgroundBoxes: ScenePlaygroundComponent['blocks'][] = playground.blocks;
+
   const groupRef = useRef<(Group | null)>(null!);
   const srcRefs = useRef<(RoundedBoxMesh | null)[]>([]);
 
@@ -62,24 +65,23 @@ function Playground({ position }: { position: Vector3Tuple }) {
         flexWrap="wrap"
         centerAnchor
       >
-        {colors.map((color, index) => (
-          <Box key={index} centerAnchor margin={0.5}>
+        {playgroundBoxes.map((box, index) => (
+          <Box key={index} centerAnchor margin={playground.boxMargin}>
             <RoundedBoxMesh
               ref={el => srcRefs.current[index] = el}
-              args={[9.0, 1.0, 1.5]}
-              material-color={color}
+              args={box.args}
             />
           </Box>
         ))}
       </Flex>
-      <group rotation={[Math.PI / 2, 0.0, 0.0]} position={[-7.4,0,0]}>
-        {colors.map((color, index) => (
-          <StaticCuboid
+      <group rotation={[Math.PI / 2, 0.0, 0.0]}
+        position={[-position[0], -position[1], -position[2]]}
+      >
+        {playgroundBoxes.map((box, index) => (
+          <PlaygroundBlock
             key={counter.counter + index}
             position={counter.positions[index]}
-            args={[9.0, 1.0, 1.5]}
-            transparent
-            opacity={0.0}
+            args={box.args}
           />
         ))}
       </group>

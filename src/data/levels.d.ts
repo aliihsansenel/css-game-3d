@@ -10,10 +10,11 @@ interface PropertyValue {
   prop: string;
   values: string[];
   editable: boolean;
+  state: 0 | 1 | 2;
 }
 
 export interface LevelComponents {
-  scene: SceneComponent[];
+  scene: (SceneComponent | ScenePlaygroundComponent)[];
   quiz: QuizQuestion[];
 }
 

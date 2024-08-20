@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useContext, FocusEvent, useCallback } from
 import { Html, Plane, RoundedBox } from "@react-three/drei";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
 
-import levelData from "../data/levels";
+import levelData, { Level } from "../data/levels";
 import { Group } from "three";
 import { CameraTargetContext } from "../controllers/CameraController.js";
 import { debounce } from "../utils/helper.js";
@@ -48,7 +48,7 @@ export const DisplayScreen = () => {
                 transition: 'all 0.5s',
                 opacity: (!cameraTargetContext?.isCameraToggled && hidden) ? 0 : 1,
               }} >
-              <ScreenContent handler={getFocus} parseCSS={playgroundContext?.parseCSS} />
+              <ScreenContent handler={getFocus} parseCSS={playgroundContext.parseCSS} level={playgroundContext.level}/>
             </Html>
           </Plane>
         </RoundedBox>
@@ -59,16 +59,16 @@ export const DisplayScreen = () => {
 }
 
 function ScreenContent(
-  {handler, parseCSS} : 
+  {level, handler, parseCSS} : 
   {
+    level: Level,
     handler: (event: FocusEvent<HTMLInputElement>) => void, 
     parseCSS: PlaygroundContextType['parseCSS'] | undefined
   }) {
 
-  const contentId = 'l0';
-  const content = levelData[contentId].quiz;
-
-  const [inputValues, setInputValues] = useState<{ [key: string]: string }>({});
+  const content = level.cssData;
+  
+  const [inputValues, setInputValues] = useState<{ [key: string]: string }>(level.initialInputState());
 
   const handleInputChange = (key: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValues((prevValues) => ({
