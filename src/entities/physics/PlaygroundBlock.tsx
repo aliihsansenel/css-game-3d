@@ -1,7 +1,7 @@
 import { RigidBody } from "@react-three/rapier";
 
-import RoundedBoxMesh from "../meshes/RoundedBox"
-import { StaticCuboidProps } from "./entities";
+import RoundedBoxMesh from "../../meshes/RoundedBox"
+import { StaticCuboidProps } from "../entities";
 
 function PlaygroundBlock(props: StaticCuboidProps) {
   const { position, ...rest } = props;

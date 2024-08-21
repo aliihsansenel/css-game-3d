@@ -1,16 +1,32 @@
+import { Vector3Tuple } from "@react-three/rapier";
 import { GroundProps, WaterProps, StaticCuboidProps, RoundedBoxMeshProps } from "../entities/entities";
 
-export interface SceneComponent extends GroundProps, WaterProps, StaticCuboidProps, RoundedBoxMeshProps {
-  type: 'ground' | 'water' | 'step';
-  position: [number, number, number];
+interface CommonProps extends GroundProps, WaterProps, StaticCuboidProps, RoundedBoxMeshProps {}
+
+export interface SceneComponent extends CommonProps {
+  type: 'spawnPoint' | 'ground' | 'water' | 'step';
+  position: Vector3Tuple;
   args?: number[];
   boxMargin?: number;
   blocks?: PlaygroundBoxProps[];
 }
 
-export interface ScenePlaygroundComponent extends GroundProps, WaterProps, StaticCuboidProps, RoundedBoxMeshProps {
+export interface ScenePlaygroundComponent extends CommonProps {
   type: 'playground';
-  position: [number, number, number];
+  position: Vector3Tuple;
+  
   boxMargin?: number;
   blocks?: PlaygroundBoxProps[];
+}
+
+export interface SceneScreenComponent extends CommonProps {
+  type: 'screen';
+  position: Vector3Tuple;
+  rotation?: Vector3Tuple;
+  screenRange: [number];
+  quizId: string;
+}
+
+export interface LevelSceneComponent {
+  component: SceneComponent | ScenePlaygroundComponent | SceneScreenComponent;
 }

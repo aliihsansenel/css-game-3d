@@ -4,12 +4,16 @@ import { Html, Plane, RoundedBox } from "@react-three/drei";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
 
 import levelData, { Level } from "../data/levels";
-import { Group } from "three";
+import { Group, Vector3Tuple } from "three";
 import { CameraTargetContext } from "../controllers/CameraController.js";
 import { debounce } from "../utils/helper.js";
 import { PlaygroundContext, PlaygroundContextType } from "../controllers/PlaygroundController.js";
 
-export const DisplayScreen = () => {
+interface DisplayScreenProps {
+  position: Vector3Tuple;
+}
+
+export const DisplayScreen = ({position} : DisplayScreenProps) => {
   const [hidden, set] = useState<boolean>(false);
   const displayScreen = useRef<Group>(null!); 
   const cameraTargetContext = useContext(CameraTargetContext);
@@ -31,7 +35,7 @@ export const DisplayScreen = () => {
   }
 
   return (
-    <group position={[-5, 2.5, -4]} ref={displayScreen}>
+    <group position={position} ref={displayScreen}>
       <RigidBody
         colliders={false}
         type="fixed"

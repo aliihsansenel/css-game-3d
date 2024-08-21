@@ -1,6 +1,7 @@
 import { SceneComponent } from "./sceneComponents";
 
 export interface QuizQuestion {
+  id: string;
   selector: string;
   pv: PropertyValue[];
   color: string;
@@ -14,7 +15,7 @@ interface PropertyValue {
 }
 
 export interface LevelComponents {
-  scene: (SceneComponent | ScenePlaygroundComponent)[];
+  scene: (SceneComponent | ScenePlaygroundComponent | SceneScreenComponent)[];
   quiz: QuizQuestion[];
 }
 

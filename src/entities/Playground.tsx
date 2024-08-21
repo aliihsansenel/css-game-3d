@@ -6,11 +6,10 @@ import { Edges, Plane } from '@react-three/drei';
 
 import { PlaygroundContext } from "../controllers/PlaygroundController";
 import RoundedBoxMesh from "../meshes/RoundedBox";
-import StaticCuboid from "./StaticCuboid";
 
 import { debounce } from "../utils/helper";
 import { ScenePlaygroundComponent } from "../data/sceneComponents";
-import PlaygroundBlock from "./PlaygroundBlock";
+import PlaygroundBlock from "./physics/PlaygroundBlock";
 
 function Playground({ position }: { position: Vector3Tuple }) {
   const { flexProps, level } = useContext(PlaygroundContext);
