@@ -3,22 +3,26 @@ import { useState, useEffect, useRef, useContext, FocusEvent, useCallback } from
 import { Html, Plane, RoundedBox } from "@react-three/drei";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
 
-import levelData, { Level } from "../data/levels";
+import levelData, { quizData } from "../data/quizDatas";
 import { Group, Vector3Tuple } from "three";
 import { CameraTargetContext } from "../controllers/CameraController.js";
 import { debounce } from "../utils/helper.js";
 import { PlaygroundContext, PlaygroundContextType } from "../controllers/PlaygroundController.js";
+import { SceneScreenComponent } from "../data/sceneComponents.js";
+import { QuizQuestion } from "../data/levels.d";
+import { Level } from "../data/levels.js";
 
 interface DisplayScreenProps {
-  position: Vector3Tuple;
+  screenData: SceneScreenComponent;
 }
 
-export const DisplayScreen = ({position} : DisplayScreenProps) => {
+export const DisplayScreen = ({screenData } : DisplayScreenProps) => {
   const [hidden, set] = useState<boolean>(false);
   const displayScreen = useRef<Group>(null!); 
   const cameraTargetContext = useContext(CameraTargetContext);
   const playgroundContext = useContext(PlaygroundContext);
 
+  console.log(playgroundContext)
   const width = 4.5;
   const heigth = 2.5;
 
@@ -35,7 +39,7 @@ export const DisplayScreen = ({position} : DisplayScreenProps) => {
   }
 
   return (
-    <group position={position} ref={displayScreen}>
+    <group position={screenData.position} ref={displayScreen}>
       <RigidBody
         colliders={false}
         type="fixed"
@@ -52,7 +56,9 @@ export const DisplayScreen = ({position} : DisplayScreenProps) => {
                 transition: 'all 0.5s',
                 opacity: (!cameraTargetContext?.isCameraToggled && hidden) ? 0 : 1,
               }} >
-              <ScreenContent handler={getFocus} parseCSS={playgroundContext.parseCSS} level={playgroundContext.level}/>
+              <ScreenContent handler={getFocus}
+                parseCSS={playgroundContext.parseCSS}
+                quizData={playgroundContext.quizData}/>
             </Html>
           </Plane>
         </RoundedBox>
@@ -63,16 +69,14 @@ export const DisplayScreen = ({position} : DisplayScreenProps) => {
 }
 
 function ScreenContent(
-  {level, handler, parseCSS} : 
+  {quizData, handler, parseCSS} : 
   {
-    level: Level,
+    quizData: QuizQuestion,
     handler: (event: FocusEvent<HTMLInputElement>) => void, 
     parseCSS: PlaygroundContextType['parseCSS'] | undefined
   }) {
-
-  const content = level.cssData;
   
-  const [inputValues, setInputValues] = useState<{ [key: string]: string }>(level.initialInputState());
+  const [inputValues, setInputValues] = useState<{ [key: string]: string }>(Level.initialInputState(quizData));
 
   const handleInputChange = (key: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValues((prevValues) => ({
@@ -91,7 +95,7 @@ function ScreenContent(
 
   return (
     <div className="screen-content">
-      {content.map((block, index) => (
+      {quizData.blocks.map((block, index) => (
         <div key={index} style={{ color: block.color }}>
           <div>{block.selector}&nbsp;{'{'}</div>
           <div className="pv">

@@ -4,10 +4,10 @@ import CameraController from './CameraController'
 import { CharacterController } from './CharacterController'
 import DisplayScreen from '../entities/DisplayScreen'
 import { Level } from '../data/levels';
-import { LevelSceneComponent, SceneComponent, ScenePlaygroundComponent, SceneScreenComponent } from '../data/sceneComponents'
 import Ground from '../entities/Ground'
 import Water from '../meshes/Water'
 import StaticCuboid from '../entities/StaticCuboid'
+import { ILevelSceneComponent } from '../data/sceneComponents'
 
 interface LevelControllerProps {
   level: Level;
@@ -15,33 +15,38 @@ interface LevelControllerProps {
 
 function LevelController({ level }: LevelControllerProps) {
   const sceneComponents = level.sceneData;
+  const cssData = level.cssData;
   const playgroundComponents = sceneComponents.filter(i => i.type === 'playground');
   const screenComponents = sceneComponents.filter(i => i.type === 'screen');
   const restSceneComponents = sceneComponents.filter(i => !['screen', 'playground'].includes(i.type));
 
+  const ps = Array(playgroundComponents.length).fill(0).map((_, i) => i);
+
   return (
-    <>
-      {restSceneComponents.map((component, index) => {
-        return <LevelSceneComponent key={index} component={component} />
+    <CameraController>
+      {restSceneComponents && restSceneComponents.map((sceneComponent, index) => {
+          return <LevelSceneComponent key={index} component={sceneComponent} />
       })}
-      <PlaygroundController level={level}>
-        {playgroundComponents && playgroundComponents.map((playgroundComponent, index) => {
-          return <LevelSceneComponent key={index} component={playgroundComponent} />
-        })}
-        <CameraController>
-        {screenComponents && screenComponents.map((screenComponent, index) => {
-          return <LevelSceneComponent key={index} component={screenComponent} />
-        })}
-          <CharacterController />
-        </CameraController>
-      </PlaygroundController>
-    </>
+      {ps.map((i) => {
+        const pc = playgroundComponents.find(c => c.quizId === `q${i}`);
+        const sc = screenComponents.find(c => c.quizId === `q${i}`);
+        const quizData = cssData.find(q => q.id === `q${i}`);
+        
+        return (
+          <PlaygroundController quizData={quizData} key={i}>
+            <LevelSceneComponent component={pc} />
+            <LevelSceneComponent component={sc} />
+          </PlaygroundController>
+        );
+      })}
+      <CharacterController />
+    </CameraController>
   )
 }
 
 export default LevelController
 
-function LevelSceneComponent({ component }: LevelSceneComponent) {
+function LevelSceneComponent({ component }: ILevelSceneComponent) {
   switch (component.type) {
     case 'ground':
       return <Ground position={component.position} />;
@@ -50,9 +55,9 @@ function LevelSceneComponent({ component }: LevelSceneComponent) {
     case 'step':
       return <StaticCuboid position={component.position} args={component.args} />;
     case 'playground':
-      return <Playground position={component.position} />;
+      return <Playground playgroundData={component} />;
     case 'screen':
-      return <DisplayScreen position={component.position} rotation={component.rotation}/>;
+      return <DisplayScreen screenData={component} />;
     default:
       return null; // or some fallback component
   }

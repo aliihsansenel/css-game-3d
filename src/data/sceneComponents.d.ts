@@ -1,5 +1,6 @@
 import { Vector3Tuple } from "@react-three/rapier";
 import { GroundProps, WaterProps, StaticCuboidProps, RoundedBoxMeshProps } from "../entities/entities";
+import { QuizQuestion } from "./levels";
 
 interface CommonProps extends GroundProps, WaterProps, StaticCuboidProps, RoundedBoxMeshProps {}
 
@@ -27,6 +28,7 @@ export interface SceneScreenComponent extends CommonProps {
   quizId: string;
 }
 
-export interface LevelSceneComponent {
+export interface ILevelSceneComponent {
   component: SceneComponent | ScenePlaygroundComponent | SceneScreenComponent;
+  quizData?: QuizQuestion;
 }

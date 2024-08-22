@@ -2,6 +2,10 @@ import { SceneComponent } from "./sceneComponents";
 
 export interface QuizQuestion {
   id: string;
+  blocks: QuizQuestionBlock[];
+}
+
+export interface QuizQuestionBlock {
   selector: string;
   pv: PropertyValue[];
   color: string;

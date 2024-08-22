@@ -2,6 +2,7 @@ import { createContext, useState } from 'react'
 import { Level } from '../data/levels';
 import { R3FlexProps } from '@react-three/flex';
 import { toCamelCase } from '../utils/helper';
+import { QuizQuestion } from '../data/levels';
 
 type FlexPropsKeys = Partial<{
   [K in keyof R3FlexProps]: string;
@@ -9,19 +10,19 @@ type FlexPropsKeys = Partial<{
 
 export interface PlaygroundContextType {
   parseCSS: (inputvalues: { [key: string]: string }) => void;
-  level: Level;
   flexProps: FlexPropsKeys;
+  quizData: QuizQuestion;
 }
 
 export const PlaygroundContext = createContext<PlaygroundContextType | null>(null);
 
 interface PlaygroundControllerProps {
   children: React.ReactNode;
-  level: Level;
+  quizData: QuizQuestion;
 }
 
-function PlaygroundController({children, level}: PlaygroundControllerProps) {
-  const [flexProps, setFlexProps] = useState<FlexPropsKeys>((level.initialPropState()));
+function PlaygroundController({children, quizData}: PlaygroundControllerProps) {
+  const [flexProps, setFlexProps] = useState<FlexPropsKeys>((Level.initialPropState(quizData)));
   
   function parseCSS(inputvalues: { [key: string]: string }): void {
     const newFlexProps: FlexPropsKeys = {};
@@ -39,7 +40,7 @@ function PlaygroundController({children, level}: PlaygroundControllerProps) {
     setFlexProps(newFlexProps);
   }
   return (
-    <PlaygroundContext.Provider value={{level, parseCSS, flexProps}}>
+    <PlaygroundContext.Provider value={{parseCSS, flexProps, quizData}}>
       {children}
     </PlaygroundContext.Provider>
   )

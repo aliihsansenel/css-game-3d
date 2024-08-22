@@ -7,7 +7,6 @@ import LevelController from "./controllers/LevelController";
 
 import "./App.css"
 import { Level } from "./data/levels";
-import SphereSensor from "./entities/physics/SphereSensor";
 
 function App() {
   const [level, setLevel] = useState(new Level('l1'));
@@ -25,7 +24,6 @@ function App() {
             <ambientLight intensity={0.5} />
             <directionalLight intensity={0.6} position={[1, 1, 1]} />
             <LevelController level={level} />
-            <SphereSensor setLevel={setLevel} />
           </Physics>
         </Suspense>
       </Canvas>
