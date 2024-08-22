@@ -97,7 +97,7 @@ const levelData: LevelDataType = {
             pv: [
               {
                 prop: 'justify-content',
-                values: ['flex-start', 'start'],
+                values: ['flex-end', 'end'],
                 editable: true,
                 state: 2
               }
@@ -151,26 +151,26 @@ export class Level {
 
   static initialPropState(quizData: QuizQuestion) {
     const blocks = quizData.blocks;
-    const questions = blocks.map(i => i.pv);
+    const questions = blocks.map(i => i.pv).flat();
 
     const obj: Record<string, string> = {};
-    // questions.forEach(pv => {
-    //   if (pv.state > 0)
-    //     obj[toCamelCase(pv.prop)] = pv.state === 2 ? pv.values[0] : "";
-    // });
+    questions.forEach(pv => {
+      if (pv.state > 0)
+        obj[toCamelCase(pv.prop)] = pv.state === 2 ? pv.values[0] : "";
+    });
     return obj;
   }
 
   static initialInputState(quizData: QuizQuestion) {
     const blocks = quizData.blocks;
-    const questions = blocks.map(i => i.pv);
+    const questions = blocks.map(i => i.pv).flat();
 
     const obj: Record<string, string> = {};
-    // questions.forEach((pv, index) => {
-    //   if (pv.state > 0)
-    //     obj[`prop-${index}`] = pv.prop;
-    //     obj[`value-${index}`] = pv.state === 2 ? pv.values[0] : "";
-    // });
+    questions.forEach((pv, index) => {
+      if (pv.state > 0)
+        obj[`prop-${index}`] = pv.prop;
+        obj[`value-${index}`] = pv.state === 2 ? pv.values[0] : "";
+    });
     return obj;
   }
 

@@ -22,7 +22,6 @@ export const DisplayScreen = ({screenData } : DisplayScreenProps) => {
   const cameraTargetContext = useContext(CameraTargetContext);
   const playgroundContext = useContext(PlaygroundContext);
 
-  console.log(playgroundContext)
   const width = 4.5;
   const heigth = 2.5;
 
