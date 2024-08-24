@@ -10,7 +10,7 @@ import { PlaygroundContext, PlaygroundContextType } from "../controllers/Playgro
 import { SceneScreenComponent } from "../data/sceneComponents.js";
 import { QuizQuestion } from "../data/levels.d";
 import { Level } from "../data/levels.js";
-import SphereSensor from "./physics/SphereSensor.js";
+import ScreenSensor from "./physics/ScreenSensor.js";
 
 interface DisplayScreenProps {
   screenData: SceneScreenComponent;
@@ -45,7 +45,7 @@ export const DisplayScreen = ({screenData } : DisplayScreenProps) => {
 
   return (
     <group position={screenData.position} ref={displayScreen}>
-      <SphereSensor screenRange={screenData.screenRange} setDisplayScreen={setDisplayScreen} />
+      <ScreenSensor screenRange={screenData.screenRange} setDisplayScreen={setDisplayScreen} />
       <RigidBody
         colliders={false}
         type="fixed"

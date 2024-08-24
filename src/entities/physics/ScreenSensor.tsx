@@ -1,11 +1,11 @@
 import { RigidBody, BallCollider } from '@react-three/rapier';
 
-interface SphereSensorProps {
+interface ScreenSensorProps {
   screenRange: number;
   setDisplayScreen: (isThisScreen: boolean) => void;
 }
 
-function SphereSensor({ screenRange, setDisplayScreen }: SphereSensorProps) {
+function ScreenSensor({ screenRange, setDisplayScreen }: ScreenSensorProps) {
   return (
     <RigidBody 
         colliders={false}
@@ -21,4 +21,4 @@ function SphereSensor({ screenRange, setDisplayScreen }: SphereSensorProps) {
   );
 }
 
-export default SphereSensor;
+export default ScreenSensor;
