@@ -3,14 +3,14 @@ import { useState, useEffect, useRef, useContext, FocusEvent, useCallback } from
 import { Html, Plane, RoundedBox } from "@react-three/drei";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
 
-import levelData, { quizData } from "../data/quizDatas";
-import { Group, Vector3Tuple } from "three";
+import { Group } from "three";
 import { CameraTargetContext } from "../controllers/CameraController.js";
 import { debounce } from "../utils/helper.js";
 import { PlaygroundContext, PlaygroundContextType } from "../controllers/PlaygroundController.js";
 import { SceneScreenComponent } from "../data/sceneComponents.js";
 import { QuizQuestion } from "../data/levels.d";
 import { Level } from "../data/levels.js";
+import SphereSensor from "./physics/SphereSensor.js";
 
 interface DisplayScreenProps {
   screenData: SceneScreenComponent;
@@ -25,10 +25,16 @@ export const DisplayScreen = ({screenData } : DisplayScreenProps) => {
   const width = 4.5;
   const heigth = 2.5;
 
-  useEffect(() => {
-    if (cameraTargetContext)
-      cameraTargetContext.setDisplayScreen(displayScreen.current);
-  }, [cameraTargetContext]);
+  function setDisplayScreen(isThisScreen:boolean) {
+    if (cameraTargetContext){
+      if (isThisScreen) {
+        cameraTargetContext.setDisplayScreen(displayScreen.current);
+      }
+      else {
+        cameraTargetContext.setDisplayScreen(null);
+      }
+    }
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function getFocus(_: FocusEvent<HTMLInputElement>): void {
@@ -39,6 +45,7 @@ export const DisplayScreen = ({screenData } : DisplayScreenProps) => {
 
   return (
     <group position={screenData.position} ref={displayScreen}>
+      <SphereSensor screenRange={screenData.screenRange} setDisplayScreen={setDisplayScreen} />
       <RigidBody
         colliders={false}
         type="fixed"

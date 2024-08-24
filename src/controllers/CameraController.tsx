@@ -5,7 +5,7 @@ import { Group, Vector3, Euler } from 'three';
 
 interface CameraTargetContextType {
   setCharacter: (target: Group) => void;
-  setDisplayScreen: (target: Group) => void;
+  setDisplayScreen: (target: Group | null) => void;
   isCameraToggled: boolean;
   focusScreen: () => void;
 }
@@ -27,7 +27,7 @@ function CameraController({children}: { children: React.ReactNode; }) {
     character.current = target;
   }
 
-  function setDisplayScreen(target: Group) {
+  function setDisplayScreen(target: Group | null) {
     displayScreen.current = target;
   }
 

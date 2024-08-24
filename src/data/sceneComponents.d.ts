@@ -24,7 +24,7 @@ export interface SceneScreenComponent extends CommonProps {
   type: 'screen';
   position: Vector3Tuple;
   rotation?: Vector3Tuple;
-  screenRange: [number];
+  screenRange: number;
   quizId: string;
 }
 

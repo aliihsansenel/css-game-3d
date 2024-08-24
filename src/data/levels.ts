@@ -7,7 +7,7 @@ const levelData: LevelDataType = {
     scene: [
       { type: 'spawnPoint', position: [-10, 0, 0] },
       { type: 'ground', position: [-10, 0, 0] },
-      { type: 'screen', position: [-5, 2.5, -4], screenRange: [3], quizId: 'q0',},
+      { type: 'screen', position: [-5, 2.5, -4], screenRange: 5, quizId: 'q0',},
       { type: 'water', position: [5, 0, 0] },
       { type: 'step', position: [-1, 0, -6], args: [3, 1, 2] },
       { type: 'playground', position: [8.8 - 0.1, 0.0, 0.01],
@@ -44,7 +44,7 @@ const levelData: LevelDataType = {
   "l1": {
     scene: [
       { type: 'ground', position: [-10, 0, 0] },
-      { type: 'screen', position: [-5, 2.5, -4], quizId: 'q0'},
+      { type: 'screen', position: [-5, 2.5, -4], quizId: 'q0', screenRange: 5},
       { type: 'water', position: [5, 0, 0] },
       { type: 'step', position: [-1, 0, -6], args: [3, 1, 2] },
       { type: 'playground', position: [8.8 - 0.1, 0.0, 0.01],
@@ -57,7 +57,7 @@ const levelData: LevelDataType = {
         ]
       },
       { type: 'ground', position: [22, 0, 0] },
-      { type: 'screen', position: [27, 2.5, -4], quizId: 'q1'},
+      { type: 'screen', position: [27, 2.5, -4], quizId: 'q1', screenRange: 5},
       { type: 'water', position: [37, 0, 0] },
       { type: 'step', position: [31, 0, 0], args: [3, 1, 2] },
       { type: 'playground', position: [40.8 - 0.1, 0.0, 0.01],
