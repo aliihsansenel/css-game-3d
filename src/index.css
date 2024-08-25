@@ -14,3 +14,14 @@ body,
 body {
   background: #f0f0f0;
 }
+
+#info {
+	position: absolute;
+	bottom: 10px;
+	width: 100%;
+	text-align: center;
+	z-index: 100;
+	display:block;
+
+  font-size: 2rem;
+}

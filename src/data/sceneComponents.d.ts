@@ -1,4 +1,4 @@
-import { Vector3Tuple } from "@react-three/rapier";
+import { CuboidArgs, Vector3Tuple } from "@react-three/rapier";
 import { GroundProps, WaterProps, StaticCuboidProps, RoundedBoxMeshProps } from "../entities/entities";
 import { QuizQuestion } from "./levels";
 
@@ -28,7 +28,15 @@ export interface SceneScreenComponent extends CommonProps {
   quizId: string;
 }
 
+export interface SceneCheckpointComponent extends CommonProps {
+  type: 'checkpoint';
+  id: string;
+  position: Vector3Tuple;
+  rotation?: Vector3Tuple;
+  sizeArgs: CuboidArgs;
+}
+
 export interface ILevelSceneComponent {
-  component: SceneComponent | ScenePlaygroundComponent | SceneScreenComponent;
+  component: SceneComponent | ScenePlaygroundComponent | SceneScreenComponent | SceneCheckpointComponent;
   quizData?: QuizQuestion;
 }

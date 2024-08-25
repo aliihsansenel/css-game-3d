@@ -5,7 +5,7 @@ import { toCamelCase } from "../utils/helper";
 const levelData: LevelDataType = {
   "l0": {
     scene: [
-      { type: 'spawnPoint', position: [-10, 0, 0] },
+      { type: 'spawnpoint', position: [-6, 0, -2] },
       { type: 'ground', position: [-10, 0, 0] },
       { type: 'screen', position: [-5, 2.5, -4], screenRange: 5, quizId: 'q0',},
       { type: 'water', position: [5, 0, 0] },
@@ -20,6 +20,7 @@ const levelData: LevelDataType = {
         ]
       },
       { type: 'ground', position: [22, 0, 0] },
+      { type: 'checkpoint', id: 'cp0', position: [22, 0, 0], rotation: [0,0,0], sizeArgs: [1,1,1] },
     ],
     quiz: [
       {
@@ -43,6 +44,7 @@ const levelData: LevelDataType = {
   },
   "l1": {
     scene: [
+      { type: 'spawnpoint', position: [-6, 0, -2] },
       { type: 'ground', position: [-10, 0, 0] },
       { type: 'screen', position: [-5, 2.5, -4], quizId: 'q0', screenRange: 5},
       { type: 'water', position: [5, 0, 0] },
@@ -70,6 +72,7 @@ const levelData: LevelDataType = {
         ]
       },
       { type: 'ground', position: [54, 0, 0] },
+      { type: 'checkpoint', id: 'cp0', position: [49, 1, 0], rotation: [0,0,0], sizeArgs: [2, 3, 10] },
     ],
     quiz: [
       {
@@ -112,13 +115,21 @@ const levelData: LevelDataType = {
 
 export class Level {
   #levelCode: string;
+  #checkpointCode: string;
+  #checkpointCount: number;
   #sceneData: LevelComponents['scene'];
   #cssData: QuizQuestion[]; 
   
   constructor(levelCode: string | null) {
     this.#levelCode = levelCode || 'l0';
+    this.#checkpointCode = 'cp0';
     this.#sceneData = levelData[this.#levelCode].scene;
     this.#cssData = levelData[this.#levelCode].quiz;
+    this.#checkpointCount = this.setCheckPointCount()
+  }
+
+  setCheckPointCount() {
+    return this.#sceneData.filter(i => i.type === 'checkpoint').length;
   }
 
   prevLevel() {
@@ -136,9 +147,17 @@ export class Level {
     }
     return this; // Return the current instance if no next level
   }
-  
+
   get levelCode() {
     return this.#levelCode;
+  }
+
+  get checkpointCode() {
+    return this.#checkpointCode;
+  }
+
+  get checkpointCount() {
+    return this.#checkpointCount;
   }
 
   get sceneData() {

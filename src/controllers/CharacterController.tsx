@@ -1,6 +1,6 @@
 import { useKeyboardControls } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { CapsuleCollider, RigidBody } from "@react-three/rapier";
+import { CapsuleCollider, RigidBody, Vector3Tuple } from "@react-three/rapier";
 import { ElementRef, MutableRefObject, createContext, useCallback, useContext, useEffect, useRef } from "react";
 import { Controls } from "./input/KeyboardController";
 import Character from "../entities/Character";
@@ -18,7 +18,11 @@ export interface AnimationStateDispatcher {
 
 export const AnimationStateContext = createContext<MutableRefObject<AnimationStateDispatcher> | null>(null);
 
-export const CharacterController = () => {
+export interface CharacterControllerProps {
+  position: Vector3Tuple;
+}
+
+export const CharacterController = ({position}: CharacterControllerProps) => {
   const { camera } = useThree();
   const jumpPressed = useKeyboardControls((state) => state[Controls.jump]);
   const leftPressed = useKeyboardControls((state) => state[Controls.left]);
@@ -129,6 +133,7 @@ export const CharacterController = () => {
       cameraTargetContext.setCharacter(character.current);
   }, [cameraTargetContext]);
 
+  const p = position;
   // FIX this component renders every frame because of useKeyboardControls
   return (
     <group>
@@ -146,8 +151,8 @@ export const CharacterController = () => {
         // }}
       
       >
-        <CapsuleCollider args={[0.65, 0.6]} position={[-6, 1.2, -2]}/>
-        <group ref={character} position={[-6, 0, -2]} >
+        <CapsuleCollider args={[0.65, 0.6]} position={[p[0], p[1] + 1.2, p[2]]}/>
+        <group ref={character} position={p} >
           <AnimationStateContext.Provider value={animStateDispatcher}>
             <Character />
           </AnimationStateContext.Provider>
