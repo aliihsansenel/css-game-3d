@@ -5,16 +5,15 @@ import Playground from '../entities/Playground'
 import CameraController from './CameraController'
 import { CharacterController } from './CharacterController'
 import DisplayScreen from '../entities/DisplayScreen'
-import { Level } from '../data/levels';
 import Ground from '../entities/Ground'
 import Water from '../meshes/Water'
 import StaticCuboid from '../entities/StaticCuboid'
 import { ILevelSceneComponent } from '../data/sceneComponents'
 import CuboidCheckpoint from '../entities/physics/CuboidCheckpoint'
+import useCheckpoint from '../hooks/useCheckpoint'
 
 function LevelController() {
-  const [level, setLevel] = useState(new Level('l1'));
-  const [sceneInstance, setSceneInstance] = useState<number>(0);
+  const [level, sceneInstance, checkpointTrigger] = useCheckpoint();
 
   const sceneComponents = level.sceneData;
   const cssData = level.cssData;
@@ -35,8 +34,8 @@ function LevelController() {
             })}
             {checkpointComponents && checkpointComponents.map((checkpointComponent) => {
                 return <CuboidCheckpoint 
-                  checkpointData={checkpointComponent} 
-                  intersectionHandler={() => setSceneInstance(i => i+1)} />;
+                  checkpointData={checkpointComponent}
+                  intersectionHandler={checkpointTrigger} />;
             })}
             {ps.map((i) => {
               const pc = playgroundComponents.find(c => c.quizId === `q${i}`);

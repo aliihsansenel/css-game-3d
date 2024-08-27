@@ -2,13 +2,16 @@ import { RigidBody, CuboidCollider } from '@react-three/rapier';
 import { SceneCheckpointComponent } from '../../data/sceneComponents';
 
 interface CuboidCheckpointProps {
-  intersectionHandler: () => void;
+  intersectionHandler: (checkpointId: string) => void;
   checkpointData: SceneCheckpointComponent;
 }
 
 function CuboidCheckpoint({ intersectionHandler, checkpointData }: CuboidCheckpointProps) {
   const {position, rotation, sizeArgs} = checkpointData;
   
+  function handleIntersection() {
+    intersectionHandler(checkpointData.id);
+  }
   return (
     <RigidBody 
         colliders={false}
@@ -20,7 +23,7 @@ function CuboidCheckpoint({ intersectionHandler, checkpointData }: CuboidCheckpo
       < CuboidCollider
         args={sizeArgs}
         sensor
-        onIntersectionEnter={intersectionHandler}
+        onIntersectionEnter={handleIntersection}
       />
     </RigidBody>
   );

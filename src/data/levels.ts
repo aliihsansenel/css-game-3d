@@ -20,7 +20,7 @@ const levelData: LevelDataType = {
         ]
       },
       { type: 'ground', position: [22, 0, 0] },
-      { type: 'checkpoint', id: 'cp0', position: [22, 0, 0], rotation: [0,0,0], sizeArgs: [1,1,1] },
+      { type: 'checkpoint', id: 'cp1', position: [17, 1, 0], rotation: [0,0,0], sizeArgs: [2, 3, 10] },
     ],
     quiz: [
       {
@@ -72,7 +72,7 @@ const levelData: LevelDataType = {
         ]
       },
       { type: 'ground', position: [54, 0, 0] },
-      { type: 'checkpoint', id: 'cp0', position: [49, 1, 0], rotation: [0,0,0], sizeArgs: [2, 3, 10] },
+      { type: 'checkpoint', id: 'cp1', position: [49, 1, 0], rotation: [0,0,0], sizeArgs: [2, 3, 10] },
     ],
     quiz: [
       {
@@ -118,7 +118,7 @@ export class Level {
   #checkpointCode: string;
   #checkpointCount: number;
   #sceneData: LevelComponents['scene'];
-  #cssData: QuizQuestion[]; 
+  #cssData: QuizQuestion[];
   
   constructor(levelCode: string | null) {
     this.#levelCode = levelCode || 'l0';
@@ -146,6 +146,35 @@ export class Level {
       return new Level(newLevel); // Return a new instance
     }
     return this; // Return the current instance if no next level
+  }
+
+  newCheckPoint(checkpointCode: string) {
+    if (!checkpointCode.startsWith('cp'))
+      return;
+    const index: number = parseInt(checkpointCode.split('cp')[1]) | 0;
+    const current: number = parseInt(this.#checkpointCode.split('cp')[1]) | 0;
+    if(index > current)
+      this.#checkpointCode = `cp${current + 1}`;
+  }
+
+  isLevelCompleted(): boolean {
+    const index: number = parseInt(this.#checkpointCode.split('cp')[1]) | 0;
+    if(index >= this.#checkpointCount)
+      return true;
+    return false;
+  }
+
+  levelInfo() {
+    const prevLevelNumber = parseInt(this.#levelCode.slice(1)) - 1;
+    const nextLevelNumber = parseInt(this.#levelCode.slice(1)) + 1;
+    const prevLevel = `l${prevLevelNumber}`;
+    const nextLevel = `l${nextLevelNumber}`;
+
+    return {
+      prevLevel: levelData[prevLevel] ? prevLevelNumber :  null,
+      nextLevel: levelData[nextLevel] ? nextLevelNumber :  null,
+      isLevelCompleted: this.isLevelCompleted()
+    }
   }
 
   get levelCode() {

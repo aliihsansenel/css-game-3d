@@ -1,8 +1,9 @@
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useState } from 'react'
 import { createPortal } from 'react-dom';
 import HUDText from '../hud/HUDText'; // Import HUDText component
 
 interface HUDContextType {
+  resetText: () => void;
   newLevelText: (levelNumber: number) => void;
 }
 
@@ -11,16 +12,17 @@ export const HUDContext = createContext<HUDContextType | null>(null);
 function HUDController({children}: { children: React.ReactNode; }) {
   const [text, setText] = useState('');
   
-  function newLevelText(levelNumber: number) {
-    setText(`Level ${levelNumber}`);
+  function resetText() {
+    setText('');
   }
 
-  useEffect(() => {
-    setText('test')
-  }, [])
+  function newLevelText(levelNumber: number) {
+    setText(`Press E to skip to LEVEL ${levelNumber}`);
+  }
   
   return (
-    <HUDContext.Provider value={{ 
+    <HUDContext.Provider value={{
+        resetText,
         newLevelText
       }}>
       {children}
