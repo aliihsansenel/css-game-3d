@@ -16,7 +16,7 @@ function App() {
         <Canvas>
           <Suspense>
             <Physics colliders={false} debug>
-              <ambientLight intensity={0.5} />
+              <ambientLight intensity={0.6} />
               <directionalLight intensity={0.6} position={[1, 1, 1]} />
               <LevelController />
             </Physics>

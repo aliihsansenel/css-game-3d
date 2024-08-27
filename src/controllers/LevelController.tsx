@@ -12,7 +12,7 @@ import { ILevelSceneComponent } from '../data/sceneComponents'
 import CuboidCheckpoint from '../entities/physics/CuboidCheckpoint'
 import useCheckpoint from '../hooks/useCheckpoint'
 
-function LevelController() {
+const LevelController = React.memo(() => {
   const {level, sceneInstance, checkpointTrigger} = useCheckpoint();
 
   const sceneComponents = level.sceneData;
@@ -67,9 +67,9 @@ function LevelController() {
       })}
     </CameraController>
   )
-}
+});
 
-export default LevelController
+export default LevelController;
 
 function LevelSceneComponent({ component }: ILevelSceneComponent) {
   switch (component.type) {

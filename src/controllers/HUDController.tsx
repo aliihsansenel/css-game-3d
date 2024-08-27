@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import React, { createContext, useState } from 'react'
 import { createPortal } from 'react-dom';
 import HUDText from '../hud/HUDText'; // Import HUDText component
 
