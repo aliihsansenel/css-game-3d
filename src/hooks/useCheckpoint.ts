@@ -13,7 +13,6 @@ function useCheckpoint() {
   useEffect(() => {
     const handleKeyDown = (event: { key: string; }) => {
       if (event.key === 'e') {
-        
         const levelInfo = level.levelInfo()
         if (levelInfo.isLevelCompleted && levelInfo.nextLevel !== null ) {
           setLevel(level => level.nextLevel())
@@ -31,6 +30,10 @@ function useCheckpoint() {
   }, [level]);
 
   function checkpointTrigger(checkpointCode: string) {
+    if (checkpointCode === 'death') {
+      setSceneInstance(sceneInstance => sceneInstance + 1)
+      return;
+    }
     level.newCheckPoint(checkpointCode);
     const levelInfo = level.levelInfo()
     if (levelInfo.isLevelCompleted && levelInfo.nextLevel !== null ) {
@@ -38,7 +41,7 @@ function useCheckpoint() {
     }
   }
 
-  return [level, sceneInstance, checkpointTrigger];
+  return {level, sceneInstance, checkpointTrigger};
 }
 
 export default useCheckpoint;

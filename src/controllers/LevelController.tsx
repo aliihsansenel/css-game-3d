@@ -13,7 +13,7 @@ import CuboidCheckpoint from '../entities/physics/CuboidCheckpoint'
 import useCheckpoint from '../hooks/useCheckpoint'
 
 function LevelController() {
-  const [level, sceneInstance, checkpointTrigger] = useCheckpoint();
+  const {level, sceneInstance, checkpointTrigger} = useCheckpoint();
 
   const sceneComponents = level.sceneData;
   const cssData = level.cssData;
@@ -23,6 +23,15 @@ function LevelController() {
   const restSceneComponents = sceneComponents.filter(i => !['screen', 'playground', 'checkpoint'].includes(i.type));
 
   const ps = Array(playgroundComponents.length).fill(0).map((_, i) => i);
+
+  const spawnPoint = (level.checkpointCode === 'cp0' ?
+    restSceneComponents.find(i => i.type === 'spawnpoint') :
+    checkpointComponents.find(i => i.id === level.checkpointCode)
+    ).position;
+
+  function onDeath() {
+    checkpointTrigger('death');
+  }
 
   return (
     <CameraController>
@@ -49,7 +58,10 @@ function LevelController() {
                 </PlaygroundController>
               );
             })}
-            <CharacterController position={restSceneComponents.find(i => i.type === 'spawnpoint').position}/>
+            <CharacterController 
+              position={spawnPoint}
+              onDeath={onDeath}
+            />
           </ React.Fragment>
           )
       })}

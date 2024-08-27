@@ -20,9 +20,10 @@ export const AnimationStateContext = createContext<MutableRefObject<AnimationSta
 
 export interface CharacterControllerProps {
   position: Vector3Tuple;
+  onDeath: () => void;
 }
 
-export const CharacterController = ({position}: CharacterControllerProps) => {
+export const CharacterController = ({position, onDeath}: CharacterControllerProps) => {
   const { camera } = useThree();
   const jumpPressed = useKeyboardControls((state) => state[Controls.jump]);
   const leftPressed = useKeyboardControls((state) => state[Controls.left]);
@@ -57,9 +58,8 @@ export const CharacterController = ({position}: CharacterControllerProps) => {
     const characterPos = new Vector3();
     character.current.getWorldPosition(characterPos);
 
-    if (characterPos.y < 0) {
-      impulse.y = Math.min(Math.pow(-characterPos.y, 1.8) * 3.0, 60.0);
-      isOnFloor.current = false;
+    if (characterPos.y < -5) {
+      onDeath();
     } else if (jumpPressed) {
       impulse.y += handleJump();
       if (impulse.y > 0) {

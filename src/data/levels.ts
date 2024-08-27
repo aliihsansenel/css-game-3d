@@ -59,6 +59,7 @@ const levelData: LevelDataType = {
         ]
       },
       { type: 'ground', position: [22, 0, 0] },
+      { type: 'checkpoint', id: 'cp1', position: [17, 1, 0], rotation: [0,0,0], sizeArgs: [2, 3, 10] },
       { type: 'screen', position: [27, 2.5, -4], quizId: 'q1', screenRange: 5},
       { type: 'water', position: [37, 0, 0] },
       { type: 'step', position: [31, 0, 0], args: [3, 1, 2] },
@@ -72,7 +73,7 @@ const levelData: LevelDataType = {
         ]
       },
       { type: 'ground', position: [54, 0, 0] },
-      { type: 'checkpoint', id: 'cp1', position: [49, 1, 0], rotation: [0,0,0], sizeArgs: [2, 3, 10] },
+      { type: 'checkpoint', id: 'cp2', position: [49, 1, 0], rotation: [0,0,0], sizeArgs: [2, 3, 10] },
     ],
     quiz: [
       {
