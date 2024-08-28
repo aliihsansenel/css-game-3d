@@ -7,7 +7,7 @@ const levelData: LevelDataType = {
     scene: [
       { type: 'spawnpoint', position: [-6, 0, -2] },
       { type: 'ground', position: [-10, 0, 0] },
-      { type: 'screen', position: [-5, 2.5, -4], screenRange: 5, quizId: 'q0',},
+      { type: 'screen', position: [-5, 2.5, -7], screenRange: 5, quizId: 'q0',},
       { type: 'water', position: [5, 0, 0] },
       { type: 'step', position: [-1, 0, -6], args: [3, 1, 2] },
       { type: 'playground', position: [8.8 - 0.1, 0.0, 0.01],
@@ -48,28 +48,26 @@ const levelData: LevelDataType = {
       { type: 'ground', position: [-10, 0, 0] },
       { type: 'screen', position: [-5, 2.5, -4], quizId: 'q0', screenRange: 5},
       { type: 'water', position: [5, 0, 0] },
-      { type: 'step', position: [-1, 0, -6], args: [3, 1, 2] },
+      { type: 'step', position: [-1, 0, 0], args: [3, 1, 2] },
       { type: 'playground', position: [8.8 - 0.1, 0.0, 0.01],
         quizId: 'q0',
         screenPosition: [-5, 2.5, -4],
         boxMargin: 0.5,
         blocks: [
           { args: [9.0, 1.0, 1.5] },
-          { args: [9.0, 1.0, 1.5] }
         ]
       },
       { type: 'ground', position: [22, 0, 0] },
       { type: 'checkpoint', id: 'cp1', position: [17, 1, 0], rotation: [0,0,0], sizeArgs: [2, 3, 10] },
       { type: 'screen', position: [27, 2.5, -4], quizId: 'q1', screenRange: 5},
       { type: 'water', position: [37, 0, 0] },
-      { type: 'step', position: [31, 0, 0], args: [3, 1, 2] },
+      { type: 'step', position: [31, 0, 6], args: [3, 1, 2] },
       { type: 'playground', position: [40.8 - 0.1, 0.0, 0.01],
         quizId: 'q1',
         screenPosition: [25, 2.5, -4],
         boxMargin: 0.5,
         blocks: [
           { args: [9.0, 1.0, 1.5] },
-          { args: [9.0, 1.0, 1.5] }
         ]
       },
       { type: 'ground', position: [54, 0, 0] },
@@ -84,9 +82,9 @@ const levelData: LevelDataType = {
             pv: [
               {
                 prop: 'justify-content',
-                values: ['flex-start', 'start'],
+                values: ['center'],
                 editable: true,
-                state: 2
+                state: 0
               }
             ],
             color: 'black'
@@ -101,9 +99,9 @@ const levelData: LevelDataType = {
             pv: [
               {
                 prop: 'justify-content',
-                values: ['flex-end', 'end'],
+                values: ['flex-start', 'start'],
                 editable: true,
-                state: 2
+                state: 1
               }
             ],
             color: 'black'
@@ -112,7 +110,8 @@ const levelData: LevelDataType = {
       } 
     ]
   },
-  "l3": {
+  // TODO level design
+  "l2": {
     scene: [
       { type: 'spawnpoint', position: [-6, 0, -2] },
       { type: 'ground', position: [-10, 0, 0] },
@@ -193,8 +192,9 @@ export class Level {
       return;
     const index: number = parseInt(checkpointCode.split('cp')[1]) | 0;
     const current: number = parseInt(this.#checkpointCode.split('cp')[1]) | 0;
+    
     if(index > current)
-      this.#checkpointCode = `cp${current + 1}`;
+      this.#checkpointCode = `cp${index}`;
   }
 
   isLevelCompleted(): boolean {
@@ -211,8 +211,8 @@ export class Level {
     const nextLevel = `l${nextLevelNumber}`;
 
     return {
-      prevLevel: levelData[prevLevel] ? prevLevelNumber :  null,
-      nextLevel: levelData[nextLevel] ? nextLevelNumber :  null,
+      prevLevel: levelData[prevLevel] ? prevLevelNumber + 1 :  null,
+      nextLevel: levelData[nextLevel] ? nextLevelNumber + 1 :  null,
       isLevelCompleted: this.isLevelCompleted()
     }
   }

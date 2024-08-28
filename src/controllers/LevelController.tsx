@@ -28,7 +28,7 @@ const LevelController = React.memo(() => {
     restSceneComponents.find(i => i.type === 'spawnpoint') :
     checkpointComponents.find(i => i.id === level.checkpointCode)
     ).position;
-
+  
   function onDeath() {
     checkpointTrigger('death');
   }

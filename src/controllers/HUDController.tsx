@@ -1,6 +1,4 @@
-import React, { createContext, useState } from 'react'
-import { createPortal } from 'react-dom';
-import HUDText from '../hud/HUDText'; // Import HUDText component
+import React, { createContext } from 'react'
 
 interface HUDContextType {
   resetText: () => void;
@@ -11,19 +9,25 @@ interface HUDContextType {
 export const HUDContext = createContext<HUDContextType | null>(null);
 
 function HUDController({children}: { children: React.ReactNode; }) {
-  const [text, setText] = useState('');
+  // const [text, setText] = useState('');
   
-  function resetText() {
+  function setText(text: string) {
+    const infoElement = document.getElementById('info');
+    if (infoElement) {
+        infoElement.textContent = text;
+    }
+  }
+  const resetText = React.useCallback(() => {
     setText('');
-  }
+  }, []);
 
-  function screenText() {
+  const screenText = React.useCallback(() => {
     setText(`Press E to edit CSS`);
-  }
+  }, []);
 
-  function newLevelText(levelNumber: number) {
+  const newLevelText = React.useCallback((levelNumber: number) => {
     setText(`Press E to skip to LEVEL ${levelNumber}`);
-  }
+  }, []);
   
   return (
     <HUDContext.Provider value={{
@@ -32,10 +36,10 @@ function HUDController({children}: { children: React.ReactNode; }) {
         newLevelText
       }}>
       {children}
-      {createPortal(
+      {/* {createPortal(
         <HUDText text={text} key={0}/>,
         document.getElementById('info') as HTMLElement
-      )}
+      )} */}
     </HUDContext.Provider>
   )
 }
