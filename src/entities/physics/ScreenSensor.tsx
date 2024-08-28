@@ -1,4 +1,6 @@
 import { RigidBody, BallCollider } from '@react-three/rapier';
+import { useContext } from 'react';
+import { HUDContext } from '../../controllers/HUDController';
 
 interface ScreenSensorProps {
   screenRange: number;
@@ -6,6 +8,10 @@ interface ScreenSensorProps {
 }
 
 function ScreenSensor({ screenRange, setDisplayScreen }: ScreenSensorProps) {
+  const hudContext = useContext(HUDContext);
+  const screenText = hudContext ? hudContext.screenText : () => {};
+  const resetText = hudContext ? hudContext.resetText : () => {};
+
   return (
     <RigidBody 
         colliders={false}
@@ -14,8 +20,8 @@ function ScreenSensor({ screenRange, setDisplayScreen }: ScreenSensorProps) {
       < BallCollider
         args={[screenRange]}
         sensor
-        onIntersectionEnter={() => setDisplayScreen(true)}
-        onIntersectionExit={() => setDisplayScreen(false)}
+        onIntersectionEnter={() => {screenText();setDisplayScreen(true)}}
+        onIntersectionExit={() => {resetText();setDisplayScreen(false)}}
       />
     </RigidBody>
   );

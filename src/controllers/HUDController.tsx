@@ -4,6 +4,7 @@ import HUDText from '../hud/HUDText'; // Import HUDText component
 
 interface HUDContextType {
   resetText: () => void;
+  screenText: () => void;
   newLevelText: (levelNumber: number) => void;
 }
 
@@ -16,6 +17,10 @@ function HUDController({children}: { children: React.ReactNode; }) {
     setText('');
   }
 
+  function screenText() {
+    setText(`Press E to edit CSS`);
+  }
+
   function newLevelText(levelNumber: number) {
     setText(`Press E to skip to LEVEL ${levelNumber}`);
   }
@@ -23,6 +28,7 @@ function HUDController({children}: { children: React.ReactNode; }) {
   return (
     <HUDContext.Provider value={{
         resetText,
+        screenText,
         newLevelText
       }}>
       {children}

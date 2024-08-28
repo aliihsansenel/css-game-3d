@@ -3,7 +3,7 @@ import { Level } from '../data/levels';
 import { HUDContext } from '../controllers/HUDController';
 
 function useCheckpoint() {
-  const [level, setLevel] = useState(new Level('l0'));
+  const [level, setLevel] = useState(new Level('l3'));
   const [sceneInstance, setSceneInstance] = useState<number>(0);
 
   const hudContext = useContext(HUDContext);

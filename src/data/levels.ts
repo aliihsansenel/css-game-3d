@@ -112,6 +112,45 @@ const levelData: LevelDataType = {
       } 
     ]
   },
+  "l3": {
+    scene: [
+      { type: 'spawnpoint', position: [-6, 0, -2] },
+      { type: 'ground', position: [-10, 0, 0] },
+      { type: 'screen', position: [-5, 2.5, -4], screenRange: 5, quizId: 'q0',},
+      { type: 'water', position: [5, 0, 0] },
+      { type: 'step', position: [-1, 0, -6], args: [3, 1, 2] },
+      { type: 'playground', position: [8.8 - 0.1, 0.0, 0.01],
+        quizId: 'q0',
+        screenPosition: [-5, 2.5, -4],
+        boxMargin: 0.5,
+        blocks: [
+          { args: [9.0, 1.0, 1.5] },
+          { args: [9.0, 1.0, 1.5] }
+        ]
+      },
+      { type: 'ground', position: [22, 0, 0] },
+      { type: 'checkpoint', id: 'cp1', position: [17, 1, 0], rotation: [0,0,0], sizeArgs: [2, 3, 10] },
+    ],
+    quiz: [
+      {
+        id: 'q0',
+        blocks: [
+          {
+            selector: '.div',
+            pv: [
+              {
+                prop: 'justify-content',
+                values: ['flex-end', 'end'],
+                editable: true,
+                state: 2
+              }
+            ],
+            color: 'black'
+          }
+        ]
+      }
+    ]
+  },
 };
 
 export class Level {
