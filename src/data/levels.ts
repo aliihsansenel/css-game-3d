@@ -27,7 +27,7 @@ const levelData: LevelDataType = {
         id: 'q0',
         blocks: [
           {
-            selector: '.div',
+            selector: '#container',
             pv: [
               {
                 prop: 'justify-content',
@@ -38,7 +38,8 @@ const levelData: LevelDataType = {
             ],
             color: 'black'
           }
-        ]
+        ],
+        hint: 'justify-content: flex-start (default) |  flex-end |  center |  space-between |  space-around;'
       }
     ]
   },
@@ -78,7 +79,7 @@ const levelData: LevelDataType = {
         id: 'q0',
         blocks: [
           {
-            selector: '.div',
+            selector: '#container',
             pv: [
               {
                 prop: 'justify-content',
@@ -89,13 +90,14 @@ const levelData: LevelDataType = {
             ],
             color: 'black'
           }
-        ]
+        ],
+        hint: 'justify-content: flex-start (default) |  flex-end |  center |  space-between |  space-around;'
       },
       {
         id: 'q1',
         blocks: [
           {
-            selector: '.div',
+            selector: '#container',
             pv: [
               {
                 prop: 'justify-content',
@@ -106,39 +108,62 @@ const levelData: LevelDataType = {
             ],
             color: 'black'
           }
-        ]
+        ],
+        hint: 'justify-content: flex-start (default) |  flex-end |  center |  space-between |  space-around;'
       } 
     ]
   },
-  // TODO level design
   "l2": {
     scene: [
       { type: 'spawnpoint', position: [-6, 0, -2] },
       { type: 'ground', position: [-10, 0, 0] },
       { type: 'screen', position: [-5, 2.5, -4], screenRange: 5, quizId: 'q0',},
       { type: 'water', position: [5, 0, 0] },
-      { type: 'step', position: [-1, 0, -6], args: [3, 1, 2] },
+      { type: 'step', position: [-1, 0, 0], args: [3, 1, 2] },
+      { type: 'step', position: [2.2, 1, 0], args: [2.5, 0.5, 2] },
+      { type: 'step', position: [5, 2, 0], args: [2.5, 0.5, 2] },
       { type: 'playground', position: [8.8 - 0.1, 0.0, 0.01],
         quizId: 'q0',
         screenPosition: [-5, 2.5, -4],
         boxMargin: 0.5,
         blocks: [
-          { args: [9.0, 1.0, 1.5] },
-          { args: [9.0, 1.0, 1.5] }
+          { args: [1.5, 1.0, 1.5] },
         ]
       },
+      { type: 'step', position: [13, 0, 7], args: [2, 1, 2] },
       { type: 'ground', position: [22, 0, 0] },
       { type: 'checkpoint', id: 'cp1', position: [17, 1, 0], rotation: [0,0,0], sizeArgs: [2, 3, 10] },
+      { type: 'cube', position: [23, 1.01, -2], rotation: [0, 0, 0] },
+      { type: 'cube', position: [23, 1.01, -1], rotation: [0, 0, 0] },
+      { type: 'cube', position: [23, 1.01, 0], rotation: [0, 0, 0] },
+      { type: 'cube', position: [23, 1.01, 1], rotation: [0, 0, 0] },
+      { type: 'cube', position: [23, 1.01, 2], rotation: [0, 0, 0] },
+      { type: 'cube', position: [23, 2.01, -1.5], rotation: [0, 0, 0] },
+      { type: 'cube', position: [23, 2.01, -0.5], rotation: [0, 0, 0] },
+      { type: 'cube', position: [23, 2.01, 0.5], rotation: [0, 0, 0] },
+      { type: 'cube', position: [23, 2.01, 1.5], rotation: [0, 0, 0] },
+      { type: 'cube', position: [23, 3.01, -1.0], rotation: [0, 0, 0] },
+      { type: 'cube', position: [23, 3.01, -0.0], rotation: [0, 0, 0] },
+      { type: 'cube', position: [23, 3.01, 1.0], rotation: [0, 0, 0] },
+      { type: 'cube', position: [23, 4.01, -0.5], rotation: [0, 0, 0] },
+      { type: 'cube', position: [23, 4.01, 0.5], rotation: [0, 0, 0] },
+      { type: 'cube', position: [23, 5.01, 0.0], rotation: [0, 0, 0] },
     ],
     quiz: [
       {
         id: 'q0',
         blocks: [
           {
-            selector: '.div',
+            selector: '#container',
             pv: [
               {
                 prop: 'justify-content',
+                values: ['flex-end', 'end'],
+                editable: true,
+                state: 2
+              },
+              {
+                prop: 'align-items',
                 values: ['flex-end', 'end'],
                 editable: true,
                 state: 2
@@ -146,7 +171,8 @@ const levelData: LevelDataType = {
             ],
             color: 'black'
           }
-        ]
+        ],
+        hint: 'justify-content: flex-start (default) |  flex-end |  center |  space-between |  space-around; align-items: flex-start |  flex-end |  center |  baseline |  stretch (default);'
       }
     ]
   },

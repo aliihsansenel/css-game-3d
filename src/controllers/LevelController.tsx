@@ -11,6 +11,7 @@ import StaticCuboid from '../entities/StaticCuboid'
 import { ILevelSceneComponent } from '../data/sceneComponents'
 import CuboidCheckpoint from '../entities/physics/CuboidCheckpoint'
 import useCheckpoint from '../hooks/useCheckpoint'
+import RoundedBox from '../entities/RoundedBox'
 
 const LevelController = React.memo(() => {
   const {level, sceneInstance, checkpointTrigger} = useCheckpoint();
@@ -83,6 +84,8 @@ function LevelSceneComponent({ component }: ILevelSceneComponent) {
       return <Playground playgroundData={component} />;
     case 'screen':
       return <DisplayScreen screenData={component} />;
+    case 'cube':
+      return <RoundedBox position={component.position} rotation={component.rotation} />;
     default:
       return null; // or some fallback component
   }

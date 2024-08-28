@@ -3,11 +3,12 @@ import { Level } from '../data/levels';
 import { HUDContext } from '../controllers/HUDController';
 
 function useCheckpoint() {
-  const [level, setLevel] = useState(new Level('l0'));
+  const [level, setLevel] = useState(new Level('l2'));
   const [sceneInstance, setSceneInstance] = useState<number>(0);
 
   const hudContext = useContext(HUDContext);
   const newLevelText = hudContext ? hudContext.newLevelText : () => {};
+  const gameOverText = hudContext ? hudContext.gameOverText : () => {};
   const resetText = hudContext ? hudContext.resetText : () => {};
 
   useEffect(() => {
@@ -36,8 +37,11 @@ function useCheckpoint() {
     }
     level.newCheckPoint(checkpointCode);
     const levelInfo = level.levelInfo()
-    if (levelInfo.isLevelCompleted && levelInfo.nextLevel !== null ) {
-      newLevelText(levelInfo.nextLevel)
+    if (levelInfo.isLevelCompleted) {
+      if (levelInfo.nextLevel === null)
+        gameOverText();
+      else
+        newLevelText(levelInfo.nextLevel);
     }
   }
 

@@ -101,33 +101,40 @@ function ScreenContent(
 
   return (
     <div className="screen-content">
-      {quizData.blocks.map((block, index) => (
-        <div key={index} style={{ color: block.color }}>
-          <div>{block.selector}&nbsp;{'{'}</div>
-          <div className="pv">
-            {block.pv.map((pvItem, pvIndex) => (
-              <div key={pvIndex}>
-                <input
-                    type="text"
-                    value={!pvItem.editable ? pvItem.prop : inputValues[`prop-${pvIndex}`] || ""} 
-                    disabled={!pvItem.editable} // Disable input if not editable
-                    onChange={handleInputChange(`prop-${pvIndex}`)}
-                    onFocus={handler}
-                  />
-                <span>:</span>
-                <input
-                    type="text"
-                    value={!pvItem.editable ? pvItem.values[0] : inputValues[`value-${pvIndex}`] || ""} 
-                    disabled={!pvItem.editable} // Disable input if not editable
-                    onChange={handleInputChange(`value-${pvIndex}`)}
-                    onFocus={handler}
-                  />
-              </div>
-            ))}
+      <div>
+        {quizData.blocks.map((block, index) => (
+          <div key={index} className="quizBlock" style={{ color: block.color }}>
+            <div>{block.selector}&nbsp;{'{'}</div>
+            <div className="pv">
+              {block.pv.map((pvItem, pvIndex) => (
+                <div key={pvIndex}>
+                  <input
+                      type="text"
+                      value={!pvItem.editable ? pvItem.prop : inputValues[`prop-${pvIndex}`] || ""} 
+                      disabled={!pvItem.editable} // Disable input if not editable
+                      onChange={handleInputChange(`prop-${pvIndex}`)}
+                      onFocus={handler}
+                    />
+                  <span>:</span>
+                  <input
+                      type="text"
+                      value={!pvItem.editable ? pvItem.values[0] : inputValues[`value-${pvIndex}`] || ""} 
+                      disabled={!pvItem.editable} // Disable input if not editable
+                      onChange={handleInputChange(`value-${pvIndex}`)}
+                      onFocus={handler}
+                    />
+                </div>
+              ))}
+            </div>
+            <div>{'}'}</div>
           </div>
-          <div>{'}'}</div>
-        </div>
-      ))}
+        ))}
+      </div>
+      <div>
+        {quizData.hint && (
+          <div className="hint">{quizData.hint}</div>
+        )}
+      </div>
     </div>
   );
 }

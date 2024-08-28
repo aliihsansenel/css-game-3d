@@ -5,7 +5,7 @@ import { QuizQuestion } from "./levels";
 interface CommonProps extends GroundProps, WaterProps, StaticCuboidProps, RoundedBoxMeshProps {}
 
 export interface SceneComponent extends CommonProps {
-  type: 'spawnPoint' | 'ground' | 'water' | 'step';
+  type: 'spawnpoint' | 'ground' | 'water' | 'step' | 'cube';
   position: Vector3Tuple;
   args?: number[];
   boxMargin?: number;

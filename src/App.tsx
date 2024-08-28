@@ -15,7 +15,7 @@ function App() {
       <HUDController>
         <Canvas>
           <Suspense>
-            <Physics colliders={false} debug>
+            <Physics colliders={false}>
               <ambientLight intensity={0.6} />
               <directionalLight intensity={0.6} position={[1, 1, 1]} />
               <LevelController />

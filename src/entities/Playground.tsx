@@ -62,8 +62,7 @@ function Playground({ playgroundData }: PlaygroundComponentProps) {
     >
       <Flex 
         {...flexProps}
-        rotation={[-Math.PI / 2, 0.0, 0.0]}
-        alignItems="flex-start"
+        rotation={[(-Math.PI / 2) * 3, (-Math.PI), 0.0]}
         plane="xz"
         size={[10.0, 10.0, 10.0]}
         flexWrap="wrap"

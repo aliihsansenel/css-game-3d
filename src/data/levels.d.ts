@@ -3,6 +3,7 @@ import { SceneComponent } from "./sceneComponents";
 export interface QuizQuestion {
   id: string;
   blocks: QuizQuestionBlock[];
+  hint: string | null;
 }
 
 export interface QuizQuestionBlock {

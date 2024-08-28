@@ -4,6 +4,7 @@ interface HUDContextType {
   resetText: () => void;
   screenText: () => void;
   newLevelText: (levelNumber: number) => void;
+  gameOverText: () => void;
 }
 
 export const HUDContext = createContext<HUDContextType | null>(null);
@@ -28,12 +29,17 @@ function HUDController({children}: { children: React.ReactNode; }) {
   const newLevelText = React.useCallback((levelNumber: number) => {
     setText(`Press E to skip to LEVEL ${levelNumber}`);
   }, []);
+
+  const gameOverText = React.useCallback(() => {
+    setText(`GAME OVER`);
+  }, []);
   
   return (
     <HUDContext.Provider value={{
         resetText,
         screenText,
-        newLevelText
+        newLevelText,
+        gameOverText
       }}>
       {children}
       {/* {createPortal(
