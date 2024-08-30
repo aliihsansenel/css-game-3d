@@ -5,8 +5,8 @@ import { Mesh } from 'three';
 
 const RoundedBoxMesh = forwardRef<Mesh, RoundedBoxMeshProps>((props, ref) => {
   const color = props.color || "#f3f3f3";
-  const {args, ...rest} = props;
-  
+  const {args, visible, ...rest} = props;
+
   return (
     <RoundedBox
       ref={ref}
@@ -17,7 +17,12 @@ const RoundedBoxMesh = forwardRef<Mesh, RoundedBoxMeshProps>((props, ref) => {
       creaseAngle={0.4} // Smooth normals everywhere except faces that meet at an angle greater than the crease angle
       {...rest} // All THREE.Mesh props are valid
     >
-      <meshStandardMaterial color={color} roughness={0.5} />
+      <meshStandardMaterial 
+        color={color} 
+        roughness={0.5} 
+        transparent={visible === false} 
+        opacity={visible === false ? 0.0 : 1.0} 
+      />
     </RoundedBox>
   );
 });

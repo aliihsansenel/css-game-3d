@@ -85,8 +85,10 @@ function LevelSceneComponent({ component }: ILevelSceneComponent) {
     case 'screen':
       return <DisplayScreen screenData={component} />;
     case 'cube':
-      return <RoundedBox position={component.position}
+      return <RoundedBox
+          position={component.position}
           rotation={component.rotation as [number, number, number] ?? [0, 0, 0]} 
+          color='#a0c8eb'
         />;
     default:
       return null; // or some fallback component

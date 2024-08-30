@@ -39,7 +39,7 @@ function PlaygroundController({children, quizData}: PlaygroundControllerProps) {
           const p = inputvalues[`prop-${key.split('value-')[1]}`] || null;
           if (p) {
             const camelCasedKey = toCamelCase(p) as keyof WritableFlexProps;
-            if (camelCasedKey && inputvalues[key] in newFlexProps) {
+            if (camelCasedKey) {
               newFlexProps[camelCasedKey] = inputvalues[key] as WritableFlexProps[typeof camelCasedKey];
             }
           } 

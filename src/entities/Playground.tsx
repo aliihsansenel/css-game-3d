@@ -76,6 +76,7 @@ function Playground({ playgroundData }: PlaygroundComponentProps) {
             <RoundedBoxMesh
               ref={el => srcRefs.current[index] = el as Mesh}
               args={box.args}
+              color="#e3a58a"
             />
           </Box>
         ))}

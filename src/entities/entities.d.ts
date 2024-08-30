@@ -17,7 +17,6 @@ export interface RoundedBoxMeshProps extends Partial<typeof RoundedBox>, Partial
   position?: Vector3Tuple;
   rotation?: Euler;
   color?: string;
-  hidden?: boolean;
   visible?: boolean;
 }
 
