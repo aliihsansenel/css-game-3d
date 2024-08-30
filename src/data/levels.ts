@@ -1,6 +1,7 @@
 import type { LevelComponents, LevelDataType, QuizQuestion } from "./levels.d";
 
 import { toCamelCase } from "../utils/helper";
+import { WritableFlexProps } from "../controllers/PlaygroundController";
 
 const levelData: LevelDataType = {
   "l0": {
@@ -267,10 +268,13 @@ export class Level {
     const blocks = quizData.blocks;
     const questions = blocks.map(i => i.pv).flat();
 
-    const obj: Record<string, string> = {};
+    const obj: Partial<WritableFlexProps> = {};
     questions.forEach(pv => {
-      if (pv.state > 0)
-        obj[toCamelCase(pv.prop)] = pv.state === 2 ? pv.values[0] : "";
+      if (pv.state > 0) {
+        const camelCasedKey = toCamelCase(pv.prop);
+        const value = pv.state === 2 ? pv.values[0] : "";
+          obj[camelCasedKey] = value;
+      }
     });
     return obj;
   }
@@ -279,7 +283,7 @@ export class Level {
     const blocks = quizData.blocks;
     const questions = blocks.map(i => i.pv).flat();
 
-    const obj: Record<string, string> = {};
+    const obj: WritableFlexProps = {};
     questions.forEach((pv, index) => {
       if (pv.state > 0)
         obj[`prop-${index}`] = pv.prop;

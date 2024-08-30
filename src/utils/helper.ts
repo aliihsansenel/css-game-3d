@@ -1,3 +1,5 @@
+import { WritableFlexProps } from "../controllers/PlaygroundController";
+
 export function debounce<T extends (...args: unknown[]) => void>(callback: T, delay: number) {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
@@ -19,6 +21,6 @@ export const debounce2 = <T extends (...args: unknown[]) => void>(fn: T, ms = 30
   };
 };
 
-export function toCamelCase(cssProperty: string) {
-  return cssProperty.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+export function toCamelCase(cssProperty: string): keyof WritableFlexProps {
+  return cssProperty.replace(/-([a-z])/g, (g) => g[1].toUpperCase()) as keyof WritableFlexProps;
 }

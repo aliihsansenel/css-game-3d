@@ -36,7 +36,13 @@ export interface SceneCheckpointComponent extends CommonProps {
   sizeArgs: CuboidArgs;
 }
 
+export interface SceneCubeComponent extends CommonProps {
+  type: 'cube';
+  position: Vector3Tuple;
+  rotation?: Vector3Tuple;
+}
+
 export interface ILevelSceneComponent {
-  component: SceneComponent | ScenePlaygroundComponent | SceneScreenComponent | SceneCheckpointComponent;
+  component: SceneComponent | ScenePlaygroundComponent | SceneScreenComponent | SceneCheckpointComponent | SceneCubeComponent;
   quizData?: QuizQuestion;
 }

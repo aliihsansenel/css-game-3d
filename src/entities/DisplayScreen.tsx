@@ -22,6 +22,9 @@ export const DisplayScreen = ({screenData } : DisplayScreenProps) => {
   const cameraTargetContext = useContext(CameraTargetContext);
   const playgroundContext = useContext(PlaygroundContext);
 
+  const parseCSS = playgroundContext ? playgroundContext.parseCSS : () => {};
+  const quizData = playgroundContext ? playgroundContext.quizData : null;
+
   const width = 4.5;
   const heigth = 2.5;
 
@@ -63,8 +66,8 @@ export const DisplayScreen = ({screenData } : DisplayScreenProps) => {
                 opacity: (!cameraTargetContext?.isCameraToggled && hidden) ? 0 : 1,
               }} >
               <ScreenContent handler={getFocus}
-                parseCSS={playgroundContext.parseCSS}
-                quizData={playgroundContext.quizData}/>
+                parseCSS={parseCSS}
+                quizData={quizData}/>
             </Html>
           </Plane>
         </RoundedBox>
@@ -77,12 +80,13 @@ export const DisplayScreen = ({screenData } : DisplayScreenProps) => {
 function ScreenContent(
   {quizData, handler, parseCSS} : 
   {
-    quizData: QuizQuestion,
+    quizData: QuizQuestion | null,
     handler: (event: FocusEvent<HTMLInputElement>) => void, 
     parseCSS: PlaygroundContextType['parseCSS'] | undefined
   }) {
   
-  const [inputValues, setInputValues] = useState<{ [key: string]: string }>(Level.initialInputState(quizData));
+  const [inputValues, setInputValues] = useState<{ [key: string]: string }>(
+    quizData ? Level.initialInputState(quizData): {} );
 
   const handleInputChange = (key: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValues((prevValues) => ({
@@ -102,7 +106,7 @@ function ScreenContent(
   return (
     <div className="screen-content">
       <div>
-        {quizData.blocks.map((block, index) => (
+        {quizData && quizData.blocks.map((block, index) => (
           <div key={index} className="quizBlock" style={{ color: block.color }}>
             <div>{block.selector}&nbsp;{'{'}</div>
             <div className="pv">
@@ -131,7 +135,7 @@ function ScreenContent(
         ))}
       </div>
       <div>
-        {quizData.hint && (
+        {quizData?.hint && (
           <div className="hint">{quizData.hint}</div>
         )}
       </div>

@@ -1,10 +1,10 @@
 import { forwardRef } from "react";
-
-import { ThreeElements } from "@react-three/fiber";
 import { RapierRigidBody, RigidBody } from "@react-three/rapier";
 
-import RoundedBoxMesh from "../meshes/RoundedBox";
-const KinematicCuboid = forwardRef<RapierRigidBody, ThreeElements['mesh']>((props, rigidBodyRef) => {
+import RoundedBoxMesh from "../../meshes/RoundedBoxMesh";
+import { RoundedBoxMeshProps } from "../entities";
+
+const KinematicCuboid = forwardRef<RapierRigidBody, RoundedBoxMeshProps>((props, rigidBodyRef) => {
 
   return (
     <RigidBody ref={rigidBodyRef}

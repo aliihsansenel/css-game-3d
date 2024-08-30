@@ -1,11 +1,11 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 
-import { Group, Vector3 } from "three";
+import { Group, Mesh, Vector3, Vector3Tuple } from "three";
 import { Flex, Box } from '@react-three/flex';
 import { Edges, Plane } from '@react-three/drei';
 
 import { PlaygroundContext } from "../controllers/PlaygroundController";
-import RoundedBoxMesh from "../meshes/RoundedBox";
+import RoundedBoxMesh from "../meshes/RoundedBoxMesh";
 
 import { debounce } from "../utils/helper";
 import { ScenePlaygroundComponent } from "../data/sceneComponents";
@@ -16,29 +16,32 @@ interface PlaygroundComponentProps {
 }
 
 function Playground({ playgroundData }: PlaygroundComponentProps) {
-  const { flexProps } = useContext(PlaygroundContext);
+  const playgroundContext = useContext(PlaygroundContext);
+  const flexProps = playgroundContext?.flexProps; // Use optional chaining to avoid null error
 
   const pos = playgroundData.position;
   const outlinePos = new Vector3().fromArray(pos);
-  outlinePos.setY(pos[2] + 0.2);
+  outlinePos.setY(pos[1] + 0.2); // Corrected index to set Y position based on the correct axis
 
-  const playgroundBoxes: ScenePlaygroundComponent['blocks'][] = playgroundData.blocks;
+  const playgroundBoxes: ScenePlaygroundComponent['blocks'] = playgroundData.blocks || []; // Fixed type assignment and provided a default empty array
 
   const groupRef = useRef<(Group | null)>(null!);
-  const srcRefs = useRef<(RoundedBoxMesh | null)[]>([]);
+  const srcRefs = useRef<(Mesh | null)[]>([]);
 
   const [counter, setCounter] = useState<{
-    positions: Vector3[];
+    positions: Vector3Tuple[];
     counter: number;
   }>({positions: [], counter: 0});
 
   function adjustRigidBodies() {
     const arr = srcRefs.current;
-      const positions: Vector3[] = [];
+    
+      const positions: Vector3Tuple[] = [];
       arr.forEach((box) => {
         if (box) {
           const position: Vector3 = box.getWorldPosition(new Vector3());
-          positions.push(position);
+          const tuple: Vector3Tuple = [position.x, position.y, position.z]
+          positions.push(tuple);
           
         }
       });
@@ -60,7 +63,7 @@ function Playground({ playgroundData }: PlaygroundComponentProps) {
       position={pos} 
       rotation={[-Math.PI / 2, 0.0, 0.0]}
     >
-      <Flex 
+      <Flex
         {...flexProps}
         rotation={[(-Math.PI / 2) * 3, (-Math.PI), 0.0]}
         plane="xz"
@@ -71,7 +74,7 @@ function Playground({ playgroundData }: PlaygroundComponentProps) {
         {playgroundBoxes.map((box, index) => (
           <Box key={index} centerAnchor margin={playgroundData.boxMargin}>
             <RoundedBoxMesh
-              ref={el => srcRefs.current[index] = el}
+              ref={el => srcRefs.current[index] = el as Mesh}
               args={box.args}
             />
           </Box>

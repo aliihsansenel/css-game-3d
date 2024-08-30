@@ -16,6 +16,6 @@ module.exports = {
     ],
     'react-hooks/exhaustive-deps': 'warn',
     '@typescript-eslint/no-unused-vars': ['warn'], // Added rule to warn on unused variables
-    '@typescript-eslint/no-empty-pattern': 'warn', // Added rule to warn on unexpected empty object patterns
+    '@typescript-eslint/no-empty-pattern': 'off', // Disable rule to avoid needing to write eslint-disable-next-line
   },
 }

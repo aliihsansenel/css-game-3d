@@ -1,9 +1,8 @@
-import { ThreeElements } from "@react-three/fiber"
 import { RigidBody } from "@react-three/rapier";
+import RoundedBoxMesh from "../meshes/RoundedBoxMesh";
+import { RoundedBoxMeshProps } from "./entities";
 
-import RoundedBoxMesh from "../meshes/RoundedBox"
-
-function RoundedBox(props: ThreeElements['mesh']) {
+function RoundedBox(props: RoundedBoxMeshProps) {
   
   return (
     <RigidBody 

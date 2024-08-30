@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import PlaygroundController from './PlaygroundController'
 import Playground from '../entities/Playground'
@@ -50,7 +50,7 @@ const LevelController = React.memo(() => {
             {ps.map((i) => {
               const pc = playgroundComponents.find(c => c.quizId === `q${i}`);
               const sc = screenComponents.find(c => c.quizId === `q${i}`);
-              const quizData = cssData.find(q => q.id === `q${i}`);
+              const quizData = cssData.find(q => q.id === `q${i}`)!;
               
               return (
                 <PlaygroundController quizData={quizData} key={i}>
@@ -85,8 +85,9 @@ function LevelSceneComponent({ component }: ILevelSceneComponent) {
     case 'screen':
       return <DisplayScreen screenData={component} />;
     case 'cube':
-      return <RoundedBox position={component.position} rotation={component.rotation} />;
+      return <RoundedBox position={component.position}
+          rotation={component.rotation as [number, number, number] ?? [0, 0, 0]} 
+        />;
     default:
       return null; // or some fallback component
-  }
-}
+  }}
