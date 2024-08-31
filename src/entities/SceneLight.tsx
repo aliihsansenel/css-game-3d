@@ -2,7 +2,7 @@
 function SceneLight() {
   return (
     <>
-      <hemisphereLight args={[0xffffbb, 0x080820, 0.8]} />
+      <hemisphereLight args={[0xffffbb, 0x080820, 1.0]} />
       <directionalLight
         intensity={1.0} 
         position={[20, 20, 30]}

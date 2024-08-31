@@ -13,7 +13,7 @@ const Character = () => {
   return (
     <>
       <CharacterAnimController actions={actions } />
-      <primitive object={scene} scale={[0.55, 0.55, 0.55]} visible={!ctc?.isCameraToggled}/>
+      <primitive object={scene} scale={[0.55, 0.55, 0.55]} visible={!ctc?.isCameraToggled} />
     </>
   );
 }
