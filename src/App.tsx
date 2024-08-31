@@ -7,17 +7,17 @@ import KeyboardController from "./controllers/input/KeyboardController";
 import LevelController from "./controllers/LevelController";
 
 import "./App.css"
+import SceneLight from "./entities/SceneLight";
 
 function App() {
   
   return (
     <KeyboardController>
       <HUDController>
-        <Canvas>
+        <Canvas shadows>
           <Suspense>
             <Physics colliders={false}>
-              <ambientLight intensity={0.6} />
-              <directionalLight intensity={0.6} position={[1, 1, 1]} />
+              <SceneLight />
               <LevelController />
             </Physics>
           </Suspense>

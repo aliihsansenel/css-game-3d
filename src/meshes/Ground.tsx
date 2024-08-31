@@ -9,7 +9,8 @@ function GroundMesh(props: ThreeElements['mesh']) {
   return (
     <mesh
       {...props}
-      ref={meshRef}>
+      ref={meshRef}
+      receiveShadow>
       <boxGeometry args={[15, 1, 20]} />
       <meshStandardMaterial color={[0.027, 0.651, 0.345]} />
     </mesh>

@@ -15,9 +15,11 @@ const RoundedBoxMesh = forwardRef<Mesh, RoundedBoxMeshProps>((props, ref) => {
       smoothness={4} // The number of curve segments. Default is 4
       bevelSegments={4} // The number of bevel segments. Default is 4, setting it to 0 removes the bevel, as a result the texture is applied to the whole geometry.
       creaseAngle={0.4} // Smooth normals everywhere except faces that meet at an angle greater than the crease angle
+      castShadow
+      receiveShadow
       {...rest} // All THREE.Mesh props are valid
     >
-      <meshStandardMaterial 
+      <meshStandardMaterial
         color={color} 
         roughness={0.5} 
         transparent={visible === false} 

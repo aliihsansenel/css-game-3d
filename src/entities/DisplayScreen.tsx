@@ -53,7 +53,7 @@ export const DisplayScreen = ({screenData } : DisplayScreenProps) => {
         colliders={false}
         type="fixed"
       >
-        <RoundedBox args={[width, heigth, 0.1]}>
+        <RoundedBox args={[width, heigth, 0.1]} castShadow>
           <meshBasicMaterial color="black" />
           <Plane args={[width - 0.3, heigth - 0.3]} position={[0, 0, .11]} >
           <meshBasicMaterial color="white" />
