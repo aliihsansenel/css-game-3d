@@ -39,7 +39,7 @@ function Water(props: WaterProps) {
         <shaderMaterial 
           vertexShader={vertexWater} 
           fragmentShader={fragmentWater}
-          // transparent={true}
+          transparent={true}
         />
       </mesh>
     </group>

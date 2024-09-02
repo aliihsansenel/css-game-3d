@@ -12,7 +12,12 @@ function PlaygroundBlock(props: StaticCuboidProps) {
         colliders='cuboid' 
         type="fixed"
       >
-        <RoundedBoxMesh position={position} {...rest} visible={false} />
+        <RoundedBoxMesh
+          renderOrder={2}
+          position={position}
+          visible={false}
+          {...rest}
+        />
       </RigidBody>
     </group>
     

@@ -1,7 +1,3 @@
-import { color, fog, float, positionWorld, triNoise3D, positionView, normalWorld, uniform } from 'three/tsl';
-
-
-
 function SceneLight() {
   return (
     <>

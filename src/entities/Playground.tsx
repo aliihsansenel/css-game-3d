@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 
-import { AdditiveBlending, Group, Mesh, NoBlending, NormalBlending, Vector3, Vector3Tuple } from "three";
+import { AdditiveBlending, Color, Group, Mesh, NoBlending, NormalBlending, Vector3, Vector3Tuple } from "three";
 import { Flex, Box } from '@react-three/flex';
 import { Edges, Plane } from '@react-three/drei';
 
@@ -92,9 +92,13 @@ function Playground({ playgroundData }: PlaygroundComponentProps) {
           />
         ))}
       </group>
-      <Plane args={[10, 10, 1, 1]}
-       >
-        <meshBasicMaterial transparent opacity={0.0} />
+      <Plane args={[10, 10, 1, 1]} renderOrder={1} >
+        <meshBasicMaterial
+          transparent
+          opacity={0.0}
+          color={new Color(0.11, 0.678, 0.878)}
+          // blending={NoBlending}
+        />
         <Edges color="red" />
       </Plane>
     </group>
