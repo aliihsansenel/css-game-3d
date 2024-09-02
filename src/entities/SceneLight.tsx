@@ -1,3 +1,6 @@
+import { color, fog, float, positionWorld, triNoise3D, positionView, normalWorld, uniform } from 'three/tsl';
+
+
 
 function SceneLight() {
   return (
@@ -16,6 +19,7 @@ function SceneLight() {
         shadow-camera-top={10}
         shadow-camera-bottom={-10}
       />
+      {/* <fog attach="fog" args={['#aea6a6', 1.0, 20]} /> */}
     </>
   )
 }

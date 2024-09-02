@@ -26,7 +26,7 @@ function Water(props: WaterProps) {
   
   return (
     <group {...props}
-      rotation={[-Math.PI / 2.0,0, 0]}
+      rotation={[-Math.PI / 2.0, 0, 0]}
       ref={groupRef}
     >
       <mesh>
@@ -36,7 +36,11 @@ function Water(props: WaterProps) {
               new Float32Array((width * sf + 1) * (height * sf + 1) * 2), 2]}>
           </float32BufferAttribute>
         </planeGeometry>
-        <shaderMaterial vertexShader={vertexWater} fragmentShader={fragmentWater} />
+        <shaderMaterial 
+          vertexShader={vertexWater} 
+          fragmentShader={fragmentWater}
+          // transparent={true}
+        />
       </mesh>
     </group>
   )
