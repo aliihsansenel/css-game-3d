@@ -80,10 +80,12 @@ export const CharacterController = ({position, onDeath}: CharacterControllerProp
     const up = new Vector3(0, 1, 0);
     const quat = new Quaternion();
     quat.setFromAxisAngle(up, Math.PI / 2);
-    const rotatedVec = cameraDirection.clone().applyQuaternion(quat);
-    const rightVec = linvelVec.clone().projectOnVector(rotatedVec);
+    const cameraRightVector = cameraDirection.clone().applyQuaternion(quat);
 
-    const dotH = rightVec.dot(linvelVec);
+    // camera right character's linear velocity 
+    const rightVel = linvelVec.clone().projectOnVector(cameraRightVector);
+
+    const dotH = rightVel.normalize().dot(linvelVec);
     const dotV = cameraDirection.dot(linvelVec);
 
     if (rightPressed && dotH < MAX_VEL) {
@@ -119,7 +121,6 @@ export const CharacterController = ({position, onDeath}: CharacterControllerProp
         character.current.rotation.y = angle;
       }
     }
-      
 
     if (linvelMagnitude < 0.1) {
       animStateDispatcher.current('Idle', linvelMagnitude)
@@ -134,6 +135,7 @@ export const CharacterController = ({position, onDeath}: CharacterControllerProp
   }, [cameraTargetContext]);
 
   const p = position;
+
   // FIX this component renders every frame because of useKeyboardControls
   return (
     <group>
@@ -149,7 +151,6 @@ export const CharacterController = ({position, onDeath}: CharacterControllerProp
         //     console.log(`The total force generated was: ${payload.totalForce.y}`);
         //   }
         // }}
-      
       >
         <CapsuleCollider args={[0.65, 0.6]} position={[p[0], p[1] + 1.2, p[2]]}/>
         <group ref={character} position={p} >
