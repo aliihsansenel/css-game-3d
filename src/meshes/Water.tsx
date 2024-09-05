@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useRef } from "react"
 
 import vertexWater from "../shaders/vertex/water.glsl";
 import fragmentWater from "../shaders/fragment/water.glsl";
@@ -12,18 +12,18 @@ function Water(props: WaterProps) {
 
   const width = 20;
   const height = 20;
-  const sf = 3;
+  // const sf = 3;
 
-  useEffect(() => {
-    if (waterGeomRef.current) {
-      const bufferGeom = waterGeomRef.current;
-      const ripplettribute = bufferGeom.getAttribute('ripple');
-      for ( let i = 0; i < ripplettribute.count; i+= 1 ) {
-        ripplettribute.setXY( i, 1.0, 1.0);
-      }
-      ripplettribute.needsUpdate = true;
-    }
-  }, [waterGeomRef])
+  // useEffect(() => {
+  //   if (waterGeomRef.current) {
+  //     const bufferGeom = waterGeomRef.current;
+  //     const ripplettribute = bufferGeom.getAttribute('ripple');
+  //     for ( let i = 0; i < ripplettribute.count; i+= 1 ) {
+  //       ripplettribute.setXY( i, 1.0, 1.0);
+  //     }
+  //     ripplettribute.needsUpdate = true;
+  //   }
+  // }, [waterGeomRef])
   
   return (
     <group {...props}
@@ -31,11 +31,11 @@ function Water(props: WaterProps) {
       ref={groupRef}
     >
       <mesh>
-        <planeGeometry ref={waterGeomRef} args={[width, height, width * sf, height * sf]} >
-          <float32BufferAttribute attach='attributes-ripple' 
+        <planeGeometry ref={waterGeomRef} args={[width, height, 1, 1]} >
+          {/* <float32BufferAttribute attach='attributes-ripple' 
             args={[ 
               new Float32Array((width * sf + 1) * (height * sf + 1) * 2), 2]}>
-          </float32BufferAttribute>
+          </float32BufferAttribute> */}
         </planeGeometry>
         {/* <shaderMaterial 
           vertexShader={vertexWater} 

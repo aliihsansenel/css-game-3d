@@ -8,13 +8,21 @@ import LevelController from "./controllers/LevelController";
 
 import "./App.css"
 import SceneLight from "./entities/SceneLight";
+import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 function App() {
   
   return (
     <KeyboardController>
       <HUDController>
-        <Canvas shadows>
+        <Canvas shadows
+          // gl={(canvas) => {
+          //   const renderer = new WebGPURenderer({
+          //     canvas: canvas as HTMLCanvasElement,
+          //   });
+          //   return renderer;
+          // }}
+        >
           <Suspense>
             <Physics colliders={false}>
               <SceneLight />
