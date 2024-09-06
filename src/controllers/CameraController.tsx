@@ -1,7 +1,7 @@
 import { createContext, useEffect, useRef, useState } from 'react'
 import { useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { Group, Vector3, Euler } from 'three';
+import { Group, Vector3 } from 'three';
 
 interface CameraTargetContextType {
   setCharacter: (target: Group) => void;
@@ -18,7 +18,7 @@ function CameraController({children}: { children: React.ReactNode; }) {
   const { camera } = useThree();
   const [isCameraToggled, setCameraToggle] = useState(false);
   const [savedCameraState, setSavedCameraState] = useState<{ 
-      position: Vector3, rotation: Euler, target: Vector3 } | null>(null);
+      position: Vector3, target: Vector3 } | null>(null);
   
   const character = useRef<Group | null>(null);
   const displayScreen = useRef<Group | null>(null);
@@ -35,7 +35,8 @@ function CameraController({children}: { children: React.ReactNode; }) {
     if (!isCameraToggled && character.current) {
       const worldPosition = new Vector3();
       character.current.getWorldPosition(worldPosition);
-      camera.position.add(worldPosition.clone().sub(exTargetPos.current));
+      const delta = worldPosition.clone().sub(exTargetPos.current);
+      camera.position.add(delta);
       exTargetPos.current = worldPosition;
       setCameraTarget(worldPosition);
     }
@@ -43,16 +44,18 @@ function CameraController({children}: { children: React.ReactNode; }) {
 
   function focusScreen() {
     // Save the current camera state
-    setSavedCameraState({
-      position: camera.position.clone(),
-      rotation: camera.rotation.clone(),
-      target: cameraTarget.clone()
-    });
     if (displayScreen.current) {
       const screenPosition = new Vector3();
       displayScreen.current.getWorldPosition(screenPosition);
+      
+      console.log(screenPosition)
+      setSavedCameraState({
+        position: camera.position.clone(),
+        target: cameraTarget.clone()
+      });
       camera.position.set(screenPosition.x, screenPosition.y, screenPosition.z + 2.3);
       camera.lookAt(screenPosition);
+      camera.updateProjectionMatrix();
       setCameraToggle(!isCameraToggled); // Toggle the state
     }
   }
@@ -67,7 +70,7 @@ function CameraController({children}: { children: React.ReactNode; }) {
         if (savedCameraState) {
           // Restore the saved camera state
           camera.position.copy(savedCameraState.position);
-          camera.rotation.copy(savedCameraState.rotation);
+          camera.updateProjectionMatrix();
           setCameraTarget(savedCameraState.target);
           setCameraToggle(!isCameraToggled); // Toggle the state
         }

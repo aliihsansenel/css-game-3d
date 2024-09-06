@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 
-import { AdditiveBlending, Color, Group, Mesh, NoBlending, NormalBlending, Vector3, Vector3Tuple } from "three";
+import { Color, Group, Mesh, Vector3, Vector3Tuple } from "three";
 import { Flex, Box } from '@react-three/flex';
 import { Edges, Plane } from '@react-three/drei';
 

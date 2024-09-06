@@ -8,7 +8,7 @@ import LevelController from "./controllers/LevelController";
 
 import "./App.css"
 import SceneLight from "./entities/SceneLight";
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+// import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 function App() {
   

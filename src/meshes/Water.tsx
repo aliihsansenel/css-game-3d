@@ -1,7 +1,7 @@
 import { useRef } from "react"
 
-import vertexWater from "../shaders/vertex/water.glsl";
-import fragmentWater from "../shaders/fragment/water.glsl";
+// import vertexWater from "../shaders/vertex/water.glsl";
+// import fragmentWater from "../shaders/fragment/water.glsl";
 import { Group, PlaneGeometry } from "three";
 import { WaterProps } from "../entities/entities";
 import { MeshReflectorMaterial } from "@react-three/drei";

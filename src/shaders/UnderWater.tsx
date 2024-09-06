@@ -1,18 +1,18 @@
-import { useFrame, useThree } from '@react-three/fiber';
-import React, { useMemo } from 'react'
-import PostProcessing from 'three/examples/jsm/renderers/common/PostProcessing.js';
-import {
-  gaussianBlur,
-  pass,
-  objectPosition,
-} from 'three/nodes';
+// import { useFrame, useThree } from '@react-three/fiber';
+// import React, { useMemo } from 'react'
+// import PostProcessing from 'three/examples/jsm/renderers/common/PostProcessing.js';
+// import {
+//   gaussianBlur,
+//   pass,
+//   objectPosition,
+// } from 'three/nodes';
 
 // TODO
 function UnderWater() {
 
-  const scene = useThree((state) => state.scene);
-  const camera = useThree((state) => state.camera);
-  const renderer = useThree((state) => state.gl);
+  // const scene = useThree((state) => state.scene);
+  // const camera = useThree((state) => state.camera);
+  // const renderer = useThree((state) => state.gl);
 
   // const postProcessing = useMemo(() => {
 
@@ -31,9 +31,9 @@ function UnderWater() {
   //   return postProcessing;
   // }, [scene, camera]);
 
-  useFrame(() =>{
-    renderer.render(postProcessing, camera);
-  })
+  // useFrame(() =>{
+  //   renderer.render(postProcessing, camera);
+  // })
 
   return (
     <></>
