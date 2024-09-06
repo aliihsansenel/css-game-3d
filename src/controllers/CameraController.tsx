@@ -17,8 +17,7 @@ function CameraController({children}: { children: React.ReactNode; }) {
   const exTargetPos = useRef<Vector3>(new Vector3(0, 0, -1))
   const { camera } = useThree();
   const [isCameraToggled, setCameraToggle] = useState(false);
-  const [savedCameraState, setSavedCameraState] = useState<{ 
-      position: Vector3, target: Vector3 } | null>(null);
+  const savedCameraState = useRef<{ position: Vector3, target: Vector3 } | null>(null);
   
   const character = useRef<Group | null>(null);
   const displayScreen = useRef<Group | null>(null);
@@ -48,11 +47,10 @@ function CameraController({children}: { children: React.ReactNode; }) {
       const screenPosition = new Vector3();
       displayScreen.current.getWorldPosition(screenPosition);
       
-      console.log(screenPosition)
-      setSavedCameraState({
+      savedCameraState.current = {
         position: camera.position.clone(),
         target: cameraTarget.clone()
-      });
+      };
       camera.position.set(screenPosition.x, screenPosition.y, screenPosition.z + 2.3);
       camera.lookAt(screenPosition);
       camera.updateProjectionMatrix();
@@ -69,9 +67,9 @@ function CameraController({children}: { children: React.ReactNode; }) {
       } else if (event.key === 'Escape' && isCameraToggled) {
         if (savedCameraState) {
           // Restore the saved camera state
-          camera.position.copy(savedCameraState.position);
+          camera.position.copy(savedCameraState.current!.position);
           camera.updateProjectionMatrix();
-          setCameraTarget(savedCameraState.target);
+          setCameraTarget(savedCameraState.current!.target);
           setCameraToggle(!isCameraToggled); // Toggle the state
         }
       }
