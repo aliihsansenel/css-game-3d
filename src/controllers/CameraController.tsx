@@ -42,11 +42,17 @@ function CameraController({children}: { children: React.ReactNode; }) {
   });
 
   function focusScreen() {
-    // Save the current camera state
     if (displayScreen.current) {
+      setCameraToggle(true);
+    }
+  }
+
+  useEffect(() => {
+    if (displayScreen.current && isCameraToggled) {
       const screenPosition = new Vector3();
       displayScreen.current.getWorldPosition(screenPosition);
       
+      // Save the current camera state
       savedCameraState.current = {
         position: camera.position.clone(),
         target: cameraTarget.clone()
@@ -54,9 +60,9 @@ function CameraController({children}: { children: React.ReactNode; }) {
       camera.position.set(screenPosition.x, screenPosition.y, screenPosition.z + 2.3);
       camera.lookAt(screenPosition);
       camera.updateProjectionMatrix();
-      setCameraToggle(!isCameraToggled); // Toggle the state
     }
-  }
+  }, [isCameraToggled])
+  
 
   useEffect(() => {
     const handleKeyDown = (event: { key: string; }) => {
@@ -70,7 +76,7 @@ function CameraController({children}: { children: React.ReactNode; }) {
           camera.position.copy(savedCameraState.current!.position);
           camera.updateProjectionMatrix();
           setCameraTarget(savedCameraState.current!.target);
-          setCameraToggle(!isCameraToggled); // Toggle the state
+          setCameraToggle(false);
         }
       }
     };
