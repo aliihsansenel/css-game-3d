@@ -12,6 +12,7 @@ import { ILevelSceneComponent } from '../data/sceneComponents'
 import CuboidCheckpoint from '../entities/physics/CuboidCheckpoint'
 import useCheckpoint from '../hooks/useCheckpoint'
 import RoundedBox from '../entities/RoundedBox'
+import { Vector3 } from 'three'
 
 const LevelController = React.memo(() => {
   const {level, sceneInstance, checkpointTrigger} = useCheckpoint();
@@ -36,8 +37,10 @@ const LevelController = React.memo(() => {
     checkpointTrigger('death');
   }
 
+  const spawnPointVector: Vector3 = new Vector3();//.fromArray(spawnPoint);
+  
   return (
-    <CameraController>
+    <CameraController spawnPoint={spawnPointVector}>
       {[0].map(() => {
         return (
           <React.Fragment key={sceneInstance}>

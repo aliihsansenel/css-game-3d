@@ -138,7 +138,7 @@ export const CharacterController = ({position, onDeath}: CharacterControllerProp
 
   // FIX this component renders every frame because of useKeyboardControls
   return (
-    <group>
+    <group position={p}>
       <RigidBody
         ref={rigidbody}
         colliders={false}
@@ -152,8 +152,8 @@ export const CharacterController = ({position, onDeath}: CharacterControllerProp
         //   }
         // }}
       >
-        <CapsuleCollider args={[0.65, 0.6]} position={[p[0], p[1] + 1.2, p[2]]}/>
-        <group ref={character} position={p} >
+        <CapsuleCollider args={[0.65, 0.6]} position={[0, 1.2, 0]}/>
+        <group ref={character} >
           <AnimationStateContext.Provider value={animStateDispatcher}>
             <Character />
           </AnimationStateContext.Provider>

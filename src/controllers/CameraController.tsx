@@ -12,9 +12,9 @@ interface CameraTargetContextType {
 
 export const CameraTargetContext = createContext<CameraTargetContextType | null>(null);
 
-function CameraController({children}: { children: React.ReactNode; }) {
-  const [cameraTarget, setCameraTarget] = useState<Vector3>(new Vector3())
-  const exTargetPos = useRef<Vector3>(new Vector3(0, 0, -1))
+function CameraController({spawnPoint, children}: {spawnPoint: Vector3, children: React.ReactNode; }) {
+  const [cameraTarget, setCameraTarget] = useState<Vector3>(spawnPoint)
+  const exTargetPos = useRef<Vector3>(spawnPoint.add(new Vector3(0, 0, -1)));
   const { camera } = useThree();
   const [isCameraToggled, setCameraToggle] = useState(false);
   const savedCameraState = useRef<{ position: Vector3, target: Vector3 } | null>(null);
@@ -51,7 +51,7 @@ function CameraController({children}: { children: React.ReactNode; }) {
     if (displayScreen.current && isCameraToggled) {
       const screenPosition = new Vector3();
       displayScreen.current.getWorldPosition(screenPosition);
-      
+
       // Save the current camera state
       savedCameraState.current = {
         position: camera.position.clone(),
