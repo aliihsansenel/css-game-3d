@@ -4,7 +4,7 @@ import { Html, Plane, RoundedBox } from "@react-three/drei";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
 
 import { Group } from "three";
-import { CameraTargetContext } from "../controllers/CameraController.js";
+import { CameraModes, CameraTargetContext } from "../controllers/CameraController.js";
 import { debounce } from "../utils/helper.js";
 import { PlaygroundContext, PlaygroundContextType } from "../controllers/PlaygroundController.js";
 import { SceneScreenComponent } from "../data/sceneComponents.js";
@@ -63,7 +63,7 @@ export const DisplayScreen = ({screenData } : DisplayScreenProps) => {
               onOcclude={set}
               style={{
                 transition: 'all 0.5s',
-                opacity: (!cameraTargetContext?.isCameraToggled && hidden) ? 0 : 1,
+                opacity: (cameraTargetContext?.cameraStatus.mode !== CameraModes.ScreenFocus && hidden) ? 0 : 1,
               }} >
               <ScreenContent handler={getFocus}
                 parseCSS={parseCSS}

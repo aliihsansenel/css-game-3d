@@ -37,40 +37,40 @@ const LevelController = React.memo(() => {
     checkpointTrigger('death');
   }
 
-  const spawnPointVector: Vector3 = new Vector3();//.fromArray(spawnPoint);
+  const spawnPointVector: Vector3 = new Vector3().fromArray(spawnPoint);
   
   return (
-    <CameraController spawnPoint={spawnPointVector}>
-      {[0].map(() => {
+    <CameraController spawnPoint={spawnPointVector} sceneInstance={sceneInstance}>
+      <React.Fragment key={sceneInstance}>
+        {restSceneComponents && restSceneComponents.map((sceneComponent, index) => {
+          return <LevelSceneComponent key={index} component={sceneComponent} />
+        })}
+        {checkpointComponents && checkpointComponents.map((checkpointComponent) => {
+            return <CuboidCheckpoint 
+              checkpointData={checkpointComponent}
+              intersectionHandler={checkpointTrigger} />;
+        })}
+        {ps.map((i) => {
+          const pc = playgroundComponents.find(c => c.quizId === `q${i}`);
+          const sc = screenComponents.find(c => c.quizId === `q${i}`);
+          const quizData = cssData.find(q => q.id === `q${i}`)!;
+          
+          return (
+            <PlaygroundController quizData={quizData} key={i}>
+              <LevelSceneComponent component={pc} />
+              <LevelSceneComponent component={sc} />
+            </PlaygroundController>
+          );
+        })}
+        {[0].map(() => {
         return (
-          <React.Fragment key={sceneInstance}>
-            {restSceneComponents && restSceneComponents.map((sceneComponent, index) => {
-              return <LevelSceneComponent key={index} component={sceneComponent} />
-            })}
-            {checkpointComponents && checkpointComponents.map((checkpointComponent) => {
-                return <CuboidCheckpoint 
-                  checkpointData={checkpointComponent}
-                  intersectionHandler={checkpointTrigger} />;
-            })}
-            {ps.map((i) => {
-              const pc = playgroundComponents.find(c => c.quizId === `q${i}`);
-              const sc = screenComponents.find(c => c.quizId === `q${i}`);
-              const quizData = cssData.find(q => q.id === `q${i}`)!;
-              
-              return (
-                <PlaygroundController quizData={quizData} key={i}>
-                  <LevelSceneComponent component={pc} />
-                  <LevelSceneComponent component={sc} />
-                </PlaygroundController>
-              );
-            })}
-            <CharacterController 
+          <CharacterController 
               position={spawnPoint}
               onDeath={onDeath}
             />
-          </ React.Fragment>
           )
       })}
+      </ React.Fragment>
     </CameraController>
   )
 });

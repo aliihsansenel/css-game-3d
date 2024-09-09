@@ -5,7 +5,7 @@ import { ElementRef, MutableRefObject, createContext, useCallback, useContext, u
 import { Controls } from "./input/KeyboardController";
 import Character from "../entities/Character";
 import { Group, Quaternion, Vector3 } from "three";
-import { CameraTargetContext } from "./CameraController";
+import { CameraModes, CameraStates, CameraTargetContext } from "./CameraController";
 
 const JUMP_FORCE = 10.5;
 const MOVEMENT_SPEED = 0.3;
@@ -24,7 +24,7 @@ export interface CharacterControllerProps {
 }
 
 export const CharacterController = ({position, onDeath}: CharacterControllerProps) => {
-  const { camera } = useThree();
+  const camera = useThree(state => state.camera);
   const jumpPressed = useKeyboardControls((state) => state[Controls.jump]);
   const leftPressed = useKeyboardControls((state) => state[Controls.left]);
   const rightPressed = useKeyboardControls((state) => state[Controls.right]);
@@ -114,7 +114,8 @@ export const CharacterController = ({position, onDeath}: CharacterControllerProp
 
     impulse = { x: dir.x, y: impulse.y, z: dir.z };
 
-    if(!cameraTargetContext?.isCameraToggled){
+    const ctc = cameraTargetContext;
+    if(ctc && ctc.cameraStatus.mode === CameraModes.Orbital && ctc.cameraStatus.state === CameraStates.OnTarget){
       rigidbody.current?.applyImpulse(impulse, true);
       if (changeRotation) {
         const angle = Math.atan2(linvel.x, linvel.z);
