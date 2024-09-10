@@ -21,7 +21,8 @@ body {
 	width: 100%;
 	text-align: center;
 	z-index: 100;
-	display:block;
-
-  font-size: 2rem;
+	display: block;
+	font-size: 2rem;
+	pointer-events: none; /* Prevent cursor point click events */
+	user-select: none; /* Make text not selectable */
 }

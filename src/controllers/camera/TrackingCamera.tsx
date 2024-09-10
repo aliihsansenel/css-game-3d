@@ -12,7 +12,7 @@ function TrackingCamera({ targetMesh } : TrackingCameraProps) {
   useFrame(() => {
     const worldPosition = new Vector3();
     targetMesh.getWorldPosition(worldPosition);
-    camera.lookAt(worldPosition);
+    camera.lookAt(worldPosition.add(new Vector3(0,2.0,0)));
   });
 
   return <></>;

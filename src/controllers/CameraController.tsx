@@ -7,6 +7,7 @@ import TrackingCamera from './camera/TrackingCamera';
 import { debounce } from '../utils/helper';
 import { PerspectiveCamera } from '@react-three/drei';
 import TransitionCamera, { ITransitionPose } from './camera/TransitionCamera';
+import { Sequence } from '../hooks/useCheckpoint';
 
 export const enum CameraStates {
   None,
@@ -26,7 +27,8 @@ interface CameraTargetContextType {
   setDisplayScreen: (target: Group | null) => void;
   cameraStatus: {
     state: CameraStates
-    mode: CameraModes
+    mode: CameraModes,
+    transitionDuration: number,
   };
   focusScreen: () => void;
 }
@@ -35,16 +37,18 @@ export const CameraTargetContext = createContext<CameraTargetContextType | null>
 
 interface CameraControllerProps {
   sceneInstance: number;
+  sequence: Sequence;
   spawnPoint: Vector3;
   children: React.ReactNode;
 }
 
-function CameraController({ sceneInstance, spawnPoint, children }: CameraControllerProps) {
+function CameraController({ sceneInstance, sequence, spawnPoint, children }: CameraControllerProps) {
   const camera = useThree(state => state.camera);
   
   const [cameraStatus, setCameraStatus] = useState<CameraTargetContextType["cameraStatus"]>({
     state: CameraStates.None,
     mode: CameraModes.None,
+    transitionDuration: 2000
   });
 
   const [character, setCharacter] = useState<Group | null>(null);
@@ -59,7 +63,7 @@ function CameraController({ sceneInstance, spawnPoint, children }: CameraControl
 
   function focusScreen() {
     if (displayScreen.current) {
-      setCameraStatus(() => ({state: CameraStates.Transition, mode: CameraModes.ScreenFocus }));
+      setCameraStatus(() => ({transitionDuration: 1000, state: CameraStates.Transition, mode: CameraModes.ScreenFocus }));
     }
   }
 
@@ -69,7 +73,7 @@ function CameraController({ sceneInstance, spawnPoint, children }: CameraControl
       character.getWorldPosition(characterPos);
 
       if (characterPos.y < -0.2)
-        setCameraStatus(() => ({state: CameraStates.OnTarget, mode: CameraModes.Tracking }));
+        setCameraStatus(() => ({transitionDuration: 1500, state: CameraStates.OnTarget, mode: CameraModes.Tracking }));
     }
   });
 
@@ -124,7 +128,7 @@ function CameraController({ sceneInstance, spawnPoint, children }: CameraControl
         }
       } else if (event.key === 'Escape' && cameraStatus.mode === CameraModes.ScreenFocus) {
         if (savedCameraState) {
-          setCameraStatus(() => ({state: CameraStates.Transition, mode: CameraModes.Orbital }));
+          setCameraStatus(() => ({transitionDuration: 1000, state: CameraStates.Transition, mode: CameraModes.Orbital }));
         }
       }
     };
@@ -137,23 +141,43 @@ function CameraController({ sceneInstance, spawnPoint, children }: CameraControl
   }, [cameraStatus]);
 
   useEffect(() => {
+    
+  }, [sceneInstance])
+  
+
+  useEffect(() => {
     if (character) {
+
+      let initialPosition = new Vector3();
+      let targetPosition = new Vector3();
+      let currentDirection = new Vector3();
+      let targetDirection = new Vector3();
+      
       let characterPos = new Vector3();
       characterPos = character.getWorldPosition(characterPos).add(new Vector3(0, 2.5, 0));
-      const initialPos = characterPos.clone().add(new Vector3(0, 0, 5));
-      const targetPos = characterPos.clone().add(new Vector3(-5, 1.5, 0));
-      const currentDirection = characterPos.clone().sub(initialPos).normalize();
-      const targetDirection = characterPos.clone().sub(targetPos).normalize();
-      camera.position.copy(initialPos);
-      camera.lookAt(characterPos)
 
-      transitionPose.current = {srcPose: [initialPos, currentDirection], dstPose: [targetPos, targetDirection]}
+      targetPosition = characterPos.clone().add(new Vector3(-5, 1.5, 0));
+      targetDirection = characterPos.clone().sub(targetPosition).normalize();
+
+      if (sequence === Sequence.FirstSpawn) {
+        initialPosition = characterPos.clone().add(new Vector3(0, 0, 5));
+        currentDirection = characterPos.clone().sub(initialPosition).normalize();
+        
+        camera.position.copy(initialPosition);
+        
+      } else if(sequence === Sequence.Respawn) {
+        const cameraDirection = new Vector3();
+        camera.getWorldDirection(cameraDirection);
+        initialPosition = camera.position.clone();
+        currentDirection = cameraDirection.normalize();
+      }
+
+      transitionPose.current = {srcPose: [initialPosition, currentDirection], dstPose: [targetPosition, targetDirection]}
       
-      setCameraStatus((state) => ({...state, state: CameraStates.Transition }));
+      setCameraStatus((state) => ({...state, mode: CameraModes.Orbital, state: CameraStates.Transition }));
     }
   }, [character])
   
-  // const PerspectiveCameraMemo = React.memo(() => <PerspectiveCamera position={[0, 0, 10]} makeDefault />);
   return (
     <>
       {/* <PerspectiveCameraMemo /> */}
@@ -167,16 +191,16 @@ function CameraController({ sceneInstance, spawnPoint, children }: CameraControl
             transitionPose={transitionPose.current!}
             targetMesh={character}
             onTransitionEnd={() => {
-              setCameraStatus(() => ({mode: CameraModes.Orbital, state: CameraStates.OnTarget }));
+              setCameraStatus((state) => ({...state, mode: CameraModes.Orbital, state: CameraStates.OnTarget }));
             }}
-            transitionDuration={2000}
+            transitionDuration={cameraStatus.transitionDuration}
           />
         }
-        {/* {cameraStatus.mode === CameraModes.Tracking && character &&
+        {cameraStatus.mode === CameraModes.Tracking && character &&
           <TrackingCamera
             targetMesh={character}
           />
-        } */}
+        }
         {cameraStatus.state === CameraStates.OnTarget && 
           cameraStatus.mode === CameraModes.Orbital &&
           character &&

@@ -58,7 +58,7 @@ export const CharacterController = ({position, onDeath}: CharacterControllerProp
     const characterPos = new Vector3();
     character.current.getWorldPosition(characterPos);
 
-    if (characterPos.y < -5) {
+    if (characterPos.y < -10) {
       onDeath();
     } else if (jumpPressed) {
       impulse.y += handleJump();

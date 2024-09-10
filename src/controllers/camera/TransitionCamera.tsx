@@ -1,5 +1,5 @@
 import { useFrame, useThree } from '@react-three/fiber';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { Group, Quaternion, Vector3 } from 'three';
 import { debounce } from '../../utils/helper';
@@ -19,15 +19,17 @@ interface TransitionCameraProps {
 
 function TransitionCamera({ targetMesh, transitionPose, onTransitionEnd, transitionDuration } : TransitionCameraProps) {
   const camera = useThree(state => state.camera);
+  const sync = useRef<number>(0.0);
 
   const debounceTransitionEnd = useCallback(
     debounce(onTransitionEnd, transitionDuration), 
   []);
 
-  useFrame((state) => {
-    const time = state.clock.elapsedTime;
-    if (time * 1000 < transitionDuration) {
-      const alpha = time * 1000 / transitionDuration;
+  useFrame(() => {
+    const time = performance.now() - sync.current;
+    if (time < transitionDuration) {
+      const alpha = time / transitionDuration;
+      
       const newPos = new Vector3().lerpVectors(transitionPose.srcPose[0], transitionPose.dstPose[0], alpha);
       const interpolatedDirection = new Vector3().
         lerpVectors(transitionPose.srcPose[1], transitionPose.dstPose[1], alpha); 
@@ -38,6 +40,7 @@ function TransitionCamera({ targetMesh, transitionPose, onTransitionEnd, transit
   });
 
   useEffect(() => {
+    sync.current = performance.now()
     debounceTransitionEnd();
   }, [debounceTransitionEnd]);
 

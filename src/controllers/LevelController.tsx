@@ -15,7 +15,7 @@ import RoundedBox from '../entities/RoundedBox'
 import { Vector3 } from 'three'
 
 const LevelController = React.memo(() => {
-  const {level, sceneInstance, checkpointTrigger} = useCheckpoint();
+  const {level, sceneInstance, sequence, checkpointTrigger} = useCheckpoint();
 
   const sceneComponents = level.sceneData;
   const cssData = level.cssData;
@@ -40,7 +40,7 @@ const LevelController = React.memo(() => {
   const spawnPointVector: Vector3 = new Vector3().fromArray(spawnPoint);
   
   return (
-    <CameraController spawnPoint={spawnPointVector} sceneInstance={sceneInstance}>
+    <CameraController spawnPoint={spawnPointVector} sequence={sequence} sceneInstance={sceneInstance}>
       <React.Fragment key={sceneInstance}>
         {restSceneComponents && restSceneComponents.map((sceneComponent, index) => {
           return <LevelSceneComponent key={index} component={sceneComponent} />
