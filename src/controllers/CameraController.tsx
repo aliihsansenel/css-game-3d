@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useEffect, useRef, useState } from 'react'
+import React, { createContext, useCallback, useEffect, useRef, useState } from 'react'
 import { useFrame, useThree } from '@react-three/fiber';
 import { Group, Vector3 } from 'three';
 import OrbitalCamera from './camera/OrbitalCamera';
@@ -41,7 +41,7 @@ interface CameraControllerProps {
   children: React.ReactNode;
 }
 
-function CameraController({ sceneInstance, sequence, spawnPoint, children }: CameraControllerProps) {
+function CameraController({ sceneInstance, sequence, children }: CameraControllerProps) {
   const camera = useThree(state => state.camera);
   
   const [cameraStatus, setCameraStatus] = useState<CameraTargetContextType["cameraStatus"]>({
@@ -61,7 +61,7 @@ function CameraController({ sceneInstance, sequence, spawnPoint, children }: Cam
     displayScreen.current = target;
   }
 
-  function focusScreen() {
+  const focusScreen = useCallback(() => {
       const screen = displayScreen.current;
       if (screen ) {
         savedCameraState.current = {
@@ -73,13 +73,13 @@ function CameraController({ sceneInstance, sequence, spawnPoint, children }: Cam
 
         setCameraStatus(() => ({transitionDuration: 700, state: CameraStates.Transition, mode: CameraModes.ScreenFocus }));
     }
-  }
+  }, [camera]);
 
-  function blurScreen() {
+  const blurScreen = useCallback(() => {
     transitionPose.current = screenFocusOutVectors(savedCameraState.current!, camera);
 
     setCameraStatus(() => ({transitionDuration: 700, state: CameraStates.Transition, mode: CameraModes.Orbital }));
-  }
+  }, [camera]);
 
   useFrame(() => {
     if (character) {
@@ -109,7 +109,7 @@ function CameraController({ sceneInstance, sequence, spawnPoint, children }: Cam
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [cameraStatus]);
+  }, [cameraStatus, focusScreen, blurScreen]);
 
   useEffect(() => {
     

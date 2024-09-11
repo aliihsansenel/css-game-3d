@@ -17,7 +17,7 @@ interface QTransitionCameraProps {
   transitionDuration: number;
 }
 
-function QTransitionCamera({ targetMesh, transitionPose, onTransitionEnd, transitionDuration } : QTransitionCameraProps) {
+function QTransitionCamera({ transitionPose, onTransitionEnd, transitionDuration } : QTransitionCameraProps) {
   const camera = useThree(state => state.camera);
 
   const debounceTransitionEnd = useCallback(
@@ -41,8 +41,8 @@ function QTransitionCamera({ targetMesh, transitionPose, onTransitionEnd, transi
 
   useEffect(() => {
     camera.position.copy(transitionPose.dstPose[0]);
-    // camera.quaternion.copy(transitionPose.dstPose[1]);
     debounceTransitionEnd();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounceTransitionEnd]);
 
   return <></>;

@@ -1,9 +1,8 @@
 import { useFrame, useThree } from '@react-three/fiber';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
-import { Group, Quaternion, Vector3 } from 'three';
-import { debounce } from '../../utils/helper';
-
+import { Group, Vector3 } from 'three';
+import { debounceAndClear } from '../../utils/helper';
 
 export interface ITransitionPose {
   srcPose: [Vector3, Vector3];
@@ -17,13 +16,12 @@ interface TransitionCameraProps {
   transitionDuration: number;
 }
 
-function TransitionCamera({ targetMesh, transitionPose, onTransitionEnd, transitionDuration } : TransitionCameraProps) {
+function TransitionCamera({ transitionPose, onTransitionEnd, transitionDuration } : TransitionCameraProps) {
   const camera = useThree(state => state.camera);
   const sync = useRef<number>(0.0);
 
-  const debounceTransitionEnd = useCallback(
-    debounce(onTransitionEnd, transitionDuration), 
-  []);
+  const debounceTransitionEnd = useMemo(() => { return debounceAndClear(onTransitionEnd, transitionDuration); },
+    [onTransitionEnd, transitionDuration]);
 
   useFrame(() => {
     const time = performance.now() - sync.current;
@@ -41,7 +39,11 @@ function TransitionCamera({ targetMesh, transitionPose, onTransitionEnd, transit
 
   useEffect(() => {
     sync.current = performance.now()
-    debounceTransitionEnd();
+    debounceTransitionEnd.debouncedFunction();
+
+    return () => {
+      debounceTransitionEnd.clear();
+    }
   }, [debounceTransitionEnd]);
 
   return <></>;

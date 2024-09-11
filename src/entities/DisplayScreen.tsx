@@ -41,7 +41,9 @@ export const DisplayScreen = ({screenData } : DisplayScreenProps) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function getFocus(_: FocusEvent<HTMLInputElement>): void {
-    if (cameraTargetContext && !cameraTargetContext.isCameraToggled) {
+    if (!cameraTargetContext) return;
+    const {mode} = cameraTargetContext.cameraStatus;
+    if (mode === CameraModes.ScreenFocus) {
       cameraTargetContext.focusScreen();
     }
   }
