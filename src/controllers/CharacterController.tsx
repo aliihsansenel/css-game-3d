@@ -58,8 +58,11 @@ export const CharacterController = ({position, onDeath}: CharacterControllerProp
     const characterPos = new Vector3();
     character.current.getWorldPosition(characterPos);
 
-    if (characterPos.y < -10) {
+    if (characterPos.y < -6) {
       onDeath();
+    } else if (characterPos.y < 0.5) {
+      // TODO Add water drag
+      rigidbody.current?.applyImpulse({x: 0, y: 0.32, z: 0}, true);
     } else if (jumpPressed) {
       impulse.y += handleJump();
       if (impulse.y > 0) {
@@ -123,7 +126,7 @@ export const CharacterController = ({position, onDeath}: CharacterControllerProp
       }
     }
 
-    if (linvelMagnitude < 0.1) {
+    if (linvelMagnitude < 0.1 || (ctc && ctc.cameraStatus.mode !== CameraModes.Orbital)) {
       animStateDispatcher.current('Idle', linvelMagnitude)
     } else if (linvelMagnitude > 0.1) {
       animStateDispatcher.current('Walking', linvelMagnitude)
