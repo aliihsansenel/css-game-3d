@@ -1,13 +1,12 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useCallback, useEffect, useRef, useState } from 'react'
+import React, { createContext, useEffect, useRef, useState } from 'react'
 import { useFrame, useThree } from '@react-three/fiber';
-import { Euler, Group, Quaternion, Vector3 } from 'three';
+import { Group, Vector3 } from 'three';
 import OrbitalCamera from './camera/OrbitalCamera';
 import TrackingCamera from './camera/TrackingCamera';
-import { debounce } from '../utils/helper';
-import { PerspectiveCamera } from '@react-three/drei';
 import TransitionCamera, { ITransitionPose } from './camera/TransitionCamera';
 import { Sequence } from '../hooks/useCheckpoint';
+import {screenFocusInVectors, screenFocusOutVectors, spawnTransitionVectors } from '../utils/vectors';
 
 export const enum CameraStates {
   None,
@@ -52,8 +51,9 @@ function CameraController({ sceneInstance, sequence, spawnPoint, children }: Cam
   });
 
   const [character, setCharacter] = useState<Group | null>(null);
-  const savedCameraState = useRef<{ position: Vector3 } | null>(null);
+  const savedCameraState = useRef<{ position: Vector3, direction: Vector3  } | null>(null);
   const transitionPose = useRef<ITransitionPose | null>(null);
+  const orbitalControlsInstance = useRef<number>(0);
   
   const displayScreen = useRef<Group | null>(null);
 
@@ -62,9 +62,23 @@ function CameraController({ sceneInstance, sequence, spawnPoint, children }: Cam
   }
 
   function focusScreen() {
-    if (displayScreen.current) {
-      setCameraStatus(() => ({transitionDuration: 1000, state: CameraStates.Transition, mode: CameraModes.ScreenFocus }));
+      const screen = displayScreen.current;
+      if (screen ) {
+        savedCameraState.current = {
+          position: camera.position.clone(),
+          direction: camera.getWorldDirection(new Vector3()).normalize(),
+        };
+        orbitalControlsInstance.current += 1;
+        transitionPose.current = screenFocusInVectors(screen, camera);
+
+        setCameraStatus(() => ({transitionDuration: 700, state: CameraStates.Transition, mode: CameraModes.ScreenFocus }));
     }
+  }
+
+  function blurScreen() {
+    transitionPose.current = screenFocusOutVectors(savedCameraState.current!, camera);
+
+    setCameraStatus(() => ({transitionDuration: 700, state: CameraStates.Transition, mode: CameraModes.Orbital }));
   }
 
   useFrame(() => {
@@ -77,49 +91,6 @@ function CameraController({ sceneInstance, sequence, spawnPoint, children }: Cam
     }
   });
 
-  // const debounceCameraCorrect = useCallback(
-  //   debounce(() => 
-  //     setCameraStatus(() => ({state: CameraStates.Transition, mode: CameraModes.Orbital })), 1000), 
-  // []);
-
-  // useEffect(() => {
-  //   console.log(camera.position)
-  //   if (displayScreen.current && cameraStatus.mode === CameraModes.None && cameraStatus.state === CameraStates.None) {
-  //     const screenPosition = new Vector3();
-  //     displayScreen.current.getWorldPosition(screenPosition);
-
-  //     // Save the current camera state
-  //     savedCameraState.current = {
-  //       position: camera.position.clone(),
-  //     };
-  //     camera.position.set(screenPosition.x, screenPosition.y, screenPosition.z + 2.3);
-  //     camera.lookAt(screenPosition);
-  //     camera.updateProjectionMatrix();
-  //   } else if (cameraStatus.mode === CameraModes.None && cameraStatus.state === CameraStates.None) {
-  //     // Restore the saved camera state
-  //     const characterPos = new Vector3();
-  //     character!.getWorldPosition(characterPos);
-  //     camera.position.copy(characterPos.clone().add(new Vector3(0, 2.5, 5)));
-  //     debounceCameraCorrect();
-  //   }
-  // }, [cameraStatus.mode])
-
-
-  // useEffect(() => {
-  //   if (cameraStatus.mode === CameraModes.None && cameraStatus.state === CameraStates.None) {
-  //     const vec = spawnPoint.clone().add(new Vector3(0, 2.5, 5));
-  //     camera.position.copy(vec);
-  //     setCameraStatus(() => ({state: CameraStates.OnTarget, mode: CameraModes.Tracking }));
-  //   }
-  // }, [character])
-
-  // useEffect(() => {
-  //   if (cameraStatus.mode === CameraModes.None && cameraStatus.state === CameraStates.None) {
-  //     camera.position.copy(spawnPoint.clone().add(new Vector3(0, 2.5, 5)));
-  //     setCameraStatus(() => ({state: CameraStates.OnTarget, mode: CameraModes.Tracking }));
-  //   }
-  // }, [sceneInstance])
-
   useEffect(() => {
     const handleKeyDown = (event: { key: string; }) => {
       if (event.key === 'e' && displayScreen.current) {
@@ -127,8 +98,8 @@ function CameraController({ sceneInstance, sequence, spawnPoint, children }: Cam
           focusScreen();
         }
       } else if (event.key === 'Escape' && cameraStatus.mode === CameraModes.ScreenFocus) {
-        if (savedCameraState) {
-          setCameraStatus(() => ({transitionDuration: 1000, state: CameraStates.Transition, mode: CameraModes.Orbital }));
+        if (savedCameraState.current) {
+          blurScreen();
         }
       }
     };
@@ -147,33 +118,7 @@ function CameraController({ sceneInstance, sequence, spawnPoint, children }: Cam
 
   useEffect(() => {
     if (character) {
-
-      let initialPosition = new Vector3();
-      let targetPosition = new Vector3();
-      let currentDirection = new Vector3();
-      let targetDirection = new Vector3();
-      
-      let characterPos = new Vector3();
-      characterPos = character.getWorldPosition(characterPos).add(new Vector3(0, 2.5, 0));
-
-      targetPosition = characterPos.clone().add(new Vector3(-5, 1.5, 0));
-      targetDirection = characterPos.clone().sub(targetPosition).normalize();
-
-      if (sequence === Sequence.FirstSpawn) {
-        initialPosition = characterPos.clone().add(new Vector3(0, 0, 5));
-        currentDirection = characterPos.clone().sub(initialPosition).normalize();
-        
-        camera.position.copy(initialPosition);
-        
-      } else if(sequence === Sequence.Respawn) {
-        const cameraDirection = new Vector3();
-        camera.getWorldDirection(cameraDirection);
-        initialPosition = camera.position.clone();
-        currentDirection = cameraDirection.normalize();
-      }
-
-      transitionPose.current = {srcPose: [initialPosition, currentDirection], dstPose: [targetPosition, targetDirection]}
-      
+      transitionPose.current = spawnTransitionVectors(character, camera, sequence);
       setCameraStatus((state) => ({...state, mode: CameraModes.Orbital, state: CameraStates.Transition }));
     }
   }, [character])
@@ -191,7 +136,7 @@ function CameraController({ sceneInstance, sequence, spawnPoint, children }: Cam
             transitionPose={transitionPose.current!}
             targetMesh={character}
             onTransitionEnd={() => {
-              setCameraStatus((state) => ({...state, mode: CameraModes.Orbital, state: CameraStates.OnTarget }));
+              setCameraStatus((state) => ({...state, state: CameraStates.OnTarget }));
             }}
             transitionDuration={cameraStatus.transitionDuration}
           />
@@ -204,7 +149,7 @@ function CameraController({ sceneInstance, sequence, spawnPoint, children }: Cam
         {cameraStatus.state === CameraStates.OnTarget && 
           cameraStatus.mode === CameraModes.Orbital &&
           character &&
-          [0].map(() => <OrbitalCamera key={sceneInstance} targetMesh={character} />)
+          [0].map(() => <OrbitalCamera key={sceneInstance + orbitalControlsInstance.current} targetMesh={character} />)
         }
       </CameraTargetContext.Provider>
     </>
