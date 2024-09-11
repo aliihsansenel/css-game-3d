@@ -43,7 +43,7 @@ export const DisplayScreen = ({screenData } : DisplayScreenProps) => {
   function getFocus(_: FocusEvent<HTMLInputElement>): void {
     if (!cameraTargetContext) return;
     const {mode} = cameraTargetContext.cameraStatus;
-    if (mode === CameraModes.ScreenFocus) {
+    if (mode !== CameraModes.ScreenFocus) {
       cameraTargetContext.focusScreen();
     }
   }
