@@ -65,7 +65,7 @@ export const DisplayScreen = ({screenData } : DisplayScreenProps) => {
               onOcclude={set}
               style={{
                 transition: 'all 0.5s',
-                opacity: (cameraTargetContext?.cameraStatus.mode !== CameraModes.ScreenFocus && hidden) ? 0 : 1,
+                opacity: (cameraTargetContext?.cameraStatus.mode === CameraModes.ScreenFocus || !hidden) ? 1 : 0,
               }} >
               <ScreenContent handler={getFocus}
                 parseCSS={parseCSS}
