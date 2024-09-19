@@ -5,10 +5,9 @@ import { Physics } from "@react-three/rapier";
 import HUDController from "./controllers/HUDController";
 import KeyboardController from "./controllers/input/KeyboardController";
 import LevelController from "./controllers/LevelController";
+import SceneLight from "./entities/SceneLight";
 
 import "./App.css"
-import SceneLight from "./entities/SceneLight";
-// import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 function App() {
   
