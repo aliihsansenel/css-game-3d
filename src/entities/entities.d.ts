@@ -6,7 +6,10 @@ export interface GroundProps {
   position: Vector3Tuple
 }
 
-export interface WaterProps extends Partial<ThreeElements['group']> { }
+export interface WaterProps extends Partial<ThreeElements['group']> { 
+  width?: number;
+  height?: number;
+}
 
 export interface StaticCuboidProps extends Partial<ThreeElements['mesh']> { 
   position: Vector3Tuple;
