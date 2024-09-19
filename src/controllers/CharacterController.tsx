@@ -1,11 +1,15 @@
-import { useKeyboardControls } from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
-import { CapsuleCollider, RigidBody, Vector3Tuple } from "@react-three/rapier";
 import { ElementRef, MutableRefObject, createContext, useCallback, useContext, useEffect, useRef } from "react";
+
+import { Group, Quaternion, Vector3 } from "three";
+import { useFrame, useThree } from "@react-three/fiber";
+import { useKeyboardControls } from "@react-three/drei";
+import { CapsuleCollider, RigidBody, Vector3Tuple } from "@react-three/rapier";
+
 import { Controls } from "./input/KeyboardController";
 import Character from "../entities/Character";
-import { Group, Quaternion, Vector3 } from "three";
 import { CameraModes, CameraStates, CameraTargetContext } from "./CameraController";
+
+import useWaterDrag from "../hooks/useWaterDrag";
 
 const JUMP_FORCE = 10.5;
 const MOVEMENT_SPEED = 0.3;
@@ -35,6 +39,7 @@ export const CharacterController = ({position, onDeath}: CharacterControllerProp
   const rigidbody = useRef<ElementRef<typeof RigidBody>>(null);
   const animStateDispatcher = useRef<(anim: string, vel: number) => void>(() => {});
   const cameraTargetContext = useContext(CameraTargetContext);
+  const { calculateDragForce } = useWaterDrag();
 
   const character = useRef<Group>(null!);
   const isOnFloor = useRef(true);
@@ -58,21 +63,20 @@ export const CharacterController = ({position, onDeath}: CharacterControllerProp
     const characterPos = new Vector3();
     character.current.getWorldPosition(characterPos);
 
+    const linvel = rigidbody.current?.linvel() || new Vector3();
+    const linvelVec = new Vector3(linvel.x, linvel.y, linvel.z);
+    const linvelMagnitude = linvelVec.length();
+
     if (characterPos.y < -6) {
       onDeath();
     } else if (characterPos.y < 0.5) {
-      // TODO Add water drag
-      rigidbody.current?.applyImpulse({x: 0, y: 0.32, z: 0}, true);
+      rigidbody.current?.applyImpulse(calculateDragForce(linvelVec), true);
     } else if (jumpPressed) {
       impulse.y += handleJump();
       if (impulse.y > 0) {
         isOnFloor.current = false;
       }
     }
-
-    const linvel = rigidbody.current?.linvel() || new Vector3();
-    const linvelVec = new Vector3(linvel.x, linvel.y, linvel.z);
-    const linvelMagnitude = linvelVec.length();
 
     let changeRotation = false;
     const cameraDirection = new Vector3();
