@@ -15,7 +15,7 @@ function PlaygroundBlock(props: StaticCuboidProps) {
         <RoundedBoxMesh
           renderOrder={2}
           position={position}
-          visible={true}
+          visible={false}
           {...rest}
         />
       </RigidBody>

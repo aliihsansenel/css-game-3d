@@ -82,7 +82,7 @@ function LevelSceneComponent({ component }: ILevelSceneComponent) {
     case 'ground':
       return <Ground position={component.position} />;
     case 'water':
-      return <Water position={component.position} />;
+      return <Water position={component.position} size={component.size}/>;
     case 'step':
       return <StaticCuboid position={component.position} args={component.args} />;
     case 'playground':

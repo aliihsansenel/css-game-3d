@@ -15,7 +15,7 @@ export interface SceneComponent extends CommonProps {
 export interface ScenePlaygroundComponent extends CommonProps {
   type: 'playground';
   position: Vector3Tuple;
-  
+  size: [number, number];
   boxMargin?: number;
   blocks?: PlaygroundBoxProps[];
 }

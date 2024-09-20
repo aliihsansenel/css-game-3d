@@ -58,6 +58,9 @@ function Playground({ playgroundData }: PlaygroundComponentProps) {
     }
   }, [flexProps]);
 
+  const width = playgroundData.size[0] || 10;
+  const height = playgroundData.size[1] || 10;
+
   return (
     <group ref={groupRef}
       position={pos} 
@@ -67,7 +70,7 @@ function Playground({ playgroundData }: PlaygroundComponentProps) {
         {...flexProps}
         rotation={[(-Math.PI / 2) * 3, (-Math.PI), 0.0]}
         plane="xz"
-        size={[10.0, 10.0, 10.0]}
+        size={[height, 10.0, width]}
         flexWrap="wrap"
         centerAnchor
       >
@@ -82,7 +85,7 @@ function Playground({ playgroundData }: PlaygroundComponentProps) {
         ))}
       </Flex>
       <group rotation={[Math.PI / 2, 0.0, 0.0]}
-        position={[-pos[0], -pos[1], -pos[2]]}
+        position={[-pos[0], -pos[1] + pos[2], 0]}
       >
         {playgroundBoxes.map((box, index) => (
           <PlaygroundBlock
@@ -92,7 +95,7 @@ function Playground({ playgroundData }: PlaygroundComponentProps) {
           />
         ))}
       </group>
-      <Plane args={[10, 10, 1, 1]} renderOrder={1} >
+      <Plane args={[height, width, 1, 1]} renderOrder={1} >
         <meshBasicMaterial
           transparent
           opacity={0.0}

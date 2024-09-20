@@ -7,8 +7,7 @@ export interface GroundProps {
 }
 
 export interface WaterProps extends Partial<ThreeElements['group']> { 
-  width?: number;
-  height?: number;
+  size?: [number, number];
 }
 
 export interface StaticCuboidProps extends Partial<ThreeElements['mesh']> { 
