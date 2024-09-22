@@ -25,9 +25,10 @@ export const AnimationStateContext = createContext<MutableRefObject<AnimationSta
 export interface CharacterControllerProps {
   position: Vector3Tuple;
   onDeath: () => void;
+  id: number;
 }
 
-export const CharacterController = ({position, onDeath}: CharacterControllerProps) => {
+export const CharacterController = ({position, onDeath, id}: CharacterControllerProps) => {
   const camera = useThree(state => state.camera);
   const jumpPressed = useKeyboardControls((state) => state[Controls.jump]);
   const leftPressed = useKeyboardControls((state) => state[Controls.left]);
@@ -146,7 +147,7 @@ export const CharacterController = ({position, onDeath}: CharacterControllerProp
 
   // FIX this component renders every frame because of useKeyboardControls
   return (
-    <group position={p}>
+    <group position={p} >
       <RigidBody
         ref={rigidbody}
         colliders={false}
@@ -161,7 +162,7 @@ export const CharacterController = ({position, onDeath}: CharacterControllerProp
         // }}
       >
         <CapsuleCollider args={[0.65, 0.6]} position={[0, 1.2, 0]}/>
-        <group ref={character} >
+        <group ref={character} name={'character-' + id} >
           <AnimationStateContext.Provider value={animStateDispatcher}>
             <Character />
           </AnimationStateContext.Provider>

@@ -181,7 +181,7 @@ const levelData: LevelDataType = {
     scene: [
       { type: 'spawnpoint', position: [-6, 0, -2] },
       { type: 'ground', position: [-10, 0, 0] },
-      { type: 'screen', position: [-5, 2.5, -7], screenRange: 5, quizId: 'q0',},
+      { type: 'screen', position: [4, 2.5, -8.5], screenRange: 3, quizId: 'q0',},
       { type: 'water', position: [10, 0, 0], size: [20, 40] },
       { type: 'step', position: [2, 0, -6], args: [8, 1, 2] },
       { type: 'step', position: [7, 0, 3.5], args: [2, 1, 2] },
@@ -219,6 +219,53 @@ const levelData: LevelDataType = {
       }
     ]
   },
+  "l4": {
+    scene: [
+      { type: 'spawnpoint', position: [-6, 0, -2] },
+      { type: 'ground', position: [-10, 0, 0] },
+      { type: 'screen', position: [4, 2.5, -8.5], screenRange: 3, quizId: 'q0',},
+      { type: 'water', position: [10, 0, 0], size: [20, 40] },
+      { type: 'step', position: [2, 0, -6], args: [8, 1, 2] },
+      { type: 'step', position: [7, 0, 3.5], args: [2, 1, 2] },
+      { type: 'playground', position: [13.8 - 0.1, 0.02, 3.01],
+        quizId: 'q0',
+        boxMargin: 0.5,
+        size: [12, 10],
+        blocks: [
+          { args: [9.0, 1.0, 1.5] },
+          { args: [9.0, 1.0, 1.5] }
+        ]
+      },
+      { type: 'step', position: [22, 0, 8], args: [2, 1, 2] },
+      { type: 'ground', position: [34, 0, 0] },
+      { type: 'checkpoint', id: 'cp1', position: [28, 2, 0], rotation: [0, 0, 0], sizeArgs: [2, 3, 10] },
+      
+    ],
+    pickable: [
+      { type: 'cube', position: [-5, 1.01, 1.5], rotation: [0, 0, 0], id: 0 },
+      { type: 'cube', position: [-5, 1.01, 3.5], rotation: [0, 0, 0], id: 1 },
+    ],
+    quiz: [
+      {
+        id: 'q0',
+        blocks: [
+          {
+            selector: '#container',
+            pv: [
+              {
+                prop: 'justify-content',
+                values: ['space-between', 'end'],
+                editable: true,
+                state: 2
+              }
+            ],
+            color: 'black'
+          }
+        ],
+        hint: 'justify-content: flex-start (default) |  flex-end |  center |  space-between |  space-around;'
+      }
+    ]
+  },
 };
 
 export class Level {
@@ -226,12 +273,14 @@ export class Level {
   #checkpointCode: string;
   #checkpointCount: number;
   #sceneData: LevelComponents['scene'];
+  #pickableData: LevelComponents['pickable'];
   #cssData: QuizQuestion[];
   
   constructor(levelCode: string | null) {
     this.#levelCode = levelCode || 'l0';
     this.#checkpointCode = 'cp0';
     this.#sceneData = levelData[this.#levelCode].scene;
+    this.#pickableData = levelData[this.#levelCode].pickable || [];
     this.#cssData = levelData[this.#levelCode].quiz;
     this.#checkpointCount = this.setCheckPointCount()
   }
@@ -300,6 +349,10 @@ export class Level {
 
   get sceneData() {
     return this.#sceneData;
+  }
+
+  get pickableData() {
+    return this.#pickableData;
   }
 
   get cssData() {

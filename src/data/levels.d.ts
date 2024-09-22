@@ -1,4 +1,4 @@
-import { SceneComponent } from "./sceneComponents";
+import { SceneComponent, ScenePickableCubeComponent } from "./sceneComponents";
 
 export interface QuizQuestion {
   id: string;
@@ -21,6 +21,7 @@ interface PropertyValue {
 
 export interface LevelComponents {
   scene: (SceneComponent | ScenePlaygroundComponent | SceneScreenComponent)[];
+  pickable?: ScenePickableComponent[];
   quiz: QuizQuestion[];
 }
 

@@ -8,7 +8,7 @@ export const enum Sequence{
 }
 
 function useCheckpoint() {
-  const [level, setLevel] = useState(new Level('l3'));
+  const [level, setLevel] = useState(new Level('l4'));
   const [sceneInstance, setSceneInstance] = useState<number>(0);
   const [sequence, setSequence] = useState<Sequence>(Sequence.FirstSpawn);
 

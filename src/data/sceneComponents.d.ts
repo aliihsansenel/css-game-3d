@@ -42,7 +42,21 @@ export interface SceneCubeComponent extends CommonProps {
   rotation?: Vector3Tuple;
 }
 
+export interface ScenePickableCubeComponent extends SceneCubeComponent {
+  id: number;
+}
+
 export interface ILevelSceneComponent {
-  component: SceneComponent | ScenePlaygroundComponent | SceneScreenComponent | SceneCheckpointComponent | SceneCubeComponent;
+  component: SceneComponent | 
+    ScenePlaygroundComponent | 
+    SceneScreenComponent | 
+    SceneCheckpointComponent | 
+    SceneCubeComponent;
   quizData?: QuizQuestion;
 }
+
+export interface ILevelPickableComponent {
+  component: ScenePickableCubeComponent;
+}
+
+export type ScenePickableComponent = ScenePickableCubeComponent;

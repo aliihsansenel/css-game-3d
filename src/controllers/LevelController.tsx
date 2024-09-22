@@ -13,6 +13,7 @@ import CuboidCheckpoint from '../entities/physics/CuboidCheckpoint'
 import useCheckpoint from '../hooks/useCheckpoint'
 import RoundedBox from '../entities/RoundedBox'
 import { Vector3 } from 'three'
+import ScenePickableController from './ScenePickableController'
 
 const LevelController = React.memo(() => {
   const {level, sceneInstance, sequence, checkpointTrigger} = useCheckpoint();
@@ -62,14 +63,16 @@ const LevelController = React.memo(() => {
             </PlaygroundController>
           );
         })}
-        {[0].map(() => {
-        return (
-          <CharacterController 
+        <ScenePickableController level={level}>
+          {[0].map((_, index) => {
+          return (
+            <CharacterController
               position={spawnPoint}
               onDeath={onDeath}
-            />
-          )
-      })}
+              id={index}
+            />)
+          })}
+        </ScenePickableController>
       </ React.Fragment>
     </CameraController>
   )
