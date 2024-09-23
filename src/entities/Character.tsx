@@ -6,13 +6,12 @@ import { CameraModes, CameraStates, CameraTargetContext } from '../controllers/C
 import { publish, subscribe, unsubscribe } from '../utils/events';
 import { ILevelPickableComponent } from '../data/sceneComponents';
 import { LevelPickableComponent } from '../controllers/ScenePickableController';
-import { Object3D, Vector3 } from 'three';
+import { Group, Object3D, Vector3 } from 'three';
 
 const Character = () => {
-  // const [prevPool, setPrevPool] = useState<ILevelPickableComponent['component'][]>([]);
   const [pickedUpObject, setPickedUpObject] = useState<ILevelPickableComponent['component'] | null>(null);
   const { scene, animations } = useGLTF('/models/robot.glb');
-  const characterMeshRef = useRef();
+  const characterMeshRef = useRef<Group>(null!);
   const { actions } = useAnimations(animations, scene);
 
   const ctc = useContext(CameraTargetContext);
@@ -25,15 +24,11 @@ const Character = () => {
       pickedUpComp.position = [0, 1.2, 1.5];
       setPickedUpObject(pickedUpComp);
     } else {
-      const v = (characterMeshRef.current! as Object3D).getWorldPosition(new Vector3()).clone().add(new Vector3(0, 1.2, 1.5));
+      // const v = (characterMeshRef.current! as Object3D).getWorldPosition(new Vector3()).clone().add(new Vector3(0, 1.2, 1.5));
+      const v = (characterMeshRef.current! as Object3D).localToWorld(new Vector3(0, 1.2, 1.5));
       pickedUpObject.position = [v.x, v.y, v.z];
       publish('spawnObject', { comp: pickedUpObject });
 
-      // setPrevPool((oldState) => {
-      //   console.log(oldState);
-      //   const filtered = oldState.filter(c => c.id !== pickedUpObject.id);
-      //   return [...filtered, pickedUpObject];
-      // });
       setPickedUpObject(null);
     }
   }, [pickedUpObject]);
@@ -47,17 +42,14 @@ const Character = () => {
   }, [handlePickupObject])
 
   return (
-    <>
+    <group ref={characterMeshRef}>
       <CharacterAnimController actions={actions } />
-      {/* {prevPool.map(((component)=> {
-        return <LevelPickableComponent key={component.component.id} component={component.component}  physicsType='dynamic' />;
-      }))} */}
       {pickedUpObject && <LevelPickableComponent component={pickedUpObject}  physicsType='static' />}
-      <primitive object={scene} ref={characterMeshRef}scale={[0.55, 0.55, 0.55]} visible={
+      <primitive object={scene} scale={[0.55, 0.55, 0.55]} visible={
         !(ctc?.cameraStatus.mode === CameraModes.ScreenFocus &&
         ctc?.cameraStatus.state === CameraStates.OnTarget)
       } />
-    </>
+    </group>
   );
 }
 

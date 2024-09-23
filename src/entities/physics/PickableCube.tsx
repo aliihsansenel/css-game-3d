@@ -58,8 +58,9 @@ function PickableCube({color, component, physicsType}: PickableCubeProps) {
             <RigidBody 
               colliders='cuboid' 
               type="dynamic" 
-              restitution={0.2} 
-              friction={0.6}
+              restitution={0.1} 
+              friction={0.8}
+              density={4.0}
             >
               {cubeMesh}
             </RigidBody>
