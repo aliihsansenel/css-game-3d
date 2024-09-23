@@ -57,13 +57,14 @@ export const DisplayScreen = ({screenData } : DisplayScreenProps) => {
       >
         <RoundedBox args={[width, heigth, 0.1]} castShadow>
           <meshBasicMaterial color="black" />
-          <Plane args={[width - 0.3, heigth - 0.3]} position={[0, 0, .11]} >
-          <meshBasicMaterial color="white" />
+          <Plane args={[(width - 0.3) * 3.0, (heigth - 0.3) * 3.0]} position={[0, 0, .11]} scale={[0.33, 0.33, 0.33]} >
+            <meshBasicMaterial color="white" />
             <Html position={[0, 0, 0.01]}
               transform
               occlude 
               onOcclude={set}
               style={{
+                transform: 'scale(3)',
                 transition: 'all 0.5s',
                 opacity: (cameraTargetContext?.cameraStatus.mode === CameraModes.ScreenFocus || !hidden) ? 1 : 0,
               }} >
