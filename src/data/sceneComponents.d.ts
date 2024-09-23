@@ -57,6 +57,7 @@ export interface ILevelSceneComponent {
 
 export interface ILevelPickableComponent {
   component: ScenePickableCubeComponent;
+  physicsType: 'dynamic' | 'static';
 }
 
 export type ScenePickableComponent = ScenePickableCubeComponent;

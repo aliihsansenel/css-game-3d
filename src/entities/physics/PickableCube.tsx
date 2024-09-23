@@ -1,48 +1,71 @@
 import { RigidBody } from "@react-three/rapier";
 
 import RoundedBoxMesh from "../../meshes/RoundedBoxMesh";
-import { ScenePickableCubeComponent } from "../../data/sceneComponents";
+import { ILevelPickableComponent, ScenePickableCubeComponent } from "../../data/sceneComponents";
 import { RoundedBoxMeshProps } from "../entities";
 import { subscribe } from "../../utils/events";
 import { useEffect, useState } from "react";
+import { Vector3Tuple } from "three";
 
 interface PickableCubeProps {
   color : RoundedBoxMeshProps["color"];
   component: ScenePickableCubeComponent;
+  physicsType: ILevelPickableComponent['physicsType'];
 }
 
-function PickableCube({color, component}: PickableCubeProps) {
-  const [exist, setExist] = useState(true);
+interface ObjectState {
+  position?: Vector3Tuple;
+  rotation?: Vector3Tuple;
+  physicsType: ILevelPickableComponent['physicsType'];
+}
+
+function PickableCube({color, component, physicsType}: PickableCubeProps) {
+  const [objectState, setObjectState] = useState<ObjectState | null>({
+    position: component.position,
+    rotation: component.rotation || [0, 0, 0],
+    physicsType: physicsType,
+  });
 
   const meshName = 'pickableCube-' + component.id;
 
   useEffect(() => {
-    subscribe('removeObject', (event) => {
-      const objName = (event as CustomEvent).detail.objectName;
+    subscribe('deleteObject', (event) => {
+      const { obj } = (event as CustomEvent).detail;
+      if (obj.name === meshName) {
+        setObjectState(null);
+      }
+    });
 
-      if (objName === meshName) {
-        setExist(false);
+    subscribe('spawnObject', (event) => {
+      const { comp } = (event as CustomEvent).detail;
+      if (comp.id === component.id) {
+        setObjectState({position: comp.position, rotation: comp.rotation, physicsType: 'dynamic'});
       }
     });
   
     // return () => {
     //   
     // }
-  }, [component])
+  }, [meshName, component])
   
-  
+  const cubeMesh = <RoundedBoxMesh color={color} name={meshName} material-roughness={.2} />;
+
   return (
     <>
-      {exist && (
-        <group position={component.position} rotation={component.rotation}>
-          <RigidBody 
-            colliders='cuboid' 
-            type="dynamic" 
-            restitution={0.2} 
-            friction={0.6}
-          >
-            <RoundedBoxMesh color={color} name={meshName} material-roughness={.2} />
-          </RigidBody>
+      {objectState && (
+        <group position={objectState.position} rotation={objectState.rotation}>
+          {physicsType === 'dynamic' ? (
+            <RigidBody 
+              colliders='cuboid' 
+              type="dynamic" 
+              restitution={0.2} 
+              friction={0.6}
+            >
+              {cubeMesh}
+            </RigidBody>
+          ): (
+            <>{cubeMesh}</>
+          )}
         </group>
       )}
     </>

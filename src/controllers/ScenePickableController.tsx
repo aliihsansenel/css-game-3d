@@ -22,9 +22,9 @@ const ScenePickableController = React.memo(({children, level} : ComponentProps) 
     const handleKeyDown = (event: { key: string; }) => {
       if (event.key === 'f' && pickableComponents!.length > 0) {
         const character = scene.getObjectByName('character-0') as Object3D;
-        const closestPickableObject = findClosestPickable(scene, character, pickableComponents!);
-        if (closestPickableObject)
-          publish('removeObject', { objectName: closestPickableObject.name });
+        const {obj, comp} = findClosestPickable(scene, character, pickableComponents!);
+        if (obj)
+          publish('pickupObject', { comp: comp, obj: obj });
       }
     };
     
@@ -33,13 +33,13 @@ const ScenePickableController = React.memo(({children, level} : ComponentProps) 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [pickableComponents]);
+  }, [scene, pickableComponents]);
 
   return (
     <>
       {children}
       {pickableComponents && pickableComponents.map((pickableComponent, index) => {
-        return <LevelPickableComponent key={index} component={pickableComponent} />
+        return <LevelPickableComponent key={index} component={pickableComponent} physicsType='dynamic' />
       })}
     </>
   )
@@ -47,11 +47,11 @@ const ScenePickableController = React.memo(({children, level} : ComponentProps) 
 
 export default ScenePickableController;
 
-function LevelPickableComponent({ component }: ILevelPickableComponent) {
+export function LevelPickableComponent({ component, physicsType }: ILevelPickableComponent) {
   const type = `pickable${component.type.charAt(0).toUpperCase()}${component.type.slice(1)}`;
   switch (type) {
     case 'pickableCube':
-      return <PickableCube color='#e39fcc' component={component} />;
+      return <PickableCube color='#e39fcc' component={component} physicsType={physicsType}/>;
   default:
     return null; // or some fallback component
-  }}
+}}
