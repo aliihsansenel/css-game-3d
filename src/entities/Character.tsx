@@ -1,5 +1,5 @@
 
-import { useGLTF, useAnimations } from '@react-three/drei';
+import { useGLTF, useAnimations, Shadow } from '@react-three/drei';
 import CharacterAnimController from '../controllers/anim/CharacterAnimController';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { CameraModes, CameraStates, CameraTargetContext } from '../controllers/CameraController';
@@ -24,9 +24,11 @@ const Character = () => {
       pickedUpComp.position = [0, 1.2, 1.5];
       setPickedUpObject(pickedUpComp);
     } else {
-      // const v = (characterMeshRef.current! as Object3D).getWorldPosition(new Vector3()).clone().add(new Vector3(0, 1.2, 1.5));
-      const v = (characterMeshRef.current! as Object3D).localToWorld(new Vector3(0, 1.2, 1.5));
+      const characterObject = (characterMeshRef.current! as Object3D);
+      const v = characterObject.localToWorld(new Vector3(0, 1.2, 1.5));
       pickedUpObject.position = [v.x, v.y, v.z];
+      const wd = characterObject.getWorldDirection(new Vector3()).clone().normalize();
+      pickedUpObject.rotation = [0, Math.atan2(wd.x, wd.z), 0];
       publish('spawnObject', { comp: pickedUpObject });
 
       setPickedUpObject(null);
@@ -49,6 +51,15 @@ const Character = () => {
         !(ctc?.cameraStatus.mode === CameraModes.ScreenFocus &&
         ctc?.cameraStatus.state === CameraStates.OnTarget)
       } />
+      {/* TODO fix shadow */}
+      <Shadow
+        color="black"
+        colorStop={0}
+        opacity={0.3}
+        position={[0,0.01,0]}
+        scale={[2.1, 2.1, 2.1]}
+        fog={false} // Reacts to fog (default=false)
+      />
     </group>
   );
 }
