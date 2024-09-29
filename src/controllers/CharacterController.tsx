@@ -1,4 +1,4 @@
-import { ElementRef, MutableRefObject, createContext, useCallback, useContext, useEffect, useRef } from "react";
+import { ElementRef, MutableRefObject, createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 import { Group, Quaternion, Vector3 } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -45,6 +45,7 @@ export const CharacterController = ({position, onDeath, id}: CharacterController
   const character = useRef<Group>(null!);
   const isOnFloor = useRef(true);
   const jumpCooldown = useRef(false);
+  const [inertiaCofactor, setInertiaCofactor] = useState<number>(1);
 
   const handleJump = useCallback(() => {
     if (isOnFloor.current && !jumpCooldown.current) {
@@ -53,10 +54,10 @@ export const CharacterController = ({position, onDeath, id}: CharacterController
         jumpCooldown.current = false;
       }, 700); 
 
-      return JUMP_FORCE;
+      return JUMP_FORCE * inertiaCofactor;
     }
     return 0;
-  }, []);
+  }, [inertiaCofactor]);
 
   useFrame(() => {
     let impulse = { x: 0, y: 0, z: 0 };
@@ -120,6 +121,7 @@ export const CharacterController = ({position, onDeath, id}: CharacterController
     dir = dir.applyQuaternion(quaternion);
     dir = dir.multiplyScalar(isOnFloor.current ? 1.0 : MID_AIR_CONTROL);
 
+    dir.multiplyScalar(inertiaCofactor);
     impulse = { x: dir.x, y: impulse.y, z: dir.z };
 
     const ctc = cameraTargetContext;
@@ -164,7 +166,7 @@ export const CharacterController = ({position, onDeath, id}: CharacterController
         <CapsuleCollider args={[0.65, 0.6]} position={[0, 1.2, 0]}/>
         <group ref={character} name={'character-' + id} >
           <AnimationStateContext.Provider value={animStateDispatcher}>
-            <Character />
+            <Character setInertiaCofactor={setInertiaCofactor} />
           </AnimationStateContext.Provider>
         </group>
       </RigidBody>

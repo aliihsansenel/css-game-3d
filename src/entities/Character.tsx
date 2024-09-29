@@ -8,7 +8,7 @@ import { ILevelPickableComponent } from '../data/sceneComponents';
 import { LevelPickableComponent } from '../controllers/ScenePickableController';
 import { Group, Object3D, Vector3 } from 'three';
 
-const Character = () => {
+const Character = ({ setInertiaCofactor } : { setInertiaCofactor: ( cofactor : number) => void }) => {
   const [pickedUpObject, setPickedUpObject] = useState<ILevelPickableComponent['component'] | null>(null);
   const { scene, animations } = useGLTF('/models/robot.glb');
   const characterMeshRef = useRef<Group>(null!);
@@ -23,6 +23,7 @@ const Character = () => {
       const pickedUpComp = {...comp};
       pickedUpComp.position = [0, 1.2, 1.5];
       setPickedUpObject(pickedUpComp);
+      setInertiaCofactor(0.8);
     } else {
       const characterObject = (characterMeshRef.current! as Object3D);
       const v = characterObject.localToWorld(new Vector3(0, 1.2, 1.5));
@@ -32,8 +33,11 @@ const Character = () => {
       publish('spawnObject', { comp: pickedUpObject });
 
       setPickedUpObject(null);
+      setInertiaCofactor(1);
     }
-  }, [pickedUpObject]);
+  }, [pickedUpObject, setInertiaCofactor]);
+
+  
 
   useEffect(() => {
     subscribe('pickupObject', handlePickupObject);
@@ -46,7 +50,7 @@ const Character = () => {
   return (
     <group ref={characterMeshRef}>
       <CharacterAnimController actions={actions } />
-      {pickedUpObject && <LevelPickableComponent component={pickedUpObject}  physicsType='static' />}
+      {pickedUpObject && <LevelPickableComponent component={pickedUpObject} physicsType='static' />}
       <primitive object={scene} scale={[0.55, 0.55, 0.55]} visible={
         !(ctc?.cameraStatus.mode === CameraModes.ScreenFocus &&
         ctc?.cameraStatus.state === CameraStates.OnTarget)
