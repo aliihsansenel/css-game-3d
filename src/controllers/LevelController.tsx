@@ -1,19 +1,22 @@
 import React from 'react'
 
-import PlaygroundController from './PlaygroundController'
-import Playground from '../entities/Playground'
+import { Vector3 } from 'three'
+
+import useCheckpoint from '../hooks/useCheckpoint'
 import CameraController from './CameraController'
+import PlaygroundController from './PlaygroundController'
+import ScenePickableController from './ScenePickableController'
+import StationaryController from './StationaryController'
 import { CharacterController } from './CharacterController'
+import { ILevelSceneComponent } from '../data/sceneComponents'
+
+import Water from '../meshes/Water'
+import Playground from '../entities/Playground'
 import DisplayScreen from '../entities/DisplayScreen'
 import Ground from '../entities/Ground'
-import Water from '../meshes/Water'
 import StaticCuboid from '../entities/StaticCuboid'
-import { ILevelSceneComponent } from '../data/sceneComponents'
 import CuboidCheckpoint from '../entities/physics/CuboidCheckpoint'
-import useCheckpoint from '../hooks/useCheckpoint'
 import RoundedBox from '../entities/RoundedBox'
-import { Vector3 } from 'three'
-import ScenePickableController from './ScenePickableController'
 
 const LevelController = React.memo(() => {
   const {level, sceneInstance, sequence, checkpointTrigger} = useCheckpoint();
@@ -51,6 +54,7 @@ const LevelController = React.memo(() => {
               checkpointData={checkpointComponent}
               intersectionHandler={checkpointTrigger} />;
         })}
+        <StationaryController level={level} />
         {ps.map((i) => {
           const pc = playgroundComponents.find(c => c.quizId === `q${i}`);
           const sc = screenComponents.find(c => c.quizId === `q${i}`);
@@ -73,7 +77,7 @@ const LevelController = React.memo(() => {
             />)
           })}
         </ScenePickableController>
-      </ React.Fragment>
+      </React.Fragment>
     </CameraController>
   )
 });

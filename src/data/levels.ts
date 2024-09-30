@@ -223,23 +223,22 @@ const levelData: LevelDataType = {
     scene: [
       { type: 'spawnpoint', position: [-6, 0, -2] },
       { type: 'ground', position: [-10, 0, 0] },
-      { type: 'screen', position: [4, 2.5, -8.5], screenRange: 3, quizId: 'q0',},
+      // { type: 'screen', position: [4, 2.5, -8.5], screenRange: 3, quizId: 'q0',},
       { type: 'water', position: [10, 0, 0], size: [20, 40] },
       { type: 'step', position: [2, 0, -6], args: [8, 1, 2] },
       { type: 'step', position: [7, 0, 3.5], args: [2, 1, 2] },
-      { type: 'playground', position: [13.8 - 0.1, 0.02, 3.01],
-        quizId: 'q0',
-        boxMargin: 0.5,
-        size: [12, 10],
-        blocks: [
-          { args: [9.0, 1.0, 1.5] },
-          { args: [9.0, 1.0, 1.5] }
-        ]
-      },
+      // { type: 'playground', position: [13.8 - 0.1, 0.02, 3.01],
+      //   quizId: 'q0',
+      //   boxMargin: 0.5,
+      //   size: [12, 10],
+      //   blocks: [
+      //     { args: [9.0, 1.0, 1.5] },
+      //     { args: [9.0, 1.0, 1.5] }
+      //   ]
+      // },
       { type: 'step', position: [22, 0, 8], args: [2, 1, 2] },
       { type: 'ground', position: [34, 0, 0] },
       { type: 'checkpoint', id: 'cp1', position: [28, 2, 0], rotation: [0, 0, 0], sizeArgs: [2, 3, 10] },
-      
     ],
     pickable: [
       { type: 'cube', position: [-5, 1.01, 1.5], rotation: [0, 0, 0], id: 0 },
@@ -264,7 +263,15 @@ const levelData: LevelDataType = {
         ],
         hint: 'justify-content: flex-start (default) |  flex-end |  center |  space-between |  space-around;'
       }
-    ]
+    ],
+    stationary: {
+      plates: [
+        { id: 0, position: [-5, 0, 0] }
+      ],
+      platforms: [
+        { id: 0, paths: [{ position: [5, 0, 5], reducer: (ids: number[]) => ids.includes(0) }] }
+      ]
+    }
   },
 };
 
@@ -274,6 +281,7 @@ export class Level {
   #checkpointCount: number;
   #sceneData: LevelComponents['scene'];
   #pickableData: LevelComponents['pickable'];
+  #stationaryData: LevelComponents['stationary'];
   #cssData: QuizQuestion[];
   
   constructor(levelCode: string | null) {
@@ -281,6 +289,7 @@ export class Level {
     this.#checkpointCode = 'cp0';
     this.#sceneData = levelData[this.#levelCode].scene;
     this.#pickableData = levelData[this.#levelCode].pickable || [];
+    this.#stationaryData = levelData[this.#levelCode].stationary || null;
     this.#cssData = levelData[this.#levelCode].quiz;
     this.#checkpointCount = this.setCheckPointCount()
   }
@@ -353,6 +362,10 @@ export class Level {
 
   get pickableData() {
     return this.#pickableData;
+  }
+
+  get stationaryData() {
+    return this.#stationaryData;
   }
 
   get cssData() {

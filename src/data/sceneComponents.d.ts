@@ -46,6 +46,27 @@ export interface ScenePickableCubeComponent extends SceneCubeComponent {
   id: number;
 }
 
+export interface ScenePlateComponent {
+  id: number;
+  position: Vector3Tuple;
+}
+
+// Plate (id array) => boolean (is position of path activated)
+export type ScenePlatfromReducer = (ids : number[]) => boolean;
+
+export interface ScenePlatformComponent {
+  id: number;
+  paths: { 
+    position: Vector3Tuple,
+    reducer: ScenePlatfromReducer 
+  }[];
+}
+
+export interface ILevelStationaryComponent {
+  plates: ScenePlateComponent[];
+  platforms: ScenePlatformComponent[];
+}
+
 export interface ILevelSceneComponent {
   component: SceneComponent | 
     ScenePlaygroundComponent | 
@@ -54,7 +75,6 @@ export interface ILevelSceneComponent {
     SceneCubeComponent;
   quizData?: QuizQuestion;
 }
-
 export interface ILevelPickableComponent {
   component: ScenePickableCubeComponent;
   physicsType: 'dynamic' | 'static';
