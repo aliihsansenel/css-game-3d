@@ -12,8 +12,8 @@ interface ComponentProps {
 
 const StationaryController = React.memo(({ level } : ComponentProps) => {
   const stationaryComponents = level.stationaryData as LevelComponents['stationary'];
-  const plates = stationaryComponents?.plates;
-  const platforms = stationaryComponents?.platforms;
+  const plates = stationaryComponents.plates;
+  const platforms = stationaryComponents.platforms;
 
   if (!stationaryComponents)
     return <></>;

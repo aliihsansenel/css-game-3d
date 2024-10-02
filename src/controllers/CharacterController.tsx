@@ -153,17 +153,13 @@ export const CharacterController = ({position, onDeath, id}: CharacterController
       <RigidBody
         ref={rigidbody}
         colliders={false}
+        name={'character-' + id}
         enabledRotations={[false, false, false]}
         onCollisionEnter={() => {
           isOnFloor.current = true;
         }}
-        // onContactForce={(payload) => {
-        //   if (jumpPressed) {
-        //     console.log(`The total force generated was: ${payload.totalForce.y}`);
-        //   }
-        // }}
       >
-        <CapsuleCollider args={[0.65, 0.6]} position={[0, 1.2, 0]}/>
+        <CapsuleCollider args={[0.65, 0.6]} position={[0, 1.2, 0]} />
         <group ref={character} name={'character-' + id} >
           <AnimationStateContext.Provider value={animStateDispatcher}>
             <Character setInertiaCofactor={setInertiaCofactor} />

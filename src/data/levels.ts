@@ -266,7 +266,7 @@ const levelData: LevelDataType = {
     ],
     stationary: {
       plates: [
-        { id: 0, position: [-5, 0, 0] }
+        { id: 0, position: [-8, .5, 1] }
       ],
       platforms: [
         { id: 0, paths: [{ position: [5, 0, 5], reducer: (ids: number[]) => ids.includes(0) }] }

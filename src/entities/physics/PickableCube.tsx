@@ -61,6 +61,7 @@ function PickableCube({color, component, physicsType}: PickableCubeProps) {
               restitution={0.1} 
               friction={0.8}
               density={4.0}
+              name={meshName}
             >
               {cubeMesh}
             </RigidBody>
