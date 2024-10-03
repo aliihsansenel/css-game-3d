@@ -16,7 +16,7 @@ const Character = ({ setInertiaCofactor } : { setInertiaCofactor: ( cofactor : n
 
   const ctc = useContext(CameraTargetContext);
 
-  const handlePickupObject = useCallback((event) => {
+  const handlePickupObject = useCallback((event: Event) => {
     const { obj, comp } = (event as CustomEvent).detail;
     if (pickedUpObject === null) {
       publish('deleteObject', { comp: comp, obj: obj });

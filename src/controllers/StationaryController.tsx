@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import { ScenePlateComponent, ScenePlatformComponent } from '../data/sceneComponents';
 import { Level } from '../data/levels'

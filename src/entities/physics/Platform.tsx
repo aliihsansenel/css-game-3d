@@ -1,9 +1,9 @@
+import { useEffect, useMemo, useRef } from 'react';
+
 import { CuboidCollider, RapierRigidBody, RigidBody } from '@react-three/rapier';
-import { PlatesStateType } from '../../controllers/StationaryController'
 import { ScenePlatformComponent } from '../../data/sceneComponents'
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { PlatesStateType } from '../../controllers/StationaryController'
 import PlatformMesh from '../../meshes/PlatformMesh';
-import { useFrame } from '@react-three/fiber';
 
 export interface ComponentProps {
   platesState: PlatesStateType;
@@ -13,9 +13,9 @@ export interface ComponentProps {
 function Platform({ component, platesState } : { component: ScenePlatformComponent } & ComponentProps) {
   // const paths = component.paths;
   
-  const [route, setRoute] = useState<{ srcIdx: number, dstIdx: number, transitionDuration: number } | { rest: number }>({ rest: 0 });
+  // const [route, setRoute] = useState<{ srcIdx: number, dstIdx: number, transitionDuration: number } | { rest: number }>({ rest: 0 });
   const rigidBody = useRef<RapierRigidBody>(null!);
-  const sync = useRef<number>(0.0);
+  // const sync = useRef<number>(0.0);
 
   // useFrame(() => {
   //   const time = performance.now() - sync.current;
