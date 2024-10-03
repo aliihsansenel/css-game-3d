@@ -13,7 +13,7 @@ export interface ComponentProps {
 function Platform({ component, platesState } : { component: ScenePlatformComponent } & ComponentProps) {
   // const paths = component.paths;
   
-  const [route, setRoute] = useState<{ srcIdx: number, dstIdx: number, transitionDuration: number } | null>(null);
+  const [route, setRoute] = useState<{ srcIdx: number, dstIdx: number, transitionDuration: number } | { rest: number }>({ rest: 0 });
   const rigidBody = useRef<RapierRigidBody>(null!);
   const sync = useRef<number>(0.0);
 
@@ -34,7 +34,7 @@ function Platform({ component, platesState } : { component: ScenePlatformCompone
   const activePlateIds = useMemo(() => Object.keys(platesState).filter(id => platesState[id]).map(i => Number(i)), [platesState]);
 
   useEffect(() => {
-    console.log('activePlateIds', activePlateIds);
+    // console.log('activePlateIds', activePlateIds);
   }, [activePlateIds])
   
   return (

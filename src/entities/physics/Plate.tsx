@@ -16,14 +16,14 @@ function Plate({ component, notifyController } : { component: ScenePlateComponen
   
   const notifyHandler = useCallback((isCollapsed: boolean) => {
     notifyController(component.id, isCollapsed);
-  }, []);
+  }, [component.id, notifyController]);
   
   const addOverlappingObject = (item: string) => {
-    overlappingObjects.current.add(item)
+    overlappingObjects.current.add(item);
   };
 
   const delOverlappingObject = useCallback((item: string) => {
-    overlappingObjects.current.delete(item)
+    overlappingObjects.current.delete(item);
   },[]);
 
   const handleCollapse = useCallback((newIsCollapsed: boolean) => {
@@ -57,7 +57,7 @@ function Plate({ component, notifyController } : { component: ScenePlateComponen
     const { obj } = (event as CustomEvent).detail;
     delOverlappingObject(obj.name)
     handleOverlappingObjects(overlappingObjects.current);
-  }, []);
+  }, [delOverlappingObject, handleOverlappingObjects]);
 
   useEffect(() => {
         
@@ -67,7 +67,7 @@ function Plate({ component, notifyController } : { component: ScenePlateComponen
       unsubscribe('deleteObject', handleDeleteObject);
     };
   
-  }, [delOverlappingObject, handleOverlappingObjects])
+  }, [delOverlappingObject, handleDeleteObject, handleOverlappingObjects])
   
   useEffect(() => {
     const pos = rigidBody.current.translation();
