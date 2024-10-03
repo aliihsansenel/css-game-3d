@@ -23,7 +23,12 @@ export interface RoundedBoxMeshProps extends Partial<typeof RoundedBox>, Partial
 }
 
 export interface PlateMeshProps extends Partial<typeof RoundedBox>, Partial<ThreeElements['mesh']> {
-  args?: NamedArrayTuple;
+  args?: Vector3Tuple;
+  position?: Vector3Tuple;
+}
+
+export interface PlatformMeshProps extends Partial<typeof RoundedBox>, Partial<ThreeElements['mesh']> {
+  args?: Vector3Tuple;
   position?: Vector3Tuple;
 }
 

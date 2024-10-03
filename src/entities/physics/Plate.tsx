@@ -4,20 +4,28 @@ import PlateMesh from '../../meshes/PlateMesh'
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { subscribe } from '../../utils/events';
 
-// TODO notify StationaryController component
-function Plate({ component } : { component: ScenePlateComponent }) {
+export interface ComponentProps {
+  notifyController: (id: number, isCollapsed: boolean) => void;
+}
+
+function Plate({ component, notifyController } : { component: ScenePlateComponent } & ComponentProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const rigidBody = useRef<RapierRigidBody>(null!);
   const cooldown = useRef<boolean>(false);
   const overlappingObjects = useRef<Set<string>>(new Set());
   
+  const notifyHandler = useCallback((isCollapsed: boolean) => {
+    notifyController(component.id, isCollapsed);
+  }, []);
+
   const handleCollapse = useCallback((isCollapsed: boolean) => {
     if (!cooldown.current) {
       setIsCollapsed(isCollapsed);
+      notifyHandler(isCollapsed);
       cooldown.current = true;
       setTimeout(() => {
         cooldown.current = false;
-      }, 500);
+      }, 100);
     }
   }, []);
 

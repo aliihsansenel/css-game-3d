@@ -56,6 +56,7 @@ export type ScenePlatfromReducer = (ids : number[]) => boolean;
 
 export interface ScenePlatformComponent {
   id: number;
+  sizeArgs?: Vector3Tuple;
   paths: { 
     position: Vector3Tuple,
     reducer: ScenePlatfromReducer 
