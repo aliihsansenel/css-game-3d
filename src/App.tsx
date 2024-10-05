@@ -23,7 +23,7 @@ function App() {
           // }}
         >
           <Suspense>
-            <Physics colliders={false} debug>
+            <Physics colliders={false}>
               <SceneLight />
               <LevelController />
             </Physics>

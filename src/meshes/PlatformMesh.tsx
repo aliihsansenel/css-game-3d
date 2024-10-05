@@ -15,7 +15,7 @@ const PlatformMesh = forwardRef<Mesh, ComponentProps>((props, ref) => {
   return (
     <RoundedBox
       ref={ref}
-      args={args || [1.5, 1.0, 1.5]}
+      args={args ? [args[0], args[1], args[2]] : undefined}
       radius={0.05}
       smoothness={4}
       bevelSegments={1}
@@ -25,8 +25,8 @@ const PlatformMesh = forwardRef<Mesh, ComponentProps>((props, ref) => {
       {...rest}
     >
       <meshStandardMaterial
-        color={"#6692a3"} 
-        roughness={0.0}
+        color={"#4788a1"} 
+        roughness={0.1}
       />
     </RoundedBox>
   );

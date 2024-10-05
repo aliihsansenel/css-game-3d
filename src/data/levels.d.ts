@@ -1,4 +1,4 @@
-import { SceneComponent,  } from "./sceneComponents";
+import { ILevelStationaryComponent, SceneComponent, ScenePickableComponent,  } from "./sceneComponents";
 
 export interface QuizQuestion {
   id: string;

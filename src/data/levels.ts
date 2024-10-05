@@ -270,9 +270,9 @@ const levelData: LevelDataType = {
         { id: 1, position: [-12, .5, 1] },
       ],
       platforms: [
-        { id: 0, sizeArgs: [], paths: [
-          { position: [5, 0, 5], reducer: (ids: number[]) => !ids.includes(0) },
-          { position: [0, 0, 5], reducer: (ids: number[]) => ids.includes(0) },
+        { id: 0, sizeArgs: [1.5, 1.0, 1.5], paths: [
+          { id: 0, position: [5, 0, 5], reducer: (ids: number[]) => !ids.includes(0) },
+          { id: 1, position: [0, 0, 5], reducer: (ids: number[]) => ids.includes(0) },
           ],
         }
       ]

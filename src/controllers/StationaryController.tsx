@@ -14,21 +14,21 @@ export type PlatesStateType = Record<string, boolean>;
 
 const StationaryController = React.memo(({ level } : ComponentProps) => {
   const stationaryComponents = level.stationaryData as LevelComponents['stationary'];
-  const plates = stationaryComponents.plates;
-  const platforms = stationaryComponents.platforms;
+  const plates = stationaryComponents?.plates;
+  const platforms = stationaryComponents?.platforms;
 
   const [platesState, setPlatesState] = useState<PlatesStateType>({});
 
   function plateStateController(id: number, isCollapsed: boolean) {
 
     setPlatesState((state) => {
-      // console.log(state, id, isCollapsed);
       if (state[id] !== undefined && state[id] === isCollapsed) {
         return state;
       }
       return {...state, [id]: isCollapsed};
     });
   }
+  
   if (!stationaryComponents)
     return <></>;
   

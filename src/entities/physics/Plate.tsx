@@ -60,9 +60,8 @@ function Plate({ component, notifyController } : { component: ScenePlateComponen
   }, [delOverlappingObject, handleOverlappingObjects]);
 
   useEffect(() => {
-        
     subscribe('deleteObject', handleDeleteObject);
-
+    
     return () => {
       unsubscribe('deleteObject', handleDeleteObject);
     };

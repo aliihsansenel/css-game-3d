@@ -58,6 +58,7 @@ export interface ScenePlatformComponent {
   id: number;
   sizeArgs?: Vector3Tuple;
   paths: { 
+    id: number;
     position: Vector3Tuple,
     reducer: ScenePlatfromReducer 
   }[];
