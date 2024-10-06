@@ -3,6 +3,7 @@ import { ScenePlateComponent } from '../../data/sceneComponents'
 import PlateMesh from '../../meshes/PlateMesh'
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { subscribe, unsubscribe } from '../../utils/events';
+import PlateGround from '../PlateGround';
 
 export interface ComponentProps {
   notifyController: (id: number, isCollapsed: boolean) => void;
@@ -81,33 +82,39 @@ function Plate({ component, notifyController } : { component: ScenePlateComponen
   }, [component.position, isCollapsed])
   
 
+  const grounded = component.grounded ? component.grounded : false;
+
   return (
-    <RigidBody type="kinematicPosition" position={component.position} ref={rigidBody}
-    >
-      <CuboidCollider
-        position={[0, 0.1, 0]}
-        args={[1.0, 0.03, 1.0]} 
-        restitution={0.1}
-       />
-       <CuboidCollider
-        position={[0, 0.2, 0]}
-        args={[1.0, 0.1, 1.0]}
-        sensor
-        onIntersectionEnter={(payload) => {
-          if (payload.other.rigidBodyObject) {
-            addOverlappingObject(payload.other.rigidBodyObject.name);
-            handleOverlappingObjects(overlappingObjects.current);
-          }
-        }}
-        onIntersectionExit={(payload) => {
-          if (payload.other.rigidBodyObject) {
-            delOverlappingObject(payload.other.rigidBodyObject.name);
-            handleOverlappingObjects(overlappingObjects.current);
-          }
-        }}
-      />
-      <PlateMesh isCollapsed={isCollapsed}/>
-    </RigidBody>
+    <group position={component.position}>
+      {grounded && 
+        <PlateGround position={[0, -0.5, 0]} />
+      }
+      <RigidBody type="kinematicPosition" ref={rigidBody}>
+        <CuboidCollider
+          position={[0, 0.1, 0]}
+          args={[1.0, 0.03, 1.0]} 
+          restitution={0.1}
+        />
+        <CuboidCollider
+          position={[0, 0.2, 0]}
+          args={[1.0, 0.1, 1.0]}
+          sensor
+          onIntersectionEnter={(payload) => {
+            if (payload.other.rigidBodyObject) {
+              addOverlappingObject(payload.other.rigidBodyObject.name);
+              handleOverlappingObjects(overlappingObjects.current);
+            }
+          }}
+          onIntersectionExit={(payload) => {
+            if (payload.other.rigidBodyObject) {
+              delOverlappingObject(payload.other.rigidBodyObject.name);
+              handleOverlappingObjects(overlappingObjects.current);
+            }
+          }}
+        />
+        <PlateMesh isCollapsed={isCollapsed} />
+      </RigidBody>
+    </group>
   )
 }
 

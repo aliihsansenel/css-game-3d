@@ -1,7 +1,8 @@
 import { forwardRef } from 'react';
+
+import { Mesh } from 'three';
 import { RoundedBox } from '@react-three/drei';
 import { PlateMeshProps } from '../entities/entities';
-import { Mesh } from 'three';
 
 export interface ComponentProps extends PlateMeshProps {
   isCollapsed: boolean;

@@ -49,6 +49,7 @@ export interface ScenePickableCubeComponent extends SceneCubeComponent {
 export interface ScenePlateComponent {
   id: number;
   position: Vector3Tuple;
+  grounded?: boolean;
 }
 
 // Plate (id array) => boolean (is position of path activated)
