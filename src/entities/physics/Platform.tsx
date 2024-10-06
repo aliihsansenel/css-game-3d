@@ -61,7 +61,7 @@ function Platform({ component, platesState } : { component: ScenePlatformCompone
     <RigidBody type="kinematicPosition" position={component.paths[0].position} ref={rigidBody}
     >
       <CuboidCollider
-        args={sizeArgs || [.75, .5, .75]}
+        args={sizeArgs ? sizeArgs as [number, number, number] : [0.75, 0.5, 0.375]}
         restitution={0.1}
        />
       <PlatformMesh args={component.sizeArgs}/>

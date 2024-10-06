@@ -13,7 +13,7 @@ const PlateMesh = forwardRef<Mesh, ComponentProps>((props, ref) => {
   return (
     <RoundedBox
       ref={ref}
-      args={args || [2.8, 0.25, 2.8]}
+      args={args || [2.0, 0.25, 2.0]}
       radius={0.04}
       smoothness={4}
       bevelSegments={1}

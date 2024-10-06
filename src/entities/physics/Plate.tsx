@@ -61,7 +61,7 @@ function Plate({ component, notifyController } : { component: ScenePlateComponen
 
   useEffect(() => {
     subscribe('deleteObject', handleDeleteObject);
-    
+
     return () => {
       unsubscribe('deleteObject', handleDeleteObject);
     };
@@ -86,12 +86,12 @@ function Plate({ component, notifyController } : { component: ScenePlateComponen
     >
       <CuboidCollider
         position={[0, 0.1, 0]}
-        args={[1.4, 0.03, 1.4]} 
+        args={[1.0, 0.03, 1.0]} 
         restitution={0.1}
        />
        <CuboidCollider
         position={[0, 0.2, 0]}
-        args={[1.4, 0.1, 1.4]} 
+        args={[1.0, 0.1, 1.0]}
         sensor
         onIntersectionEnter={(payload) => {
           if (payload.other.rigidBodyObject) {

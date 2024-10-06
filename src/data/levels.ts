@@ -294,7 +294,7 @@ export class Level {
     this.#checkpointCode = 'cp0';
     this.#sceneData = levelData[this.#levelCode].scene;
     this.#pickableData = levelData[this.#levelCode].pickable || [];
-    this.#stationaryData = levelData[this.#levelCode].stationary || null;
+    this.#stationaryData = levelData[this.#levelCode].stationary;
     this.#cssData = levelData[this.#levelCode].quiz;
     this.#checkpointCount = this.setCheckPointCount()
   }
