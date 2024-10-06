@@ -58,8 +58,8 @@ function Playground({ playgroundData }: PlaygroundComponentProps) {
     }
   }, [flexProps]);
 
-  const width = playgroundData.size[0] || 10;
-  const height = playgroundData.size[1] || 10;
+  const width = playgroundData.size ? playgroundData.size[0] : 10;
+  const height = playgroundData.size ? playgroundData.size[1] : 10;
 
   return (
     <group ref={groupRef}

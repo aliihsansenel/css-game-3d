@@ -11,7 +11,8 @@ const levelData: LevelDataType = {
       { type: 'screen', position: [-5, 2.5, -7], screenRange: 5, quizId: 'q0',},
       { type: 'water', position: [5, 0, 0] },
       { type: 'step', position: [-1, 0, -6], args: [3, 1, 2] },
-      { type: 'playground', position: [8.8 - 0.1, 0.02, 0.01],
+      { type: 'playground',
+        position: [8.8 - 0.1, 0.02, 0.01],
         quizId: 'q0',
         screenPosition: [-5, 2.5, -4],
         boxMargin: 0.5,
@@ -64,7 +65,8 @@ const levelData: LevelDataType = {
       { type: 'screen', position: [27, 2.5, -4], quizId: 'q1', screenRange: 5},
       { type: 'water', position: [37, 0, 0] },
       { type: 'step', position: [31, 0, 6], args: [3, 1, 2] },
-      { type: 'playground', position: [40.8 - 0.1, 0.02, 0.01],
+      { type: 'playground',
+        position: [40.8 - 0.1, 0.02, 0.01],
         quizId: 'q1',
         screenPosition: [25, 2.5, -4],
         boxMargin: 0.5,
@@ -123,7 +125,8 @@ const levelData: LevelDataType = {
       { type: 'step', position: [-1, 0, 0], args: [3, 1, 2] },
       { type: 'step', position: [2.2, 1, 0], args: [2.5, 0.5, 2] },
       { type: 'step', position: [5, 2, 0], args: [2.5, 0.5, 2] },
-      { type: 'playground', position: [8.8 - 0.1, 0.02, 0.01],
+      { type: 'playground',
+        position: [8.8 - 0.1, 0.02, 0.01],
         quizId: 'q0',
         screenPosition: [-5, 2.5, -4],
         boxMargin: 0.5,
@@ -134,21 +137,6 @@ const levelData: LevelDataType = {
       { type: 'step', position: [13, 0, 7], args: [2, 1, 2] },
       { type: 'ground', position: [22, 0, 0] },
       { type: 'checkpoint', id: 'cp1', position: [17, 1, 0], rotation: [0,0,0], sizeArgs: [2, 3, 10] },
-      { type: 'cube', position: [23, 1.01, -2], rotation: [0, 0, 0] },
-      { type: 'cube', position: [23, 1.01, -1], rotation: [0, 0, 0] },
-      { type: 'cube', position: [23, 1.01, 0], rotation: [0, 0, 0] },
-      { type: 'cube', position: [23, 1.01, 1], rotation: [0, 0, 0] },
-      { type: 'cube', position: [23, 1.01, 2], rotation: [0, 0, 0] },
-      { type: 'cube', position: [23, 2.01, -1.5], rotation: [0, 0, 0] },
-      { type: 'cube', position: [23, 2.01, -0.5], rotation: [0, 0, 0] },
-      { type: 'cube', position: [23, 2.01, 0.5], rotation: [0, 0, 0] },
-      { type: 'cube', position: [23, 2.01, 1.5], rotation: [0, 0, 0] },
-      { type: 'cube', position: [23, 3.01, -1.0], rotation: [0, 0, 0] },
-      { type: 'cube', position: [23, 3.01, -0.0], rotation: [0, 0, 0] },
-      { type: 'cube', position: [23, 3.01, 1.0], rotation: [0, 0, 0] },
-      { type: 'cube', position: [23, 4.01, -0.5], rotation: [0, 0, 0] },
-      { type: 'cube', position: [23, 4.01, 0.5], rotation: [0, 0, 0] },
-      { type: 'cube', position: [23, 5.01, 0.0], rotation: [0, 0, 0] },
     ],
     quiz: [
       {
@@ -185,7 +173,8 @@ const levelData: LevelDataType = {
       { type: 'water', position: [10, 0, 0], size: [20, 40] },
       { type: 'step', position: [2, 0, -6], args: [8, 1, 2] },
       { type: 'step', position: [7, 0, 3.5], args: [2, 1, 2] },
-      { type: 'playground', position: [13.8 - 0.1, 0.02, 3.01],
+      { type: 'playground',
+        position: [13.8 - 0.1, 0.02, 3.01],
         quizId: 'q0',
         boxMargin: 0.5,
         size: [12, 10],
@@ -223,26 +212,41 @@ const levelData: LevelDataType = {
     scene: [
       { type: 'spawnpoint', position: [-6, 0, -2] },
       { type: 'ground', position: [-10, 0, 0] },
-      // { type: 'screen', position: [4, 2.5, -8.5], screenRange: 3, quizId: 'q0',},
+      { type: 'screen', position: [1.5, 2.5, -8.5], screenRange: 3, quizId: 'q0',},
       { type: 'water', position: [10, 0, 0], size: [20, 40] },
-      { type: 'step', position: [2, 0, -6], args: [8, 1, 2] },
-      // { type: 'step', position: [7, 0, 3.5], args: [2, 1, 2] },
-      // { type: 'playground', position: [13.8 - 0.1, 0.02, 3.01],
-      //   quizId: 'q0',
-      //   boxMargin: 0.5,
-      //   size: [12, 10],
-      //   blocks: [
-      //     { args: [9.0, 1.0, 1.5] },
-      //     { args: [9.0, 1.0, 1.5] }
-      //   ]
-      // },
-      // { type: 'step', position: [22, 0, 8], args: [2, 1, 2] },
+      { type: 'playground',
+        position: [8.4 - 0.1, 0.02, 0.01],
+        quizId: 'q0',
+        boxMargin: 0.5,
+        size: [12, 10],
+        blocks: [
+          { args: [4.3, 1.0, 1.5] },
+        ]
+      },
+      { type: 'step', position: [10, 0, -10.8], args: [2, 1, 5] },
+      { type: 'step', position: [7, 1.0, -8.0], args: [4, 3, 0.3] },
+      { type: 'step', position: [-1, 0, 7], args: [2, 1, 1.5] },
       { type: 'ground', position: [34, 0, 0] },
       { type: 'checkpoint', id: 'cp1', position: [28, 2, 0], rotation: [0, 0, 0], sizeArgs: [2, 3, 10] },
+      { type: 'cube', position: [33, 1.01, -2], rotation: [0, 0, 0] },
+      { type: 'cube', position: [33, 1.01, -1], rotation: [0, 0, 0] },
+      { type: 'cube', position: [33, 1.01, 0], rotation: [0, 0, 0] },
+      { type: 'cube', position: [33, 1.01, 1], rotation: [0, 0, 0] },
+      { type: 'cube', position: [33, 1.01, 2], rotation: [0, 0, 0] },
+      { type: 'cube', position: [33, 2.01, -1.5], rotation: [0, 0, 0] },
+      { type: 'cube', position: [33, 2.01, -0.5], rotation: [0, 0, 0] },
+      { type: 'cube', position: [33, 2.01, 0.5], rotation: [0, 0, 0] },
+      { type: 'cube', position: [33, 2.01, 1.5], rotation: [0, 0, 0] },
+      { type: 'cube', position: [33, 3.01, -1.0], rotation: [0, 0, 0] },
+      { type: 'cube', position: [33, 3.01, -0.0], rotation: [0, 0, 0] },
+      { type: 'cube', position: [33, 3.01, 1.0], rotation: [0, 0, 0] },
+      { type: 'cube', position: [33, 4.01, -0.5], rotation: [0, 0, 0] },
+      { type: 'cube', position: [33, 4.01, 0.5], rotation: [0, 0, 0] },
+      { type: 'cube', position: [33, 5.01, 0.0], rotation: [0, 0, 0] },
     ],
     pickable: [
       { type: 'cube', position: [-5, 1.01, 1.5], rotation: [0, 0, 0], id: 0 },
-      { type: 'cube', position: [-5, 1.01, 3.5], rotation: [0, 0, 0], id: 1 },
+      { type: 'cube', position: [10, 0.9, -13], rotation: [0, 0, 0], id: 1 },
     ],
     quiz: [
       {
@@ -253,7 +257,13 @@ const levelData: LevelDataType = {
             pv: [
               {
                 prop: 'justify-content',
-                values: ['space-between', 'end'],
+                values: ['flex-start', 'end'],
+                editable: true,
+                state: 1
+              },
+              {
+                prop: 'align-items',
+                values: ['flex-end'],
                 editable: true,
                 state: 2
               }
@@ -266,13 +276,19 @@ const levelData: LevelDataType = {
     ],
     stationary: {
       plates: [
-        { id: 0, position: [-8, .5, 1] },
-        { id: 1, position: [6, .5, 1], grounded: true },
+        { id: 0, position: [-8, .5, 6] },
+        { id: 1, position: [-11, .5, 6] },
+        { id: 2, position: [10, .5, 10], grounded: true },
       ],
       platforms: [
         { id: 0, sizeArgs: [1.5, 1.0, 1.5], paths: [
-          { id: 0, position: [5, 0, 5], reducer: (ids: number[]) => !ids.includes(0) },
-          { id: 1, position: [0, 0, 5], reducer: (ids: number[]) => ids.includes(0) },
+          { id: 0, position: [2, 0, 7], reducer: (ids: number[]) => !ids.includes(0) },
+          { id: 1, position: [2, 0, -5], reducer: (ids: number[]) => ids.includes(0) },
+          ],
+        },
+        { id: 1, sizeArgs: [1.5, 1.0, 1.5], paths: [
+          { id: 0, position: [10, 0, 7], reducer: (ids: number[]) => !ids.includes(0) },
+          { id: 1, position: [25, 0, 7], reducer: (ids: number[]) => ids.includes(1) && ids.includes(2) },
           ],
         }
       ]

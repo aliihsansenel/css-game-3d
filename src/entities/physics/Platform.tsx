@@ -48,7 +48,7 @@ function Platform({ component, platesState } : { component: ScenePlatformCompone
         const curPos = new Vector3(sv.x, sv.y, sv.z);
         const dstPos = new Vector3(dv[0], dv[1], dv[2]);
         const dist = curPos.distanceTo(dstPos);
-        setRoute({curPos: curPos, dstPos: dstPos, dstIdx: path.id, transitionDuration: dist * 1000 * 0.6});
+        setRoute({curPos: curPos, dstPos: dstPos, dstIdx: path.id, transitionDuration: dist * 1000 * 0.3});
         sync.current = performance.now();
       }
     }
