@@ -276,8 +276,8 @@ const levelData: LevelDataType = {
     ],
     stationary: {
       plates: [
-        { id: 0, position: [-8, .5, 6] },
-        { id: 1, position: [-11, .5, 6] },
+        { id: 0, position: [-7, .5, -7] },
+        { id: 1, position: [-7, .5, 7] },
         { id: 2, position: [10, .5, 10], grounded: true },
       ],
       platforms: [
